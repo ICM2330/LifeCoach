@@ -1,10 +1,14 @@
 package com.example.lifecoach_
 
-import java.util.Date
+import android.location.Location
+import com.example.lifecoach_.Model.Frecuency
+import java.time.format.DateTimeFormatter
+import java.util.Optional
 
-class Habit (
+open class Habit (
     var name : String,
-    var history : List <Date>,
-    var frecuency :
+    var history : List <DateTimeFormatter>,
+    var frecuency : Frecuency,
+    location : Optional<Location>
     ) {
 }

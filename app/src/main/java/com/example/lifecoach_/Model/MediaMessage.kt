@@ -6,7 +6,10 @@ import java.util.Date
 
 class MediaMessage (
     timeStamp : Date,
-    fileAttached : Uri
+    var fileAttached : Uri
     ) : MessageApp(timeStamp), Serializable {
 
+    override fun toString(): String {
+        return "MediaMessage(fileAttached=$fileAttached)"
+    }
 }
