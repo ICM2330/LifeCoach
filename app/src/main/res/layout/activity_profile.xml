@@ -28,8 +28,8 @@
 
     <ImageView
         android:id="@+id/profileimage"
-        android:layout_width="166dp"
-        android:layout_height="148dp"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -38,6 +38,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -178,5 +179,75 @@
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="50dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profileimage"
+        app:srcCompat="@drawable/registercamera"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/privacyButtonProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="21dp"
+        android:backgroundTint="#1C571E"
+        android:fontFamily="sans-serif-black"
+        android:text="Privacidad"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toStartOf="@+id/notificationsButtonProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <Button
+        android:id="@+id/notificationsButtonProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="22dp"
+        android:backgroundTint="#1C571E"
+        android:fontFamily="sans-serif-black"
+        android:text="Notificaciones"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/privacyButtonProfile"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="23dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/privacyButtonProfile"
+        app:layout_constraintEnd_toEndOf="@+id/privacyButtonProfile"
+        app:layout_constraintHorizontal_bias="0.908"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/privacyButtonProfile"
+        app:srcCompat="@drawable/baseline_lock_person_24" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="18dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/notificationsButtonProfile"
+        app:layout_constraintEnd_toEndOf="@+id/notificationsButtonProfile"
+        app:layout_constraintHorizontal_bias="0.877"
+        app:layout_constraintStart_toStartOf="@+id/notificationsButtonProfile"
+        app:layout_constraintTop_toTopOf="@+id/notificationsButtonProfile"
+        app:layout_constraintVertical_bias="0.541"
+        app:srcCompat="@drawable/notifications" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
