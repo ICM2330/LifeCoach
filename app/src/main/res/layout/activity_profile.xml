@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="33dp"
+            android:layout_marginTop="35dp"
             android:layout_marginEnd="250dp"
             android:text="Email"
             android:textAlignment="textStart"
@@ -115,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="250dp"
             android:text="Telefóno"
             android:textAlignment="textStart"
@@ -126,8 +126,8 @@
 
         <EditText
             android:id="@+id/nameProfile"
-            android:layout_width="211dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="40dp"
             android:ems="10"
@@ -194,7 +194,7 @@
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <Button
-        android:id="@+id/privacyButtonProfile"
+        android:id="@+id/logOutButtonProfile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -203,7 +203,7 @@
         android:layout_marginBottom="21dp"
         android:backgroundTint="#1C571E"
         android:fontFamily="sans-serif-black"
-        android:text="Privacidad"
+        android:text="Cerrar Sesión"
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toStartOf="@+id/notificationsButtonProfile"
@@ -224,18 +224,18 @@
         android:textStyle="normal|bold"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/privacyButtonProfile"
+        app:layout_constraintStart_toEndOf="@+id/logOutButtonProfile"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="23dp"
         android:layout_height="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/privacyButtonProfile"
-        app:layout_constraintEnd_toEndOf="@+id/privacyButtonProfile"
+        app:layout_constraintBottom_toBottomOf="@+id/logOutButtonProfile"
+        app:layout_constraintEnd_toEndOf="@+id/logOutButtonProfile"
         app:layout_constraintHorizontal_bias="0.908"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/privacyButtonProfile"
+        app:layout_constraintTop_toTopOf="@+id/logOutButtonProfile"
         app:srcCompat="@drawable/baseline_lock_person_24" />
 
     <ImageView
