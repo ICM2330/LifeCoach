@@ -5,12 +5,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.telephony.PhoneNumberFormattingTextWatcher
-import android.telephony.PhoneNumberUtils
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.lifecoach_.Model.Friend
-import com.example.lifecoach_.Model.Steps
 import com.example.lifecoach_.Model.User
 import com.example.lifecoach_.databinding.ActivityMainBinding
 
@@ -33,21 +29,16 @@ class MainActivity : AppCompatActivity() {
 
         //Button of Registering
         binding.registerButton.setOnClickListener {
-            var user = getUserProof()
-            intent = Intent(baseContext, ProfileActivity::class.java)
+            var userProof = getUserProof()
+            intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra("user", userProof)
             startActivity(intent)
         }
     }
 
     fun getUserProof () : User{
-        lateinit var friendsUP : List<Friend>
-        lateinit var steps : List<Steps>
-
-        var userProof = User(binding.nameRegister.text.toString(), uriImage,
-            binding.userRegister.text.toString(), binding.emailRegister.text.toString(),
-            binding.phoneRegister as? PhoneNumberUtils, 0,steps, friendsUP, true)
-
-        return userProof
+        return User(binding.nameRegister.text.toString(), binding.userRegister.text.toString(),
+            binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong())
     }
 
     val getContentGallery = registerForActivityResult(

@@ -1,6 +1,8 @@
 package com.example.lifecoach_
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.lifecoach_.Model.User
@@ -15,11 +17,23 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //Fill the info. with the login activity
-        val user = intent.getSerializableExtra("user") as User
+        val userProof = intent.getSerializableExtra("user") as User
+        fullInformation(binding, userProof)
 
         //Instructions of buttons
         manageButtons(binding)
     }
+
+    fun fullInformation (binding: ActivityProfileBinding, user : User){
+        binding.emailProfile.setText(user.email)
+        binding.nameProfile.setText(user.name)
+        binding.userProfile.setText(user.username)
+
+        var stringPhone = user.phone.toString()
+        binding.phoneProfile.setText(stringPhone)
+    }
+
+
 
     fun manageButtons(binding: ActivityProfileBinding){
         bottomNavigationBarManagement(binding)
