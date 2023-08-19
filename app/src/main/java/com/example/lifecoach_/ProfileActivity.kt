@@ -3,6 +3,7 @@ package com.example.lifecoach_
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.lifecoach_.Model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
 
 class ProfileActivity : AppCompatActivity() {
@@ -12,6 +13,11 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Fill the info. with the login activity
+        val user = intent.getSerializableExtra("user") as User
+
+        //Instructions of buttons
         manageButtons(binding)
     }
 
