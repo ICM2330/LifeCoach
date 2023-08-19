@@ -1,34 +1,30 @@
+package com.example.lifecoach_
+
 import android.content.Intent
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.lifecoach_.ChatMenuActivity
-import com.example.lifecoach_.DashBoardHabitsActivity
-import com.example.lifecoach_.FriendActivity
-import com.example.lifecoach_.R
-import com.example.lifecoach_.databinding.ActivityFriendBinding
-import com.example.lifecoach_.databinding.ActivityProfileViewBinding
+import android.os.Bundle
+import com.example.lifecoach_.databinding.ActivityProfileBinding
 
-class ProfileViewActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityProfileViewBinding
+class ProfileActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileViewBinding.inflate(layoutInflater)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
         manageButtons(binding)
     }
 
-    fun manageButtons(binding: ActivityProfileViewBinding){
-        bottomNavigationBarManagement()
+    fun manageButtons(binding: ActivityProfileBinding){
+        bottomNavigationBarManagement(binding)
     }
 
-    fun bottomNavigationBarManagement(){
+    fun bottomNavigationBarManagement(binding: ActivityProfileBinding) {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.menuProfile-> {
+                R.id.menuProfile -> {
                     //Do an intent with the profile activity
-                    val intent = Intent(baseContext, ProfileViewActivity::class.java)
+                    val intent = Intent(baseContext, ProfileActivity::class.java)
                     startActivity(intent)
                     true
                 }
@@ -38,13 +34,13 @@ class ProfileViewActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                R.id.menuHabits->{
+                R.id.menuHabits -> {
                     // Do an intent with the dashboard of habits activity
                     val intent = Intent(baseContext, DashBoardHabitsActivity::class.java)
                     startActivity(intent)
                     true
                 }
-                R.id.menuFriends->{
+                R.id.menuFriends -> {
                     // Do an intent with the friends activity
                     val intent = Intent(baseContext, FriendActivity::class.java)
                     startActivity(intent)
@@ -54,5 +50,4 @@ class ProfileViewActivity : AppCompatActivity() {
             }
         }
     }
-
 }

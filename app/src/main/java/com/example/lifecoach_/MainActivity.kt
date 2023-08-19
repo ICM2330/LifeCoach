@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         //Button of Registering
         binding.registerButton.setOnClickListener {
-            intent = Intent(baseContext, ProfileViewActivity::class.java)
+            intent = Intent(baseContext, ProfileActivity::class.java)
             startActivity(intent)
         }
     }
