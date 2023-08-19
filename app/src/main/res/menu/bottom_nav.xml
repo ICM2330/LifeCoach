@@ -10,17 +10,17 @@
         />
 
     <item android:title="Hábitos"
-        android:id="@+id/habitsProfile"
+        android:id="@+id/menuHabits"
         android:icon="@drawable/bar_menu"
         />
 
     <item android:title="Amigos"
-        android:id="@+id/friendsProfile"
+        android:id="@+id/menuFriends"
         android:icon="@drawable/friends_menu"
         />
 
     <item android:title="Chat"
-        android:id="@+id/chatProfile"
+        android:id="@+id/menuChat"
         android:icon="@drawable/chat_menu"
         />
 
