@@ -1,0 +1,14 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.LifeCoach_" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name = "backgroundColor">@color/greenmenu</item>
+    </style>
+
+    <style name="BottomNavigation">
+        <item name="android:background">@color/greenmenu</item>
+        <item name="itemIconTint">@color/white</item>
+    </style>
+
+    <style name="Theme.LifeCoach_" parent="Base.Theme.LifeCoach_" />
+</resources>

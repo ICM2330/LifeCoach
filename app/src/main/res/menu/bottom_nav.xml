@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/BottomNavigation">
+
+
+
+    <item android:title="Perfil"
+        android:id="@+id/profileMenu"
+        android:icon="@drawable/user_menu"
+        />
+
+    <item android:title="Hábitos"
+        android:id="@+id/profileDashBoard"
+        android:icon="@drawable/bar_menu"
+        />
+
+    <item android:title="Amigos"
+        android:id="@+id/profileHome"
+        android:icon="@drawable/friends_menu"
+        />
+
+    <item android:title="Chat"
+        android:id="@+id/profileChat"
+        android:icon="@drawable/chat_menu"
+        />
+
+</menu>

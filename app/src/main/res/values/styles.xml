@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="GreenMenuStyle"><item name="android:backgroundTint">@color/greenmenu</item></style>
+</resources>
