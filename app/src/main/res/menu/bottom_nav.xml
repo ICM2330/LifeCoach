@@ -5,22 +5,22 @@
 
 
     <item android:title="Perfil"
-        android:id="@+id/profileMenu"
+        android:id="@+id/menuProfile"
         android:icon="@drawable/user_menu"
         />
 
     <item android:title="Hábitos"
-        android:id="@+id/profileDashBoard"
+        android:id="@+id/habitsProfile"
         android:icon="@drawable/bar_menu"
         />
 
     <item android:title="Amigos"
-        android:id="@+id/profileHome"
+        android:id="@+id/friendsProfile"
         android:icon="@drawable/friends_menu"
         />
 
     <item android:title="Chat"
-        android:id="@+id/profileChat"
+        android:id="@+id/chatProfile"
         android:icon="@drawable/chat_menu"
         />
 
