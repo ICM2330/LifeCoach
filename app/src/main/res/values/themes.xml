@@ -8,6 +8,7 @@
     <style name="BottomNavigation">
         <item name="android:background">@color/greenmenu</item>
         <item name="itemIconTint">@color/white</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Theme.LifeCoach_" parent="Base.Theme.LifeCoach_" />
