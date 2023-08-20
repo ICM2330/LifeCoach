@@ -1,6 +1,7 @@
 package com.example.lifecoach_.model
 
 import android.media.Image
+import android.net.Uri
 import java.io.Serializable
 
 class User(
@@ -10,7 +11,7 @@ class User(
     var phone: Long
 ):Serializable
 {
-    lateinit var picture: Image
+    lateinit var picture: Uri
     var dark_mode: Int = 0
     lateinit var steps: List<Steps>
     lateinit var friends : List<Friend>
