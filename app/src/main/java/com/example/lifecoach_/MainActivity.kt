@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.lifecoach_.Model.User
+import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

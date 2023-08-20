@@ -1,11 +1,9 @@
 package com.example.lifecoach_
 
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.lifecoach_.Model.User
+import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
 
 class ProfileActivity : AppCompatActivity() {

@@ -1,7 +1,6 @@
-package com.example.lifecoach_.Model
+package com.example.lifecoach_.model.habits
 
 import android.location.Location
-import com.example.lifecoach_.Habit
 import java.io.Serializable
 import java.time.format.DateTimeFormatter
 import java.util.Optional

@@ -1,9 +1,6 @@
-package com.example.lifecoach_.Model
+package com.example.lifecoach_.model
 
 import android.media.Image
-import android.telephony.PhoneNumberFormattingTextWatcher
-import android.telephony.PhoneNumberUtils
-import android.text.Editable
 import java.io.Serializable
 
 class User(

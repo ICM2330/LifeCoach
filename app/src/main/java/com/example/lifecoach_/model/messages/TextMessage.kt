@@ -1,6 +1,5 @@
-package com.example.lifecoach_.Model
+package com.example.lifecoach_.model.messages
 
-import android.net.Uri
 import java.io.Serializable
 import java.util.Date
 
