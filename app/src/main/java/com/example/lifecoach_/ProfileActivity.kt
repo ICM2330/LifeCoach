@@ -60,12 +60,6 @@ class ProfileActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                R.id.menuFriends -> {
-                    // Do an intent with the friends activity
-                    val intent = Intent(baseContext, FriendActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
                 else -> false
             }
         }
