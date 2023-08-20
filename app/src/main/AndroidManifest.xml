@@ -28,9 +28,6 @@
             android:name=".ChatMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileViewActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
