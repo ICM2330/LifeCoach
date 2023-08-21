@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.lifecoach_.CreateHabitsActivity
+import com.example.lifecoach_.activities.habits.CreateHabitsActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
@@ -42,7 +42,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
     fun manageButtons(binding: ActivityProfileBinding, user : User){
-        bottomNavigationBarManagement(binding)
+        bottomNavigationBarManagement(binding, user)
         uploadInfo(binding, user)
         logOut(binding)
         uploadPhotoProfile(binding)
@@ -91,12 +91,13 @@ class ProfileActivity : AppCompatActivity() {
 
 
 
-    fun bottomNavigationBarManagement(binding: ActivityProfileBinding) {
+    fun bottomNavigationBarManagement(binding: ActivityProfileBinding, user : User) {
         binding.bottomNavigationViewCreate.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menuProfile -> {
                     //Do an intent with the profile activity
                     val intent = Intent(this, ProfileActivity::class.java)
+                    intent.putExtra("user", user)
                     startActivity(intent)
                     true
                 }

@@ -1,8 +1,9 @@
-package com.example.lifecoach_
+package com.example.lifecoach_.activities.habits
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.ProfileActivity
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.databinding.ActivityCreateHabitsBinding
