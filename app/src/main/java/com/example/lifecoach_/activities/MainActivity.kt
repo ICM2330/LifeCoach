@@ -1,4 +1,4 @@
-package com.example.lifecoach_
+package com.example.lifecoach_.activities
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityMainBinding
+import com.example.lifecoach_.activities.friends.ChatMenuActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         buttonsManager()
+        /*intent = Intent(this, ChatMenuActivity::class.java)
+        startActivity(intent)*/
     }
 
     fun buttonsManager (){

@@ -1,9 +1,9 @@
-package com.example.lifecoach_
+package com.example.lifecoach_.activities.friends
 
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.lifecoach_.adapter.FriendChatAdapter
+import com.example.lifecoach_.adapters.FriendChatAdapter
 import com.example.lifecoach_.databinding.ActivityChatMenuBinding
 import com.example.lifecoach_.model.Friend
 import com.example.lifecoach_.model.User
