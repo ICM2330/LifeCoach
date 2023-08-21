@@ -8,17 +8,19 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.lifecoach_.R
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityMainBinding
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
+import com.example.lifecoach_.databinding.ActivityProfileBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
     private lateinit var uriImage : Uri
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         buttonsManager()
         /*intent = Intent(this, ChatMenuActivity::class.java)
