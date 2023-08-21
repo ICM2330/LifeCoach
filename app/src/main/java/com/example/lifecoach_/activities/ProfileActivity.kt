@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.lifecoach_.CreateHabitsActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
@@ -91,23 +92,23 @@ class ProfileActivity : AppCompatActivity() {
 
 
     fun bottomNavigationBarManagement(binding: ActivityProfileBinding) {
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+        binding.bottomNavigationViewCreate.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menuProfile -> {
                     //Do an intent with the profile activity
-                    val intent = Intent(baseContext, ProfileActivity::class.java)
+                    val intent = Intent(this, ProfileActivity::class.java)
                     startActivity(intent)
                     true
                 }
                 R.id.menuChat -> {
                     // Do an intent with the chat activity
-                    val intent = Intent(baseContext, ChatMenuActivity::class.java)
+                    val intent = Intent(this, ChatMenuActivity::class.java)
                     startActivity(intent)
                     true
                 }
                 R.id.menuHabits -> {
                     // Do an intent with the dashboard of habits activity
-                    val intent = Intent(baseContext, DashBoardHabitsActivity::class.java)
+                    val intent = Intent(this, CreateHabitsActivity::class.java)
                     startActivity(intent)
                     true
                 }
