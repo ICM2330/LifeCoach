@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
+        android:id="@+id/bottomNavigationViewCreate"
         style="@style/BottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
         android:text="Actualizar"
         android:textSize="12sp"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -222,7 +222,7 @@
         android:text="Notificaciones"
         android:textSize="12sp"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/uploadInfoProfileButton"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -240,7 +240,7 @@
         android:text="Cerrar Sesión"
         android:textSize="12sp"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
         app:layout_constraintEnd_toStartOf="@+id/uploadInfoProfileButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
