@@ -18,6 +18,9 @@
             android:name=".activities.habits.CreateHabitsActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.friends.ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
