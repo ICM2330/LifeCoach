@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#D5D5D5"
+    android:padding="5dp">
+
+    <FrameLayout
+        android:id="@+id/frameReceived"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/messageImgReceived"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginHorizontal="15dp"
+            android:padding="20dp"
+            />
+        <TextView
+            android:id="@+id/messageReceived"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginHorizontal="15dp"
+            android:padding="20dp"
+            android:textColor="@color/black"
+            android:text="Mensaje recibido" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/msgindicatorr"
+            android:layout_gravity="bottom"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameForwarded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/messageImgForwarded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="150dp"
+            android:background="@color/white"
+            android:layout_marginHorizontal="15dp"
+            android:padding="20dp"
+            />
+        <TextView
+            android:id="@+id/messageForwarded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginHorizontal="15dp"
+            android:padding="20dp"
+            android:textColor="@color/black"
+            android:text="Mensaje enviado" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/msgindicatorf"
+            android:layout_gravity="bottom|end"/>
+    </FrameLayout>
+
+</LinearLayout>

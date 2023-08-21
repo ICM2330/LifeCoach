@@ -4,6 +4,7 @@ import java.io.Serializable
 import java.util.Date
 
 open class MessageApp (
+    var forwarded : Boolean,
     var timeStamp : Date
 ): Serializable{
 
