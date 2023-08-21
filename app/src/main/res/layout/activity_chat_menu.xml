@@ -6,4 +6,82 @@
     android:layout_height="match_parent"
     tools:context=".ChatMenuActivity">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        style="@style/BottomNavigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:itemTextColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="Comparte tus hábitos y motivate junto a tus amigos"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/baseline_search_24"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cmBusqueda"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="9"
+                android:hint="Buscar" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="monospace"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="Mis 'Life Coaches'"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/cmChats"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="4dp"/>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

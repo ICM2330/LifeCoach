@@ -10,6 +10,6 @@ class MediaMessage (
     ) : MessageApp(timeStamp), Serializable {
 
     override fun toString(): String {
-        return "MediaMessage(fileAttached=$fileAttached)"
+        return "media"
     }
 }
