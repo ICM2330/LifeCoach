@@ -1,4 +1,4 @@
-package com.example.lifecoach_.adapter
+package com.example.lifecoach_.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

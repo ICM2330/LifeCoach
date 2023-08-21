@@ -14,19 +14,19 @@
         android:theme="@style/Theme.LifeCoach_"
         tools:targetApi="31">
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".FriendActivity"
+            android:name=".activities.friends.FriendActivity"
             android:exported="false" />
         <activity
-            android:name=".DashBoardHabitsActivity"
+            android:name=".activities.DashBoardHabitsActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatMenuActivity"
+            android:name=".activities.friends.ChatMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

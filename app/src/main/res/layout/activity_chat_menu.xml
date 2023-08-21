@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatMenuActivity">
+    tools:context=".activities.friends.ChatMenuActivity">
 
     <include
         android:id="@+id/include"
@@ -73,7 +73,7 @@
             android:fontFamily="monospace"
             android:paddingStart="25dp"
             android:paddingEnd="25dp"
-            android:text="Mis 'Life Coaches'"
+            android:text="Mis &quot;Life Coaches&quot;"
             android:textSize="18sp"
             android:textStyle="bold" />
 

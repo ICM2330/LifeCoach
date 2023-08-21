@@ -1,4 +1,4 @@
-package com.example.lifecoach_
+package com.example.lifecoach_.activities
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.lifecoach_.R
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
+import com.example.lifecoach_.activities.friends.ChatMenuActivity
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
