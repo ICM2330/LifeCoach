@@ -44,8 +44,8 @@
         <ImageView
             android:id="@+id/messageImgForwarded"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxHeight="150dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
             android:background="@color/white"
             android:layout_marginHorizontal="15dp"
             android:padding="20dp"
