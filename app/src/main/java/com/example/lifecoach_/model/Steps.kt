@@ -1,4 +1,4 @@
-package com.example.lifecoach_.Model
+package com.example.lifecoach_.model
 
 import java.io.Serializable
 import java.util.Date

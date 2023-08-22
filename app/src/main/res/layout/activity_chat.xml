@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.friends.ChatMenuActivity">
+    tools:context=".activities.friends.ChatActivity">
 
     <include
         android:id="@+id/include"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationViewCreate"
+        android:id="@+id/bottomNavigationView"
         style="@style/BottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -24,64 +24,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav" />
 
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#D5D5D5"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="monospace"
-            android:gravity="center"
-            android:paddingStart="25dp"
-            android:paddingEnd="25dp"
-            android:text="Comparte tus hábitos y motivate junto a tus amigos"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
         <LinearLayout
+            android:id="@+id/cFriendProfile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:padding="15dp">
-
             <ImageView
+                android:id="@+id/cFriendPic"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/baseline_search_24"/>
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cmBusqueda"
+                android:src="@drawable/usuario" />
+            <TextView
+                android:id="@+id/cFriendName"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="9"
-                android:hint="Buscar" />
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="25sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="monospace"
-            android:paddingStart="25dp"
-            android:paddingEnd="25dp"
-            android:text="Mis &quot;Life Coaches&quot;"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/cmChats"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="4dp"/>
+            <ListView
+                android:id="@+id/cmessages"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="#D5D5D5"
+                android:paddingBottom="90dp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:layout_margin="20dp"
+                android:background="@color/white"
+                android:hint="escribe un mensaje"
+                android:paddingHorizontal="20dp" />
+        </FrameLayout>
+
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

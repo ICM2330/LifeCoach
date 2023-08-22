@@ -1,9 +1,10 @@
-package com.example.lifecoach_.Model
+package com.example.lifecoach_.model.messages
 
 import java.io.Serializable
 import java.util.Date
 
 open class MessageApp (
+    var forwarded : Boolean,
     var timeStamp : Date
 ): Serializable{
 

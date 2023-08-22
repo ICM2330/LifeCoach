@@ -1,4 +1,4 @@
-package com.example.lifecoach_.Model
+package com.example.lifecoach_.model.habits
 
 import java.time.Duration
 import java.time.format.DateTimeFormatter
