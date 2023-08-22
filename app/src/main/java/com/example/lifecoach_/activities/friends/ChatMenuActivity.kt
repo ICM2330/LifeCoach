@@ -68,7 +68,7 @@ class ChatMenuActivity : AppCompatActivity() {
             val chat = messages.toMutableList()
             if(lastMessage[i] != "")
                 chat.add(TextMessage(false, Date(), lastMessage[i]))
-            friends.add(Friend(User("", nombres[i], "", 0), chat))
+            friends.add(Friend(User(nombres[i], "${nombres[i]}${nombres[i].length}", "${nombres[i]}@gmail.com", 0), chat))
         }
         return friends
     }
