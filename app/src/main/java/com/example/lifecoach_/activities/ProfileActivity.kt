@@ -109,7 +109,8 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 R.id.menuHabits -> {
                     // Do an intent with the dashboard of habits activity
-                    val intent = Intent(this, CreateHabitsActivity::class.java)
+                    val intent = Intent(this, DashBoardHabitsActivity::class.java)
+                    intent.putExtra("user", user)
                     startActivity(intent)
                     true
                 }

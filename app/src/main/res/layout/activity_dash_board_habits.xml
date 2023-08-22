@@ -47,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/stepsdashboard"
+            android:src="@drawable/stepsdashboard"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <TextView
@@ -111,7 +111,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/friendsdashboard"
+            android:src="@drawable/friendsdashboard"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <ImageView
@@ -124,7 +124,7 @@
             app:layout_constraintBottom_toTopOf="@+id/streakText"
             app:layout_constraintEnd_toStartOf="@+id/buttonFriendsDashboard"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/streaksdashboard" />
+            android:src="@drawable/streaksdashboard" />
 
         <ImageView
             android:id="@+id/imageView12"
@@ -134,7 +134,7 @@
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/juanfrapp" />
+            android:src="@drawable/juanfrapp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,7 +179,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18"
-        app:srcCompat="@drawable/healthylife" />
+        android:src="@drawable/healthylife" />
 
     <ListView
         android:id="@+id/habitsListView"
@@ -217,7 +217,7 @@
         app:layout_constraintHorizontal_bias="0.031"
         app:layout_constraintStart_toStartOf="@+id/createHabitButton"
         app:layout_constraintTop_toTopOf="@+id/createHabitButton"
-        app:srcCompat="@drawable/pencildashboard" />
+        android:src="@drawable/pencildashboard" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
