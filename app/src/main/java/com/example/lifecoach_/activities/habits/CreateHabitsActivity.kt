@@ -7,6 +7,7 @@ import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.ProfileActivity
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.activities.habits.creation.RunningHabitCreationActivity
+import com.example.lifecoach_.activities.habits.creation.StepHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityCreateHabitsBinding
 
 class CreateHabitsActivity : AppCompatActivity() {
@@ -48,7 +49,7 @@ class CreateHabitsActivity : AppCompatActivity() {
 
     fun stepsHabit(){
         binding.dailyStepsCreation.setOnClickListener {
-
+            startActivity(Intent(this, StepHabitCreationActivity::class.java))
         }
     }
 

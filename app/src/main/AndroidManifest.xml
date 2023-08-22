@@ -15,6 +15,9 @@
         android:theme="@style/Theme.LifeCoach_"
         tools:targetApi="31">
         <activity
+            android:name=".activities.habits.creation.StepHabitCreationActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.habits.view.RunningHabitViewActivity"
             android:exported="false" />
         <activity
