@@ -16,9 +16,10 @@ class CreateHabitsActivity : AppCompatActivity() {
         binding = ActivityCreateHabitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        manageButtons()
     }
 
-    fun manageButtons(){
+    private fun manageButtons(){
         bottomNavigationBarManagement(binding)
         timeHabit()
         runHabit()
@@ -27,15 +28,14 @@ class CreateHabitsActivity : AppCompatActivity() {
         featuredHabit()
     }
 
-    fun timeHabit(){
+    private fun timeHabit(){
          binding.timeControlButton.setOnClickListener {
-
          }
     }
 
     fun runHabit(){
         binding.runHabitCreateButton.setOnClickListener {
-
+            startActivity(Intent(this, RunningHabitCreationActivity::class.java))
         }
     }
 
