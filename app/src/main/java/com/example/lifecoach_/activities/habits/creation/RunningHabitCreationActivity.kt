@@ -18,5 +18,9 @@ class RunningHabitCreationActivity : AppCompatActivity() {
         binding.btnLlegada.setOnClickListener {
             // startActivity(Intent(this, TODO: Colocar Vista de Mapa que retorne una ubicación))
         }
+
+        binding.btnCrear.setOnClickListener {
+            finish()
+        }
     }
 }
