@@ -14,4 +14,5 @@
     <string name="editar_h_bito">Editar Hábito</string>
     <string name="_5000_pasos">5000 pasos</string>
     <string name="objetivo_de_pasos">Objetivo de Pasos</string>
+    <string name="historial_de_pasos">Historial de Pasos</string>
 </resources>
