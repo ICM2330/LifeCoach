@@ -164,7 +164,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="50dp"
-                        android:text="@string/crear_h_bito" />
+                        android:text="@string/crear_h_bito"
+                        android:layout_marginBottom="100dp"
+                        />
                 </LinearLayout>
 
             </LinearLayout>

@@ -3,9 +3,11 @@ package com.example.lifecoach_.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.activities.habits.CreateHabitsActivity
+import com.example.lifecoach_.activities.habits.view.RunningHabitViewActivity
 import com.example.lifecoach_.databinding.ActivityDashBoardHabitsBinding
 import com.example.lifecoach_.databinding.ActivityProfileBinding
 import com.example.lifecoach_.model.User
@@ -21,6 +23,14 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         //Fill the info. with the login activity
         val userProof = intent.getSerializableExtra("user") as User
         manageButtons(userProof)
+
+        binding.habitsListView.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayOf("Hábito 1"))
+
+        binding.habitsListView.setOnItemClickListener { _, _, i, _ ->
+            val intent = Intent(this, RunningHabitViewActivity::class.java)
+            intent.putExtra("habit", i)
+            startActivity(intent)
+        }
     }
 
     fun manageButtons(user : User){
