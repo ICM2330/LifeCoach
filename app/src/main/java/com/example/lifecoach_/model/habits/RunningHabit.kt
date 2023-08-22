@@ -7,14 +7,15 @@ import java.util.Optional
 
 class RunningHabit(
     name: String,
-    history: List<DateTimeFormatter>,
+    history : MutableList <DateTimeFormatter>,
     frequency: Frecuency,
-    location: Optional<Location>,
+    locationStart: Location ?,
+    locationFinish : Location ?,
     objetive : Duration,
     accomplishment : List<Duration>,
     var distance : Long
 
-) : TimeControlHabit(name, history, frequency, location, objetive, accomplishment){
+) : TimeControlHabit(name, history, frequency, objetive, accomplishment){
 
     override fun toString(): String {
         return "RunningHabit(distance=$distance)"
