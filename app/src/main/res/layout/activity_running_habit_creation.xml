@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.habits.RunningHabitCreationActivity">
+    tools:context=".activities.habits.creation.RunningHabitCreationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

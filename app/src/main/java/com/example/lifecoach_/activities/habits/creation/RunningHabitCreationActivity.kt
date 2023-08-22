@@ -1,4 +1,4 @@
-package com.example.lifecoach_.activities.habits
+package com.example.lifecoach_.activities.habits.creation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
