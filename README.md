@@ -1,6 +1,7 @@
 <h1 align = "center"> Proyecto LifeCoach 365 🏃💪  </h1>
 <br>
 
+
 <p align = "justify"> LifeCoach_365 es una aplicación móvil implementada con el objetivo de promover la construcción de hábitos saludables específicamente en los ámbitos físicos y productivos, con el fin de mejorar el estilo de vida de quienes la usen en su día a día. </p>
 <p align = "justify"> Lo anterior, se busca a través de la afrontación de retos consigo mismo por parte de los usuarios, en conjunto con la sana competencia en el cumplimiento de metas con el circulo social. </p>
 <br>
