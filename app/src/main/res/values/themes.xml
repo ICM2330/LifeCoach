@@ -6,11 +6,15 @@
         <item name="colorPrimary">@color/greenmenu</item>
     </style>
 
-    <style name="NavBar" parent="Widget.Material3.BottomNavigationView">
+    <style name="BottomNavigation" parent="Widget.Material3.BottomNavigationView">
         <item name="android:background">@color/greenmenu</item>
         <item name="itemIconTint">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Theme.LifeCoach_" parent="Base.Theme.LifeCoach_" />
+    
+    <style name="TextBoxStyle" parent="Widget.Material3.TextInputEditText.FilledBox">
+        <item name="background">@color/greenmenu</item>
+    </style>
 </resources>

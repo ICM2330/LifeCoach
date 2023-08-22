@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">LifeCoach_</string>
+    <string name="duraci_n">Duración</string>
+    <string name="frecuencia">Frecuencia</string>
+    <string name="correr_por_el_parque">Correr por el Parque</string>
+    <string name="h_bito">Hábito</string>
+    <string name="seleccionar_punto_de_partida">Seleccionar Punto de Partida</string>
+    <string name="punto_de_partida">Punto de Partida</string>
+    <string name="punto_de_llegada">Punto de Llegada</string>
+    <string name="seleccionar_punto_de_llegada">Seleccionar Punto de Llegada</string>
 </resources>
