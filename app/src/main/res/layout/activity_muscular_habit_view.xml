@@ -46,18 +46,16 @@
 
     <TextView
         android:id="@+id/textView16"
+        android:layout_width="0dp"
         android:layout_height="25dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="65dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
         android:text="@string/habito_destacado"
         android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView17"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        android:layout_width="match_parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -70,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView17"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/imageView17"/>
 
     <LinearLayout
         android:id="@+id/linearLayout4"
@@ -104,32 +102,310 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+
     <TextView
         android:id="@+id/textView22"
-        android:layout_width="158dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:text="Cumplimiento"
         android:textColor="@color/greenmenu"
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
 
     <Button
         android:id="@+id/btn_editar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/editar_h_bito"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/vshmidxp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_editar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/img_3" />
 
+    <ImageView
+        android:id="@+id/vshgoodxp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vshmidxp"
+        app:layout_constraintStart_toEndOf="@+id/vshmidxp"
+        app:srcCompat="@drawable/img_4" />
 
+    <ImageView
+        android:id="@+id/vshbadxp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/vshmidxp"
+        app:layout_constraintEnd_toStartOf="@+id/vshmidxp"
+        app:srcCompat="@drawable/img_5" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="L"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="M"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="X"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="J"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="V"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="S"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="D"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/greenmenu" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="300dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Como sientes que estuvo tu entrenamiento?"
+        app:layout_constraintBottom_toTopOf="@+id/vshmidxp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
