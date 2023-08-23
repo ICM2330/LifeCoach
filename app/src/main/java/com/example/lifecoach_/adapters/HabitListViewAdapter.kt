@@ -30,7 +30,7 @@ class HabitListViewAdapter (context : Context, habits : MutableList<Habit>) :
                 imgCheck.setImageResource(R.drawable.checkpositive)
 
                 val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.corriendo)
+                imgHabit.setImageResource(R.drawable.foot)
 
                 val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
                 textProgress.setText("50 pasos")
@@ -69,7 +69,7 @@ class HabitListViewAdapter (context : Context, habits : MutableList<Habit>) :
                 imgCheck.setImageResource(R.drawable.checkpositive)
 
                 val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.healthydashboard)
+                imgHabit.setImageResource(R.drawable.strgthabitlgo)
 
                 val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
                 textProgress.setText("Completado!")
