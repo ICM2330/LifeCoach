@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import com.example.lifecoach_.R
+import com.example.lifecoach_.activities.friends.ChatActivity
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.activities.habits.CreateHabitsActivity
 import com.example.lifecoach_.adapters.FriendChatAdapter
@@ -40,7 +41,19 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         val adapter = HabitListViewAdapter(this, userProof.habits)
         binding.habitsListView.adapter = adapter
 
-        
+        binding.habitsListView.setOnItemClickListener { parent, view, position, id  ->
+            when (userProof.habits[position]){
+                is RunningHabit -> {
+                    //TODO : INCLUDE THE OTHER TYPES OF HABITS
+                    /*
+                    val intent = Intent(baseContext, ChatActivity::class.java)
+                    intent.putExtra("habits", userProof.habits[position])
+                    startActivity(intent)
+                     */
+                }
+            }
+
+        }
     }
 
 
