@@ -12,6 +12,7 @@ import com.example.lifecoach_.activities.friends.ChatActivity
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.activities.habits.CreateHabitsActivity
 import com.example.lifecoach_.activities.habits.view.GenericHabitViewActivity
+import com.example.lifecoach_.activities.habits.view.MuscularHabitViewActivity
 import com.example.lifecoach_.activities.habits.view.RunningHabitViewActivity
 import com.example.lifecoach_.activities.habits.view.StepHabitViewActivity
 import com.example.lifecoach_.activities.habits.view.TimeHabitViewActivity
@@ -51,6 +52,11 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         }
         binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
             when (userProof.habits[position]) {
+                is StrengthHabit -> {
+                    val intent = Intent(baseContext, MuscularHabitViewActivity::class.java)
+                    //intent.putExtra("habits", userProof.habits[position])
+                    startActivity(intent)
+                }
                 is RunningHabit -> {
                     val intent = Intent(baseContext, RunningHabitViewActivity::class.java)
                     //intent.putExtra("habits", userProof.habits[position])
