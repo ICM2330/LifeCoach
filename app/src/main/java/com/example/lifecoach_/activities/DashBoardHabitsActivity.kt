@@ -52,7 +52,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 is RunningHabit -> {
                     //TODO : INCLUDE THE OTHER TYPES OF HABITS
                     val intent = Intent(baseContext, RunningHabitViewActivity::class.java)
-                    intent.putExtra("habits", userProof.habits[position])
+                    //intent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
                     /*
                     val intent = Intent(baseContext, ChatActivity::class.java)
@@ -63,19 +63,19 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
                 is StepsHabit -> {
                     val intent = Intent(baseContext, StepHabitViewActivity::class.java)
-                    intent.putExtra("habits", userProof.habits[position])
+                    //intent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
                 }
 
                 is TimeControlHabit -> {
                     val intent = Intent(baseContext, TimeHabitViewActivity::class.java)
-                    intent.putExtra("habits", userProof.habits[position])
+                    //ntent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
                 }
 
                 else -> {
                     val intent = Intent(baseContext, GenericHabitViewActivity::class.java)
-                    intent.putExtra("habits", userProof.habits[position])
+                    //intent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
                 }
             }
