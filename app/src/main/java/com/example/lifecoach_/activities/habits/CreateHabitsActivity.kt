@@ -7,6 +7,7 @@ import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.ProfileActivity
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.activities.habits.creation.GenericHabitCreationActivity
+import com.example.lifecoach_.activities.habits.creation.MuscularHabitCreationActivity
 import com.example.lifecoach_.activities.habits.creation.RunningHabitCreationActivity
 import com.example.lifecoach_.activities.habits.creation.StepHabitCreationActivity
 import com.example.lifecoach_.activities.habits.creation.TimeHabitCreationActivity
@@ -46,7 +47,7 @@ class CreateHabitsActivity : AppCompatActivity() {
 
     fun muscleHabit(){
         binding.musculationCreationHabit.setOnClickListener {
-
+        startActivity(Intent(this, MuscularHabitCreationActivity::class.java))
         }
     }
 

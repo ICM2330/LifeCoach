@@ -53,6 +53,14 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                     startActivity(intent)
                      */
                 }
+                is StrengthHabit -> {
+                    //TODO : INCLUDE THE OTHER TYPES OF HABITS
+                    /*
+                    val intent = Intent(baseContext, ChatActivity::class.java)
+                    intent.putExtra("habits", userProof.habits[position])
+                    startActivity(intent)
+                     */
+                }
             }
 
         }
