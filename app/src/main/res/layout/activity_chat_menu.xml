@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/baseline_search_24" />
+                android:src="@drawable/search" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cmBusqueda"
