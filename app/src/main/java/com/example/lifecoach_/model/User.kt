@@ -2,6 +2,7 @@ package com.example.lifecoach_.model
 
 import android.media.Image
 import android.net.Uri
+import com.example.lifecoach_.model.habits.Habit
 import java.io.Serializable
 
 class User(
@@ -14,6 +15,7 @@ class User(
     lateinit var picture: Uri
     var dark_mode: Int = 0
     lateinit var steps: List<Steps>
+    lateinit var habits : MutableList<Habit>
     lateinit var friends : List<Friend>
     var loged: Boolean = false
     override fun toString(): String {
