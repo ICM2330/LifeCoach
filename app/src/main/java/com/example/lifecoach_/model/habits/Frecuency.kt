@@ -2,9 +2,10 @@ package com.example.lifecoach_.model.habits
 
 import java.time.Duration
 import java.time.format.DateTimeFormatter
+import java.util.Date
 
 class Frecuency (
-    var start : DateTimeFormatter,
+    var start : Date,
     var period : Duration
 ) {
 

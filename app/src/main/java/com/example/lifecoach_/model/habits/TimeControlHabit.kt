@@ -7,13 +7,12 @@ import java.util.Optional
 
 open class TimeControlHabit(
     name: String,
-    history: List<DateTimeFormatter>,
+    history: MutableList<DateTimeFormatter>,
     frequency: Frecuency,
-    location: Optional<Location>,
     var objective : Duration,
     var accomplishment : List<Duration>
 
-) : Habit(name, history, frequency, location) {
+) : Habit(name, history, frequency) {
 
     override fun toString(): String {
         return "TimeControlHabit(objective=$objective, accomplishment=$accomplishment)"
