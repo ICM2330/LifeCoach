@@ -127,7 +127,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView12"
+            android:id="@+id/dbprofileimage"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_marginStart="40dp"

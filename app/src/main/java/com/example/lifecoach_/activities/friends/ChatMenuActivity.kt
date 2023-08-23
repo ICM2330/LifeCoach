@@ -59,8 +59,7 @@ class ChatMenuActivity : AppCompatActivity() {
             TextMessage(true,Date(),"Bien"),
             TextMessage(true,Date(),"y tu?"),
             TextMessage(false,Date(),"Bien"),
-            TextMessage(true,Date(),"Te queria contar que complete mis habitos de hoy, todo gracias a esta app!! \n\n\nTe comparto su logo para que se la muestres a tus amigos!"),
-            MediaMessage(true,Date(),null)
+            TextMessage(true,Date(),"Te queria contar que complete mis habitos de hoy, todo gracias a esta app!! \n\n\nTe comparto su logo para que se la muestres a tus amigos!")
         )
 
         val friends: MutableList<Friend> = mutableListOf()
