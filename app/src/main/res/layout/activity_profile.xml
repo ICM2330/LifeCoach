@@ -27,7 +27,7 @@
         app:menu="@menu/bottom_nav" />
 
     <ImageView
-        android:id="@+id/profileimage"
+        android:id="@+id/dbprofileimage"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_marginTop="20dp"
@@ -50,7 +50,7 @@
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileimage">
+        app:layout_constraintTop_toBottomOf="@+id/dbprofileimage">
 
         <TextView
             android:id="@+id/textView5"
@@ -189,7 +189,7 @@
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/profileimage"
+        app:layout_constraintStart_toStartOf="@+id/dbprofileimage"
         app:srcCompat="@drawable/registercamera"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 

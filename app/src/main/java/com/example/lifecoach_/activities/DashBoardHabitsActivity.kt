@@ -1,6 +1,8 @@
 package com.example.lifecoach_.activities
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,52 +33,39 @@ import java.util.Date
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
+    private lateinit var uriImage : Uri
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDashBoardHabitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         //Fill the info. with the login activity
         val userProof = intent.getSerializableExtra("user") as User
         manageButtons(userProof)
-
         userProof.habits = createHabits()
-
         val adapter = HabitListViewAdapter(this, userProof.habits)
         binding.habitsListView.adapter = adapter
-
         binding.buttonStepsDashboardButton.setOnClickListener {
             startActivity(Intent(this, StepsReviewActivity::class.java))
         }
-
         binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
             when (userProof.habits[position]) {
                 is RunningHabit -> {
-                    //TODO : INCLUDE THE OTHER TYPES OF HABITS
                     val intent = Intent(baseContext, RunningHabitViewActivity::class.java)
                     //intent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
-                    /*
-                    val intent = Intent(baseContext, ChatActivity::class.java)
-                    intent.putExtra("habits", userProof.habits[position])
-                    startActivity(intent)
-                     */
                 }
-
                 is StepsHabit -> {
                     val intent = Intent(baseContext, StepHabitViewActivity::class.java)
                     //intent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
                 }
-
                 is TimeControlHabit -> {
                     val intent = Intent(baseContext, TimeHabitViewActivity::class.java)
                     //ntent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
                 }
-
                 else -> {
                     val intent = Intent(baseContext, GenericHabitViewActivity::class.java)
                     //intent.putExtra("habits", userProof.habits[position])
@@ -86,7 +75,6 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         }
     }
-
 
     //Create habits for show
     @RequiresApi(Build.VERSION_CODES.O)
@@ -162,31 +150,22 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         }
     }
 
-    fun bottomNavigationBarManagement(user: User) {
+    private fun bottomNavigationBarManagement(user: User) {
         binding.bottomNavigationViewCreate.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menuProfile -> {
-                    //Do an intent with the profile activity
                     val intent = Intent(this, ProfileActivity::class.java)
                     intent.putExtra("user", user)
                     startActivity(intent)
-                    true
+                    finish()
+                    false
                 }
-
                 R.id.menuChat -> {
                     // Do an intent with the chat activity
                     val intent = Intent(this, ChatMenuActivity::class.java)
                     startActivity(intent)
-                    true
+                    false
                 }
-
-                R.id.menuHabits -> {
-                    // Do an intent with the dashboard of habits activity
-                    val intent = Intent(this, DashBoardHabitsActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-
                 else -> false
             }
         }

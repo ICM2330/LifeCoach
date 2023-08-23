@@ -1,6 +1,5 @@
 package com.example.lifecoach_.model
 
-import android.media.Image
 import android.net.Uri
 import com.example.lifecoach_.model.habits.Habit
 import java.io.Serializable
