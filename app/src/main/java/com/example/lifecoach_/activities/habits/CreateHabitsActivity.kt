@@ -24,7 +24,6 @@ class CreateHabitsActivity : AppCompatActivity() {
     }
 
     private fun manageButtons(){
-        bottomNavigationBarManagement(binding)
         timeHabit()
         runHabit()
         muscleHabit()
@@ -59,32 +58,6 @@ class CreateHabitsActivity : AppCompatActivity() {
     fun featuredHabit(){
         binding.featuredHabitCreation.setOnClickListener {
             startActivity(Intent(this, GenericHabitCreationActivity::class.java))
-        }
-    }
-
-    fun bottomNavigationBarManagement(binding: ActivityCreateHabitsBinding) {
-        binding.bottomNavigationViewCreate.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menuProfile -> {
-                    //Do an intent with the profile activity
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.menuChat -> {
-                    // Do an intent with the chat activity
-                    val intent = Intent(this, ChatMenuActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.menuHabits -> {
-                    // Do an intent with the dashboard of habits activity
-                    val intent = Intent(this, CreateHabitsActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
         }
     }
 }
