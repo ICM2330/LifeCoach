@@ -47,6 +47,10 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         val adapter = HabitListViewAdapter(this, userProof.habits)
         binding.habitsListView.adapter = adapter
 
+        binding.buttonStepsDashboardButton.setOnClickListener {
+            startActivity(Intent(this, StepsReviewActivity::class.java))
+        }
+
         binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
             when (userProof.habits[position]) {
                 is RunningHabit -> {
