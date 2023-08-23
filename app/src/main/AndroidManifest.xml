@@ -18,6 +18,9 @@
             android:name=".activities.StepsReviewActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.habits.register.RunningHabitRegisterActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.habits.view.TimeHabitViewActivity"
             android:exported="false" />
         <activity
