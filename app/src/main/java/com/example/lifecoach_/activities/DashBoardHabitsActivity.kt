@@ -8,11 +8,8 @@ import androidx.annotation.RequiresApi
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.activities.habits.CreateHabitsActivity
-import com.example.lifecoach_.adapters.FriendChatAdapter
 import com.example.lifecoach_.adapters.HabitListViewAdapter
 import com.example.lifecoach_.databinding.ActivityDashBoardHabitsBinding
-import com.example.lifecoach_.databinding.ActivityProfileBinding
-import com.example.lifecoach_.model.Friend
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.model.habits.Frecuency
 import com.example.lifecoach_.model.habits.Habit
