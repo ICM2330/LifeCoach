@@ -17,4 +17,14 @@
     <string name="historial_de_pasos">Historial de Pasos</string>
     <string name="temporizador">Temporizador</string>
     <string name="_00_00">00:00</string>
+
+    <string-array
+        name="frecuencias">
+        <item>Cada 12 Horas</item>
+        <item>Diariamente</item>
+        <item>Días Pares</item>
+        <item>Días Impares</item>
+        <item>Semanalmente</item>
+        <item>Mensualmente</item>
+    </string-array>
 </resources>
