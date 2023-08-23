@@ -19,13 +19,15 @@ import com.example.lifecoach_.model.habits.Frecuency
 import com.example.lifecoach_.model.habits.Habit
 import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.StepsHabit
+import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
 import java.time.Duration
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
 class DashBoardHabitsActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityDashBoardHabitsBinding
+    private lateinit var binding: ActivityDashBoardHabitsBinding
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +43,8 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         val adapter = HabitListViewAdapter(this, userProof.habits)
         binding.habitsListView.adapter = adapter
 
-        binding.habitsListView.setOnItemClickListener { parent, view, position, id  ->
-            when (userProof.habits[position]){
+        binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
+            when (userProof.habits[position]) {
                 is RunningHabit -> {
                     //TODO : INCLUDE THE OTHER TYPES OF HABITS
                     /*
@@ -59,66 +61,79 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
     //Create habits for show
     @RequiresApi(Build.VERSION_CODES.O)
-    fun createHabits () : MutableList<Habit>{
-        var habits: MutableList<Habit> = mutableListOf()
+    fun createHabits(): MutableList<Habit> {
+        val habits: MutableList<Habit> = mutableListOf()
 
-        //Create habit of steps
-        var listHistory : MutableList<DateTimeFormatter> = mutableListOf()
-        val duration : Duration = Duration.ofDays(1)
-        var frecuency = Frecuency(Date(), duration)
-        var accomplishment : MutableList<Int> = mutableListOf()
-        var habitSteps = StepsHabit("Pasos", listHistory, frecuency,  30, accomplishment)
-
-        //Create habit of frecuency
-        var durationReading : Duration = Duration.ofDays(2)
-        var accomplishmentReading : MutableList<Duration> = mutableListOf()
-        var habitTimeControl = TimeControlHabit("Leer", listHistory, frecuency, durationReading, accomplishmentReading)
-
-        //Create habit of running
-        var durationRunning : Duration = Duration.ofMinutes(55)
-        var accomplishmentRunning : MutableList<Duration> = mutableListOf()
-        var habitRunning = RunningHabit("Correr", listHistory, frecuency, null,null, durationRunning, accomplishmentRunning, 12000)
-
+        val listHistory: MutableList<DateTimeFormatter> = mutableListOf()
+        val duration: Duration = Duration.ofDays(1)
+        val frecuency = Frecuency(Date(), duration)
 
         //Insert Habits to list
-        habits.add(habitSteps)
-        habits.add(habitTimeControl)
-        habits.add(habitRunning)
-        habits.add(habitSteps)
-        habits.add(habitTimeControl)
-        habits.add(habitRunning)
+        habits.add(StepsHabit("Pasos", listHistory, frecuency, 30, mutableListOf()))
+        habits.add(
+            TimeControlHabit(
+                "Leer", listHistory, frecuency, Duration.ofDays(2), mutableListOf()
+            )
+        )
+        habits.add(
+            RunningHabit(
+                "Correr",
+                listHistory,
+                frecuency,
+                null,
+                null,
+                Duration.ofMinutes(55),
+                mutableListOf(),
+                12000
+            )
+        )
+        habits.add(Habit("Hacer tarea", listHistory, frecuency))
+        habits.add(StrengthHabit("Brazo", listHistory, frecuency, "Brazo", mutableListOf()))
+        habits.add(
+            RunningHabit(
+                "Correr",
+                listHistory,
+                frecuency,
+                null,
+                null,
+                Duration.ofMinutes(55),
+                mutableListOf(),
+                12000
+            )
+        )
 
         //Return the habits list
         return habits
     }
 
-    fun manageButtons(user : User){
+    fun manageButtons(user: User) {
         CreateHabit(user)
         bottomNavigationBarManagement(user)
         viewSteps(user)
         viewFriends(user)
     }
 
-    fun viewSteps (user : User){
-        binding.buttonStepsDashboardButton.setOnClickListener{
+    fun viewSteps(user: User) {
+        binding.buttonStepsDashboardButton.setOnClickListener {
 
         }
     }
 
-    fun viewFriends(user : User){
+    fun viewFriends(user: User) {
         binding.buttonFriendsDashboard.setOnClickListener {
             val intent = Intent(baseContext, ChatMenuActivity::class.java)
             startActivity(intent)
         }
     }
-    fun CreateHabit(user : User){
+
+    fun CreateHabit(user: User) {
         binding.createHabitButton.setOnClickListener {
             intent = Intent(baseContext, CreateHabitsActivity::class.java)
             startActivity(intent)
         }
     }
 
-    fun bottomNavigationBarManagement(user : User) {
+    fun bottomNavigationBarManagement(user: User) {
         binding.bottomNavigationViewCreate.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menuProfile -> {
