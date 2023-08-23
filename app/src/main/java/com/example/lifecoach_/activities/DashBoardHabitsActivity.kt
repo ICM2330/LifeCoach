@@ -9,6 +9,10 @@ import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.friends.ChatActivity
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.activities.habits.CreateHabitsActivity
+import com.example.lifecoach_.activities.habits.view.GenericHabitViewActivity
+import com.example.lifecoach_.activities.habits.view.RunningHabitViewActivity
+import com.example.lifecoach_.activities.habits.view.StepHabitViewActivity
+import com.example.lifecoach_.activities.habits.view.TimeHabitViewActivity
 import com.example.lifecoach_.adapters.FriendChatAdapter
 import com.example.lifecoach_.adapters.HabitListViewAdapter
 import com.example.lifecoach_.databinding.ActivityDashBoardHabitsBinding
@@ -43,23 +47,40 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         val adapter = HabitListViewAdapter(this, userProof.habits)
         binding.habitsListView.adapter = adapter
 
+        binding.buttonStepsDashboardButton.setOnClickListener {
+            startActivity(Intent(this, StepsReviewActivity::class.java))
+        }
+
         binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
             when (userProof.habits[position]) {
                 is RunningHabit -> {
                     //TODO : INCLUDE THE OTHER TYPES OF HABITS
+                    val intent = Intent(baseContext, RunningHabitViewActivity::class.java)
+                    //intent.putExtra("habits", userProof.habits[position])
+                    startActivity(intent)
                     /*
                     val intent = Intent(baseContext, ChatActivity::class.java)
                     intent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
                      */
                 }
-                is StrengthHabit -> {
-                    //TODO : INCLUDE THE OTHER TYPES OF HABITS
-                    /*
-                    val intent = Intent(baseContext, ChatActivity::class.java)
-                    intent.putExtra("habits", userProof.habits[position])
+
+                is StepsHabit -> {
+                    val intent = Intent(baseContext, StepHabitViewActivity::class.java)
+                    //intent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
-                     */
+                }
+
+                is TimeControlHabit -> {
+                    val intent = Intent(baseContext, TimeHabitViewActivity::class.java)
+                    //ntent.putExtra("habits", userProof.habits[position])
+                    startActivity(intent)
+                }
+
+                else -> {
+                    val intent = Intent(baseContext, GenericHabitViewActivity::class.java)
+                    //intent.putExtra("habits", userProof.habits[position])
+                    startActivity(intent)
                 }
             }
 

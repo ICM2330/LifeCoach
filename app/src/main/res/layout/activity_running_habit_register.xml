@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.habits.view.RunningHabitViewActivity">
+    tools:context=".activities.habits.register.TimeHabitRegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,10 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,54 +33,40 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/label_habito"
+                        android:id="@+id/label_temp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/h_bito"
+                        android:text="@string/temporizador"
                         android:textAlignment="textStart"
                         android:textColor="@color/greenmenu"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/label_habito_val"
+                        android:id="@+id/label_temp_val"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/h_bito"
+                        android:text="@string/_00_00"
                         android:textAlignment="textEnd"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="20dp"
-                    android:orientation="horizontal">
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/label_freq"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/frecuencia"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/greenmenu"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="384dp" />
 
-                    <TextView
-                        android:id="@+id/label_freq_val"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/frecuencia"
-                        android:textAlignment="textEnd"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="30dp"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -96,16 +78,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
-                        android:text="Marcar Completado" />
+                        android:text="Iniciar" />
                     <Button
-                        android:id="@+id/btn_editar"
+                        android:id="@+id/btn_salir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
-                        android:text="@string/editar_h_bito" />
+                        android:text="Salir" />
                 </LinearLayout>
 
             </LinearLayout>
-        </ScrollView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

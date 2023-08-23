@@ -13,62 +13,45 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationViewCreate"
-        style="@style/BottomNavigation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:itemTextColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav" />
-
     <Button
         android:id="@+id/featuredHabitCreation"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="81dp"
         android:backgroundTint="#74CC6A"
         android:fontFamily="sans-serif-black"
         android:text="Personalizado"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewOther" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOtro" />
 
     <Button
         android:id="@+id/timeControlButton"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_marginTop="22dp"
         android:backgroundTint="#74CC6A"
         android:fontFamily="sans-serif-black"
         android:text="Control de Tiempo"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSalud"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewProductividad" />
+        app:layout_constraintTop_toBottomOf="@+id/viewProductivity" />
 
     <Button
         android:id="@+id/dailyStepsCreation"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_marginStart="85dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="77dp"
         android:backgroundTint="#74CC6A"
         android:fontFamily="sans-serif-black"
         android:text="Pasos diarios"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewOtro"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/musculationCreationHabit" />
 
@@ -76,29 +59,26 @@
         android:id="@+id/musculationCreationHabit"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_marginStart="85dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="77dp"
         android:backgroundTint="#74CC6A"
         android:fontFamily="sans-serif-black"
         android:text="Musculación"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/dailyStepsCreation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+        app:layout_constraintTop_toBottomOf="@+id/runHabitCreateButton" />
 
     <Button
         android:id="@+id/runHabitCreateButton"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_marginTop="24dp"
         android:backgroundTint="#74CC6A"
         android:fontFamily="sans-serif-black"
         android:text="Correr"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/musculationCreationHabit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -178,13 +158,10 @@
         android:layout_height="18dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="68dp"
-        android:layout_marginEnd="309dp"
         android:fontFamily="sans-serif-condensed"
         android:text="PRODUCTIVIDAD"
         android:textColor="#19911E"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
@@ -193,14 +170,11 @@
         android:layout_width="86dp"
         android:layout_height="19dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="309dp"
+        android:layout_marginTop="120dp"
         android:fontFamily="sans-serif-condensed"
         android:text="SALUD"
         android:textColor="#19911E"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewProductividad" />
 
@@ -209,16 +183,13 @@
         android:layout_width="86dp"
         android:layout_height="19dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="260dp"
-        android:layout_marginEnd="309dp"
+        android:layout_marginBottom="150dp"
         android:fontFamily="sans-serif-condensed"
         android:text="OTRO"
         android:textColor="#19911E"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSalud" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <View
         android:id="@+id/viewProductivity"
