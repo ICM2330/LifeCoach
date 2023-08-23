@@ -9,6 +9,7 @@ import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import com.example.lifecoach_.activities.habits.creation.GenericHabitCreationActivity
 import com.example.lifecoach_.activities.habits.creation.RunningHabitCreationActivity
 import com.example.lifecoach_.activities.habits.creation.StepHabitCreationActivity
+import com.example.lifecoach_.activities.habits.creation.TimeHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityCreateHabitsBinding
 
 class CreateHabitsActivity : AppCompatActivity() {
@@ -33,6 +34,7 @@ class CreateHabitsActivity : AppCompatActivity() {
 
     private fun timeHabit(){
          binding.timeControlButton.setOnClickListener {
+             startActivity(Intent(this, TimeHabitCreationActivity::class.java))
          }
     }
 
