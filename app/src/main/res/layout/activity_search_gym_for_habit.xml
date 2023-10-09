@@ -6,4 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".activities.habits.auxiliar.SearchGymForHabitActivity">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/searchNearestGymButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="Buscar Gimnasio Mas Cercano"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/searchNearestGymButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintVertical_bias="0.682">
+
+        <ImageButton
+            android:id="@+id/buttonBack"
+            android:layout_width="52dp"
+            android:layout_height="51dp"
+            android:backgroundTint="#00FFFFFF"
+            android:src="@drawable/backarrow"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/osmMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"></org.osmdroid.views.MapView>
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

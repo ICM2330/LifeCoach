@@ -70,7 +70,6 @@ class SearchGymForHabitActivity : AppCompatActivity() {
     // On Pause
     override fun onPause() {
         super.onPause()
-
         stopLocationUpdates()
     }
 
