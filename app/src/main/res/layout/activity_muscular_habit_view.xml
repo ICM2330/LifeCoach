@@ -123,7 +123,7 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/greenmenu"
         android:text="@string/editar_h_bito"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -370,25 +370,13 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="282dp"
-        android:layout_height="49dp"
-        android:gravity="center"
-        android:text="¿Cómo sientes que estuvo tu entrenamiento?"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="559dp" />
-
     <Button
         android:id="@+id/buttonGimnasiosSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:text="Buscar Gimnasios"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_editar"
@@ -400,10 +388,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:text="Registrar Progreso del día"
         app:layout_constraintBottom_toTopOf="@+id/btn_editar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 
