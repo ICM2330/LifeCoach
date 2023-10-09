@@ -50,6 +50,8 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         binding.buttonStepsDashboardButton.setOnClickListener {
             startActivity(Intent(this, StepsReviewActivity::class.java))
         }
+
+        // Do the manage of the habit according to the type of habit
         binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
             when (userProof.habits[position]) {
                 is StrengthHabit -> {
