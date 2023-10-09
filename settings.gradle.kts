@@ -18,4 +18,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "LifeCoach_"
 include(":app")
- 

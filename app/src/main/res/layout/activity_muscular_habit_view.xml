@@ -118,47 +118,22 @@
 
     <Button
         android:id="@+id/btn_editar"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/greenmenu"
         android:text="@string/editar_h_bito"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/vshmidxp"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_editar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/img_3" />
-
-    <ImageView
-        android:id="@+id/vshgoodxp"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/vshmidxp"
-        app:layout_constraintStart_toEndOf="@+id/vshmidxp"
-        app:srcCompat="@drawable/img_4" />
-
-    <ImageView
-        android:id="@+id/vshbadxp"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/vshmidxp"
-        app:layout_constraintEnd_toStartOf="@+id/vshmidxp"
-        app:srcCompat="@drawable/img_5" />
+        app:layout_constraintStart_toEndOf="@+id/buttonGimnasiosSearch" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="304dp"
+        android:layout_height="187dp"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -397,13 +372,37 @@
 
     <TextView
         android:id="@+id/textView20"
-        android:layout_width="300dp"
+        android:layout_width="282dp"
+        android:layout_height="49dp"
         android:gravity="center"
+        android:text="¿Cómo sientes que estuvo tu entrenamiento?"
         android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="559dp" />
+
+    <Button
+        android:id="@+id/buttonGimnasiosSearch"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Como sientes que estuvo tu entrenamiento?"
-        app:layout_constraintBottom_toTopOf="@+id/vshmidxp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Buscar Gimnasios"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_editar"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonRegistrarProgresoDia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="8dp"
+        android:text="Registrar Progreso del día"
+        app:layout_constraintBottom_toTopOf="@+id/btn_editar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
