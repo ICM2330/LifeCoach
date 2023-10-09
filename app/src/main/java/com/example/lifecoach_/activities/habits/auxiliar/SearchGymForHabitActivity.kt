@@ -3,12 +3,14 @@ package com.example.lifecoach_.activities.habits.auxiliar
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.os.StrictMode
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -136,12 +138,13 @@ class SearchGymForHabitActivity : AppCompatActivity() {
     }
 
     // Method to manage the button of search nearest gym
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun manageButtonSearchNearestGym() {
         binding.searchNearestGymButton.setOnClickListener {
-            val lowerLeftLatitude = lastLocation!!.latitude - 0.1
-            val lowerLeftLongitude = lastLocation!!.longitude - 0.1
-            val upperRightLatitude = lastLocation!!.latitude + 0.1
-            val upperRightLongitude = lastLocation!!.longitude + 0.1
+            val lowerLeftLatitude = lastLocation!!.latitude - 0.2
+            val lowerLeftLongitude = lastLocation!!.longitude - 0.2
+            val upperRightLatitude = lastLocation!!.latitude + 0.2
+            val upperRightLongitude = lastLocation!!.longitude + 0.2
 
             val placesList = geocoder.getFromLocationName("Gimnasio", 5,
                 lowerLeftLatitude, lowerLeftLongitude, upperRightLatitude, upperRightLongitude)
@@ -160,27 +163,66 @@ class SearchGymForHabitActivity : AppCompatActivity() {
                 map.overlays.add(lastLocationMarker)
 
 
-                // Put the marker in every found place
+                // Make a List of pairs with the distance between the last location and the nearest gyms
+                val listDistancesBetweenTwoPoints = mutableListOf<Pair<Double, GeoPoint>>()
                 for (place in placesList){
-                    val actualGeoPoint = GeoPoint(place.latitude, place.longitude)
-                    val actualMarker = Marker(map)
-                    actualMarker.position = actualGeoPoint
-                    actualMarker.title = place.featureName
-                    val myIcon = resources.getDrawable(R.drawable.pesoicon, theme)
-                    actualMarker.icon = myIcon
-                    actualMarker.snippet = place.getAddressLine(0)
-                    actualMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-
-                    listGeoPointsNearestGyms.add(actualGeoPoint)
-                    listMarkersNearestGyms.add(actualMarker)
-
-                    map.overlays.add(actualMarker)
+                    listDistancesBetweenTwoPoints.add(giveDistancesBetweenTwoPoints(lastLocationGeoPoint!!,
+                        GeoPoint(place.latitude, place.longitude)))
                 }
+
+                // Sort the list of pairs by the distance
+                listDistancesBetweenTwoPoints.sortBy { it.first }
+
+                // Draw the route between the last location and the nearest gym
+                drawRoute(lastLocationGeoPoint!!, listDistancesBetweenTwoPoints[0].second)
             }
             else{
-                Toast.makeText(baseContext, "No se encontraron gimnasios cercanos a tu ubicación", Toast.LENGTH_LONG).show()
+                Toast.makeText(baseContext,
+                    "No se encontraron gimnasios cercanos a tu ubicación",
+                    Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun giveDistancesBetweenTwoPoints(
+        start: GeoPoint,
+        finish: GeoPoint
+    ): Pair<Double, GeoPoint> {
+        val routePoints = ArrayList<GeoPoint>()
+        routePoints.add(start)
+        routePoints.add(finish)
+        val road = roadManager.getRoad(routePoints)
+        return Pair(road.mLength, finish)
+    }
+
+    private fun drawRoute (start: GeoPoint, finish: GeoPoint){
+        val routePoints = ArrayList<GeoPoint>()
+        routePoints.add(start)
+        routePoints.add(finish)
+        val road = roadManager.getRoad(routePoints)
+        Log.i("MapsApp", "Route length: " + road.mLength + " klm")
+
+        // Delete the route if it already exists
+        if (roadOverlay != null) {
+            map.overlays.remove(roadOverlay)
+        }
+
+        // Draw the route
+        roadOverlay = RoadManager.buildRoadOverlay(road)
+        roadOverlay!!.outlinePaint.color = Color.RED
+        roadOverlay!!.outlinePaint.strokeWidth = 10F
+        map.overlays.add(roadOverlay)
+
+        //Format the distance to show only 2 decimals
+        val formattedDistance = String.format("%.2f", road.mLength)
+
+        // Show a Toast with the distance between the last location and the nearest gym
+        Toast.makeText(
+            baseContext,
+            "Distancia entre localización actual y gimnasio más cercano: $formattedDistance KM",
+            Toast.LENGTH_LONG
+        ).show()
+
     }
 
     // Method to draw the five nearest gyms
