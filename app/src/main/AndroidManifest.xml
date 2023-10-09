@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LifeCoach_"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCDCJYLR9qfY83lspNLaQ3EbPdSXjR7meI"/>
         <activity
             android:name=".activities.habits.auxiliar.SearchGymForHabitActivity"
             android:exported="false" />
