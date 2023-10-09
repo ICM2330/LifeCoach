@@ -2,33 +2,43 @@ package com.example.lifecoach_.activities.habits.auxiliar
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.os.StrictMode
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.view.MuscularHabitViewActivity
 import com.example.lifecoach_.databinding.ActivitySearchGymForHabitBinding
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.Priority
 import org.osmdroid.bonuspack.routing.OSRMRoadManager
 import org.osmdroid.bonuspack.routing.RoadManager
 import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import java.util.Locale
 
+@Suppress("DEPRECATION", "NAME_SHADOWING")
 class SearchGymForHabitActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivitySearchGymForHabitBinding
@@ -66,6 +76,9 @@ class SearchGymForHabitActivity : AppCompatActivity() {
     //Road Manager
     private lateinit var roadManager: RoadManager
 
+    //Variable to know if the user is going to a gym
+    private var isGoingToGym = false
+
     // -- IMPLEMENTATION METHODS OF LIFECYCLE OF ACTIVITY ---
     // On Create
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,9 +90,99 @@ class SearchGymForHabitActivity : AppCompatActivity() {
             this, androidx.preference.PreferenceManager.getDefaultSharedPreferences(this)
         )
 
+        // Init Map
+        map = binding.osmMap
+        map.setTileSource(TileSourceFactory.MAPNIK)
+        map.setMultiTouchControls(true)
+
+        // Use the zoom controller of the map (Not using long or click event, so no trouble)
+        map.zoomController.setVisibility(org.osmdroid.views.CustomZoomButtonsController.Visibility.ALWAYS)
+
+        // Do a general zoom to the earth
+        map.controller.setZoom(5.0)
+        map.controller.animateTo(GeoPoint(4.6287662, -74.0636298647595 ))
 
         //Geocoder initialization
         geocoder = Geocoder(baseContext, Locale.getDefault())
+
+        // Do the stuff related with the last location and their elements
+        locationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+            .setWaitForAccurateLocation(true).setMinUpdateIntervalMillis(5000).build()
+
+        locationCallback = object : LocationCallback() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            override fun onLocationResult(result: LocationResult) {
+                super.onLocationResult(result)
+                if (result.lastLocation != null) {
+                    val currentLocation = result.lastLocation!!
+
+                    if (lastLocation == null) {
+                        // If it's the first location, simply register it
+                        lastLocation = currentLocation
+                        lastLocationGeoPoint =
+                            GeoPoint(currentLocation.latitude, currentLocation.longitude)
+                        lastLocationMarker = Marker(map)
+                        lastLocationMarker?.position = lastLocationGeoPoint
+                        lastLocationMarker?.title = "Last Location"
+                        val myIcon = resources.getDrawable(R.drawable.userpin, theme)
+                        lastLocationMarker?.icon = myIcon
+                        lastLocationMarker?.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                        map.overlays.add(lastLocationMarker)
+                        map.controller.setZoom(18.0)
+                        map.controller.animateTo(lastLocationGeoPoint)
+
+                        // Draw the five nearest gyms
+                        drawFiveNearestGymsMarkers()
+                    } else {
+                        // Calculate the distance between the current and previous location
+                        val distance = lastLocation!!.distanceTo(currentLocation)
+
+                        // If the distance is greater than or equal to 30 meters, register the location and draw again the five nearest gyms
+                        if (distance >= 30.0) {
+                            // If the distance is greater than or equal to 30 meters, register the location
+                            map.overlays.clear()
+
+                            lastLocation = currentLocation
+                            lastLocationGeoPoint =
+                                GeoPoint(currentLocation.latitude, currentLocation.longitude)
+                            lastLocationMarker = Marker(map)
+                            lastLocationMarker?.position = lastLocationGeoPoint
+                            lastLocationMarker?.title = "Last Location"
+                            val myIcon = resources.getDrawable(R.drawable.userpin, theme)
+                            lastLocationMarker?.icon = myIcon
+                            lastLocationMarker?.setAnchor(
+                                Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM
+                            )
+                            map.overlays.add(lastLocationMarker)
+                            map.controller.setZoom(18.0)
+                            map.controller.animateTo(lastLocationGeoPoint)
+
+                            // Draw the five nearest gyms
+                            drawFiveNearestGymsMarkers()
+                        }
+                    }
+                }
+            }
+        }
+
+        // Ask for the permissions and start the location updates if granted
+        checkLocationPermission()
+
+        locationClient.lastLocation.addOnFailureListener {
+            // Use a default location if the last location is not available or it's null
+            // Show a Toast that the last location is not available
+            Toast.makeText(
+                baseContext,
+                "No se puede utilizar las funcionalidades de la aplicación relacionadas con ubicación.",
+                Toast.LENGTH_LONG
+            ).show()
+
+            // Do a general zoom to the earth
+            map.controller.setZoom(5.0)
+            map.controller.animateTo(GeoPoint(4.6287662, -74.0636298647595 ))
+        }
 
         //Allow network access in the main thread - Just for performance purposes
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -95,14 +198,16 @@ class SearchGymForHabitActivity : AppCompatActivity() {
     // On Resume
     override fun onResume() {
         super.onResume()
-        // Initialize the map
+        map.onResume()
 
-
+        // Check location permission from hardware
+        locationSettings()
     }
 
     // On Pause
     override fun onPause() {
         super.onPause()
+        map.onPause()
         stopLocationUpdates()
     }
 
@@ -175,6 +280,9 @@ class SearchGymForHabitActivity : AppCompatActivity() {
 
                 // Draw the route between the last location and the nearest gym
                 drawRoute(lastLocationGeoPoint!!, listDistancesBetweenTwoPoints[0].second)
+
+                // Indicate that the user is going to a gym
+                isGoingToGym = true
             }
             else{
                 Toast.makeText(baseContext,
@@ -270,6 +378,61 @@ class SearchGymForHabitActivity : AppCompatActivity() {
         }
         else{
             Toast.makeText(baseContext, "No se encontraron gimnasios cercanos a tu ubicación", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // Functions related with permissions and this kind of stuff
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                baseContext, android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(
+                    baseContext,
+                    "You must grant location permission to see the map and receive updates.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            getPermissionLocation.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            // Do actions
+            startLocationUpdates()
+        }
+    }
+
+    private fun locationSettings() {
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val client = LocationServices.getSettingsClient(this)
+        val task = client.checkLocationSettings(builder.build())
+
+        task.addOnSuccessListener {
+            checkLocationPermission()
+        }
+
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                try {
+                    val intentSenderRequest =
+                        IntentSenderRequest.Builder(exception.resolution).build()
+                    locationSettings.launch(intentSenderRequest)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Show a toast if the location settings are not satisfied
+                    Toast.makeText(
+                        baseContext, "Location settings are not satisfied", Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private val locationSettings = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+            checkLocationPermission()
+        } else {
+            Toast.makeText(baseContext, "Location is required for this app", Toast.LENGTH_LONG)
+                .show()
         }
     }
 }
