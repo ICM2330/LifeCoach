@@ -5,7 +5,6 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
@@ -185,15 +184,24 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    fun bitmapDescriptorFromVector(context : Context, vectorResId : Int) : BitmapDescriptor {
+    private fun bitmapDescriptorFromVector(context : Context, vectorResId : Int) : BitmapDescriptor {
         val vectorDrawable : Drawable = ContextCompat.getDrawable(context, vectorResId)!!
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        val bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(),
-            Bitmap.Config.ARGB_8888);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
+        val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
+    override fun onResume() {
+        super.onResume()
+        locationSettings()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
 }
 
