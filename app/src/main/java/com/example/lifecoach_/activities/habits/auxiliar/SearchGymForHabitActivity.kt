@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,6 +35,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 
 
 class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -60,7 +64,6 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivitySearchGymForHabitBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.googleMapFragment) as SupportMapFragment
@@ -77,6 +80,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (locationResult.lastLocation != null) {
                     lastLocation = locationResult.lastLocation
                     updateLocationOnMap()
+                    putGymsWithinRangeMarkers()
                 }
             }
         }
@@ -88,6 +92,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(gMap: GoogleMap) {
         mMap = gMap
         mMap.uiSettings.setAllGesturesEnabled(true)
+        Places.initialize(this, getString(R.string.google_maps_key))
     }
 
     private fun updateLocationOnMap() {
@@ -108,12 +113,82 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun manageButtons() {
-
         binding.searchNearestGymButton.setOnClickListener {
-            // Implement your logic to search for the nearest gym using Google Places API or other methods.
-            // You can use the lastLocation to get the user's current location.
+
         }
     }
+
+    private fun putGymsWithinRangeMarkers() {
+        // Initialize the Places SDK if you haven't already
+        Places.initialize(applicationContext, getString(R.string.google_maps_key))
+
+        // Specify the fields you want to retrieve for each place
+        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
+
+        // Define the maximum distance in meters (e.g., 3000 meters for a 3 km radius)
+        val maxDistance = 3000
+
+        // Use the builder to create a FindCurrentPlaceRequest.
+        val placesClient = Places.createClient(this)
+
+        // Create a FindCurrentPlaceRequest.
+        val request = FindCurrentPlaceRequest.newInstance(
+            placeFields
+        )
+
+        checkLocationPermission()
+        // Call findCurrentPlace and handle the response (first check that the user has granted permission).
+        placesClient.findCurrentPlace(request).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val response = task.result
+                var anyMarkerPut = false
+                if (response != null) {
+                    val places = response.placeLikelihoods
+
+                    // Add markers for the places (gyms) within the specified distance
+                    for (likelihood in places) {
+                        val place = likelihood.place
+                        val latLng = place.latLng
+                        val placeName = place.name
+
+                        Log.i("Places", "Place found: ${place.name}")
+
+                        if (latLng != null && placeName != null) {
+                            val distance = calculateDistance(lastLocation?.latitude ?: 0.0, lastLocation?.longitude ?: 0.0, latLng.latitude, latLng.longitude)
+
+                            if (distance <= maxDistance &&
+                                (placeName.contains("Gym" , ignoreCase = true)
+                                        || placeName.contains("Gimnasio", ignoreCase = true)
+                                        || placeName.contains("BodyTech", ignoreCase = true)
+                                        || placeName.contains("Fit", ignoreCase = true))){
+                                mMap.addMarker(
+                                    MarkerOptions()
+                                        .position(latLng)
+                                        .title(placeName)
+                                        .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
+                                )
+                                anyMarkerPut = true
+                            }
+                        }
+                    }
+
+                    if (!anyMarkerPut){
+                        Toast.makeText(baseContext, "No hay gimnasios cercanos", Toast.LENGTH_LONG).show()
+                    }
+                }
+            } else {
+                // Handle errors here
+            }
+        }
+    }
+
+
+    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
+        val results = FloatArray(1)
+        Location.distanceBetween(lat1, lon1, lat2, lon2, results)
+        return results[0]
+    }
+
 
     private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(
