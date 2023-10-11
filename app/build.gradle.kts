@@ -56,6 +56,7 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.google.android.libraries.places:places:3.2.0")
     implementation("androidx.compose.ui:ui-graphics-android:1.5.3")
+    implementation("com.android.volley:volley:1.2.1")
     testImplementation("junit:junit:4.13.2")
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

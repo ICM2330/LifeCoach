@@ -16,6 +16,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.lifecoach_.R
 import com.example.lifecoach_.databinding.ActivitySearchGymForHabitBinding
 import com.google.android.gms.common.api.ResolvableApiException
@@ -38,6 +41,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.gson.JsonParser
+import org.json.JSONObject
 
 
 class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -114,72 +119,22 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun manageButtons() {
         binding.searchNearestGymButton.setOnClickListener {
+            for (gym in listGym){
+                // Put a marker in each gym
+                Log.i("Gym", gym.toString())
+                val gymMarker = mMap.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(gym.lat, gym.lon))
+                        .title(gym.name)
+                        .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
+                )
 
+            }
         }
     }
 
     private fun putGymsWithinRangeMarkers() {
-        // Initialize the Places SDK if you haven't already
-        Places.initialize(applicationContext, getString(R.string.google_maps_key))
 
-        // Specify the fields you want to retrieve for each place
-        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
-
-        // Define the maximum distance in meters (e.g., 3000 meters for a 3 km radius)
-        val maxDistance = 3000
-
-        // Use the builder to create a FindCurrentPlaceRequest.
-        val placesClient = Places.createClient(this)
-
-        // Create a FindCurrentPlaceRequest.
-        val request = FindCurrentPlaceRequest.newInstance(
-            placeFields
-        )
-
-        checkLocationPermission()
-        // Call findCurrentPlace and handle the response (first check that the user has granted permission).
-        placesClient.findCurrentPlace(request).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val response = task.result
-                var anyMarkerPut = false
-                if (response != null) {
-                    val places = response.placeLikelihoods
-
-                    // Add markers for the places (gyms) within the specified distance
-                    for (likelihood in places) {
-                        val place = likelihood.place
-                        val latLng = place.latLng
-                        val placeName = place.name
-
-                        Log.i("Places", "Place found: ${place.name}")
-
-                        if (latLng != null && placeName != null) {
-                            val distance = calculateDistance(lastLocation?.latitude ?: 0.0, lastLocation?.longitude ?: 0.0, latLng.latitude, latLng.longitude)
-
-                            if (distance <= maxDistance &&
-                                (placeName.contains("Gym" , ignoreCase = true)
-                                        || placeName.contains("Gimnasio", ignoreCase = true)
-                                        || placeName.contains("BodyTech", ignoreCase = true)
-                                        || placeName.contains("Fit", ignoreCase = true))){
-                                mMap.addMarker(
-                                    MarkerOptions()
-                                        .position(latLng)
-                                        .title(placeName)
-                                        .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
-                                )
-                                anyMarkerPut = true
-                            }
-                        }
-                    }
-
-                    if (!anyMarkerPut){
-                        Toast.makeText(baseContext, "No hay gimnasios cercanos", Toast.LENGTH_LONG).show()
-                    }
-                }
-            } else {
-                // Handle errors here
-            }
-        }
     }
 
 
@@ -249,7 +204,8 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private val locationSettings = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()
+    private val locationSettings = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
     ) {
         if (it.resultCode == RESULT_OK) {
             checkLocationPermission()
@@ -259,11 +215,18 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun bitmapDescriptorFromVector(context : Context, vectorResId : Int) : BitmapDescriptor {
-        val vectorDrawable : Drawable = ContextCompat.getDrawable(context, vectorResId)!!
-        vectorDrawable.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
-        val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888)
+    private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
+        val vectorDrawable: Drawable = ContextCompat.getDrawable(context, vectorResId)!!
+        vectorDrawable.setBounds(
+            0,
+            0,
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight
+        )
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
         val canvas = Canvas(bitmap)
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
@@ -278,5 +241,48 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onPause()
         stopLocationUpdates()
     }
+
+    private var listGym = mutableListOf<Gym>()
+    private fun consumeRestVolley(typeQuery : Int) {
+        val queue = Volley.newRequestQueue(this)
+        val url =
+            "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lastLocation!!.latitude},${lastLocation!!.longitude}&radius=3000&type=gym&key=${
+                getString(R.string.google_maps_key)
+            }"
+
+        Log.i("Volley", "URL: ${url}")
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                val jsonString = response.toString()
+                Log.i("FILE", jsonString)
+                val jsonObject = JsonParser.parseString(jsonString).asJsonObject
+                Log.i("FILE", jsonObject.toString())
+                val results = jsonObject.getAsJsonArray("results")
+                for (result in results) {
+                    val geometry = result.asJsonObject.getAsJsonObject("geometry")
+                    val location = geometry.getAsJsonObject("location")
+                    listGym.add(Gym(
+                        result.asJsonObject.get("name").asString,
+                        location.get("lat").asDouble,
+                        location.get("lng").asDouble
+                    ))
+                }
+
+                
+
+
+
+            },
+            { Log.i("Volley", "Doesn't works") })
+
+        queue.add(stringRequest)
+    }
+
 }
 
+ class Gym(val name: String, val lat: Double, val lon: Double) {
+    override fun toString(): String {
+        return "Gym(name='$name', lat=$lat, lon=$lon)"
+    }
+}
