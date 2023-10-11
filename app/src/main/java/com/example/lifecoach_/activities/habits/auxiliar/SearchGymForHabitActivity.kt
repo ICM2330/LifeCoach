@@ -56,6 +56,9 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var lastLocation: Location? = null
     private var lastLocationMarker: Marker? = null
+    private var gymMarkers: MutableList<Marker> = mutableListOf()
+
+    private val listGym = mutableListOf<Gym>()
 
     private val getPermissionLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -85,7 +88,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (locationResult.lastLocation != null) {
                     lastLocation = locationResult.lastLocation
                     updateLocationOnMap()
-                    putGymsWithinRangeMarkers()
+                    consumeRestVolley()
                 }
             }
         }
@@ -119,16 +122,10 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun manageButtons() {
         binding.searchNearestGymButton.setOnClickListener {
-            for (gym in listGym){
-                // Put a marker in each gym
-                Log.i("Gym", gym.toString())
-                val gymMarker = mMap.addMarker(
-                    MarkerOptions()
-                        .position(LatLng(gym.lat, gym.lon))
-                        .title(gym.name)
-                        .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
-                )
-
+            if(lastLocation != null){
+                for(gym in listGym){
+                    Log.i("GYM", gym.toString())
+                }
             }
         }
     }
@@ -137,13 +134,11 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
     private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
         val results = FloatArray(1)
         Location.distanceBetween(lat1, lon1, lat2, lon2, results)
         return results[0]
     }
-
 
     private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(
@@ -242,46 +237,55 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         stopLocationUpdates()
     }
 
-    private var listGym = mutableListOf<Gym>()
-    private fun consumeRestVolley(typeQuery : Int) {
+    private fun consumeRestVolley() {
         val queue = Volley.newRequestQueue(this)
         val url =
             "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lastLocation!!.latitude},${lastLocation!!.longitude}&radius=3000&type=gym&key=${
                 getString(R.string.google_maps_key)
             }"
-
-        Log.i("Volley", "URL: ${url}")
         val stringRequest = StringRequest(
             Request.Method.GET, url,
             { response ->
-                val jsonString = response.toString()
-                Log.i("FILE", jsonString)
-                val jsonObject = JsonParser.parseString(jsonString).asJsonObject
-                Log.i("FILE", jsonObject.toString())
-                val results = jsonObject.getAsJsonArray("results")
-                for (result in results) {
-                    val geometry = result.asJsonObject.getAsJsonObject("geometry")
-                    val location = geometry.getAsJsonObject("location")
-                    listGym.add(Gym(
-                        result.asJsonObject.get("name").asString,
-                        location.get("lat").asDouble,
-                        location.get("lng").asDouble
-                    ))
-                }
-
-                
-
-
-
+                responseToGymList(response.toString())
+                for(marker in gymMarkers)
+                    marker.remove()
+                gymMarkers.clear()
+                for(gym in listGym)
+                    gymMarkers.add(putGymMarker(gym))
             },
             { Log.i("Volley", "Doesn't works") })
 
         queue.add(stringRequest)
     }
-
+    private fun putGymMarker(gym:Gym): Marker {
+        // Add a marker in default location
+        val location = LatLng(gym.lat, gym.lon)
+        return mMap.addMarker(
+            MarkerOptions().position(location)
+                .title(gym.name)
+                .alpha(1F)
+                .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
+        )!!
+    }
+    private fun responseToGymList(response: String){
+        val jsonObject = JsonParser.parseString(response).asJsonObject
+        val results = jsonObject.getAsJsonArray("results")
+        listGym.clear()
+        for (result in results) {
+            val geometry = result.asJsonObject.getAsJsonObject("geometry")
+            val location = geometry.getAsJsonObject("location")
+            listGym.add(
+                Gym(
+                    result.asJsonObject.get("name").asString,
+                    location.get("lat").asDouble,
+                    location.get("lng").asDouble
+                )
+            )
+        }
+    }
 }
 
- class Gym(val name: String, val lat: Double, val lon: Double) {
+class Gym(val name: String, val lat: Double, val lon: Double) {
     override fun toString(): String {
         return "Gym(name='$name', lat=$lat, lon=$lon)"
     }
