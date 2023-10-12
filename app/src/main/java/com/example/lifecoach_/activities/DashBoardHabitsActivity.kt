@@ -47,11 +47,6 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         userProof.habits = createHabits()
         val adapter = HabitListViewAdapter(this, userProof.habits)
         binding.habitsListView.adapter = adapter
-        binding.buttonStepsDashboardButton.setOnClickListener {
-            startActivity(Intent(this, StepsReviewActivity::class.java))
-        }
-
-        // Do the manage of the habit according to the type of habit
         binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
             when (userProof.habits[position]) {
                 is StrengthHabit -> {
@@ -71,7 +66,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 }
                 is TimeControlHabit -> {
                     val intent = Intent(baseContext, TimeHabitViewActivity::class.java)
-                    //ntent.putExtra("habits", userProof.habits[position])
+                    //intent.putExtra("habits", userProof.habits[position])
                     startActivity(intent)
                 }
                 else -> {
@@ -134,21 +129,6 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     fun manageButtons(user: User) {
         CreateHabit(user)
         bottomNavigationBarManagement(user)
-        viewSteps(user)
-        viewFriends(user)
-    }
-
-    fun viewSteps(user: User) {
-        binding.buttonStepsDashboardButton.setOnClickListener {
-
-        }
-    }
-
-    fun viewFriends(user: User) {
-        binding.buttonFriendsDashboard.setOnClickListener {
-            val intent = Intent(baseContext, ChatMenuActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     fun CreateHabit(user: User) {

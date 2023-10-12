@@ -136,7 +136,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/musculationCreationHabit"
         app:layout_constraintStart_toStartOf="@+id/musculationCreationHabit"
         app:layout_constraintTop_toTopOf="@+id/musculationCreationHabit"
-        app:srcCompat="@drawable/muscle" />
+        app:srcCompat="@drawable/muscle_logo" />
 
     <TextView
         android:id="@+id/textView4"
