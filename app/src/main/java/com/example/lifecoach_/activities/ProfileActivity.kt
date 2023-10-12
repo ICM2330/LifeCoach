@@ -120,6 +120,6 @@ class ProfileActivity : AppCompatActivity() {
     private fun loadImage(uri: Uri) {
         val imageStream = contentResolver.openInputStream(uri)
         val bitmap = BitmapFactory.decodeStream(imageStream)
-        binding.dbprofileimage.setImageBitmap(bitmap)
+        binding.profProfPic.setImageBitmap(bitmap)
     }
 }

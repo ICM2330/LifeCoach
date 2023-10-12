@@ -63,7 +63,7 @@
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/textView18"
-            app:layout_constraintStart_toEndOf="@+id/dbprofileimage"
+            app:layout_constraintStart_toEndOf="@+id/card"
             app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
         <ImageView
@@ -89,15 +89,31 @@
             app:layout_constraintStart_toStartOf="@+id/streakText"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/dbprofileimage"
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:layout_marginStart="32dp"
-            android:src="@drawable/juanfrapp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="50dp"
+            android:elevation="12dp"
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/dashProfPic"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/juanfrapp" />
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
