@@ -8,39 +8,35 @@
 
     <ImageView
         android:id="@+id/checkImage"
-        android:layout_width="34dp"
-        android:layout_height="38dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageHabit"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageHabit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageHabit"
         app:srcCompat="@drawable/checkpositive" />
 
     <ImageView
         android:id="@+id/imageHabit"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="68dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.488"
-        app:srcCompat="@drawable/muscle" />
+        android:layout_marginStart="32dp"
+        app:layout_constraintStart_toEndOf="@+id/checkImage"
+        app:layout_constraintTop_toTopOf="@+id/progressHabitText"
+        app:srcCompat="@drawable/muscle_logo" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="32dp"
         android:fontFamily="sans-serif-black"
         android:text="Llevas:"
         android:textColorHighlight="#2BAE31"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.409"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/goalHabitText"
+        app:layout_constraintStart_toEndOf="@+id/imageHabit"
+        app:layout_constraintTop_toTopOf="@+id/goalHabitText"
         app:layout_constraintVertical_bias="0.965" />
 
     <TextView
@@ -51,23 +47,19 @@
         android:text="Falta:"
         android:textColorHighlight="#2BAE31"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/progressHabitText"
-        app:layout_constraintHorizontal_bias="0.868"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/progressHabitText"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/progressHabitText"
         app:layout_constraintVertical_bias="0.425" />
 
     <TextView
         android:id="@+id/progressHabitText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Progress habit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.774"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,12 +67,9 @@
         android:id="@+id/goalHabitText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="102dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Goal Habit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.774"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/progressHabitText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

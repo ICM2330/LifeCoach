@@ -1,7 +1,6 @@
 package com.example.lifecoach_.adapters
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +61,7 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
                 /*val imageStream = context.contentResolver.openInputStream(message.fileAttached!!)
                 val bitmap = BitmapFactory.decodeStream(imageStream)
                 img.setImageBitmap(bitmap)*/
-                img.setImageResource(R.drawable.logolong)
+                img.setImageResource(R.drawable.logopng)
                 msg.text = ""
             }
         }

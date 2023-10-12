@@ -131,12 +131,6 @@
                         android:hint="@string/_80_kg"
                         android:inputType="number" />
 
-                    <ImageView
-                        android:id="@+id/mancuerna"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:src="@drawable/img" />
-
                 </LinearLayout>
 
 
