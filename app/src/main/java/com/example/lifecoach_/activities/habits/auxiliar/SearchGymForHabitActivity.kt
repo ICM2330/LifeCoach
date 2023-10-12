@@ -38,11 +38,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.gson.JsonParser
-import org.json.JSONObject
+import com.google.maps.DirectionsApi
+import com.google.maps.GeoApiContext
+import com.google.maps.model.DirectionsResult
 
 
 class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -121,23 +122,76 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun manageButtons() {
-        binding.searchNearestGymButton.setOnClickListener {
-            if(lastLocation != null){
-                for(gym in listGym){
-                    Log.i("GYM", gym.toString())
-                }
-            }
-        }
+       putGymsWithinRangeMarkers()
     }
 
     private fun putGymsWithinRangeMarkers() {
+        mMap.setOnMarkerClickListener { clickedMarker ->
+            for (gymMarker in gymMarkers) {
+                if (clickedMarker.position == gymMarker.position) {
+                    // Clear the map
+                    mMap.clear()
 
-    }
+                    // Add the user marker
+                    lastLocationMarker = mMap.addMarker(
+                        MarkerOptions()
+                            .position(lastLocationMarker!!.position)
+                            .title("Last Location")
+                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.userpin))
+                    )
 
-    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Float {
-        val results = FloatArray(1)
-        Location.distanceBetween(lat1, lon1, lat2, lon2, results)
-        return results[0]
+                    // Add the clicked marker
+                    mMap.addMarker(
+                        MarkerOptions()
+                            .position(clickedMarker.position)
+                            .title(clickedMarker.title)
+                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
+                    )
+
+                    // Draw the roue between the two points using the Google Directions API
+                    val apiKey = getString(R.string.google_maps_key)
+                    val geoContext = GeoApiContext.Builder()
+                        .apiKey(apiKey)
+                        .build()
+
+                    val directionsResult: DirectionsResult = DirectionsApi.newRequest(geoContext)
+                        .origin("${lastLocationMarker!!.position.latitude},${lastLocationMarker!!.position.longitude}")
+                        .destination("${clickedMarker.position.latitude},${clickedMarker.position.longitude}")
+                        .await()
+
+                    // Draw the polyline
+                    val polylineOptions = PolylineOptions()
+
+                    if (directionsResult.routes.isNotEmpty()) {
+                        val route = directionsResult.routes[0].overviewPolyline.decodePath()
+                        for (point in route) {
+                            polylineOptions.add(LatLng(point.lat, point.lng))
+                        }
+
+                        runOnUiThread {
+                            mMap.addPolyline(polylineOptions)
+                            mMap.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    lastLocationMarker!!.position,
+                                    10f
+                                )
+                            )
+                        }
+
+                        // Get the distance and convert it to kilometers
+                        val distance = directionsResult.routes[0].legs[0].distance.inMeters / 1000
+
+                        // Show a Toast with the distance
+                        Toast.makeText(
+                            baseContext,
+                            "Distance between your location and selected marker: $distance km",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            true
+        }
     }
 
     private fun startLocationUpdates() {
@@ -247,17 +301,18 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
             Request.Method.GET, url,
             { response ->
                 responseToGymList(response.toString())
-                for(marker in gymMarkers)
+                for (marker in gymMarkers)
                     marker.remove()
                 gymMarkers.clear()
-                for(gym in listGym)
+                for (gym in listGym)
                     gymMarkers.add(putGymMarker(gym))
             },
             { Log.i("Volley", "Doesn't works") })
 
         queue.add(stringRequest)
     }
-    private fun putGymMarker(gym:Gym): Marker {
+
+    private fun putGymMarker(gym: Gym): Marker {
         // Add a marker in default location
         val location = LatLng(gym.lat, gym.lon)
         return mMap.addMarker(
@@ -267,7 +322,8 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                 .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
         )!!
     }
-    private fun responseToGymList(response: String){
+
+    private fun responseToGymList(response: String) {
         val jsonObject = JsonParser.parseString(response).asJsonObject
         val results = jsonObject.getAsJsonArray("results")
         listGym.clear()
