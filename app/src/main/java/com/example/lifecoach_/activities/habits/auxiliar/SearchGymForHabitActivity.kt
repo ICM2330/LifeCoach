@@ -44,6 +44,7 @@ import com.google.gson.JsonParser
 import com.google.maps.DirectionsApi
 import com.google.maps.GeoApiContext
 import com.google.maps.model.DirectionsResult
+import com.google.maps.model.TravelMode
 
 
 class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -93,15 +94,14 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
-
-        checkLocationPermission()
-        manageButtons()
     }
 
     override fun onMapReady(gMap: GoogleMap) {
         mMap = gMap
         mMap.uiSettings.setAllGesturesEnabled(true)
         Places.initialize(this, getString(R.string.google_maps_key))
+        checkLocationPermission()
+        manageButtons()
     }
 
     private fun updateLocationOnMap() {
@@ -159,6 +159,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                     val directionsResult: DirectionsResult = DirectionsApi.newRequest(geoContext)
                         .origin("${lastLocationMarker!!.position.latitude},${lastLocationMarker!!.position.longitude}")
                         .destination("${clickedMarker.position.latitude},${clickedMarker.position.longitude}")
+                        .mode(TravelMode.WALKING)
                         .await()
 
                     // Draw the polyline
@@ -172,12 +173,6 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         runOnUiThread {
                             mMap.addPolyline(polylineOptions)
-                            mMap.moveCamera(
-                                CameraUpdateFactory.newLatLngZoom(
-                                    lastLocationMarker!!.position,
-                                    10f
-                                )
-                            )
                         }
 
                         // Get the distance and convert it to kilometers
