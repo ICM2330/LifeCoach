@@ -148,6 +148,8 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                             .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
                     )
 
+
+                    // ----------- DRAW ROUTE -------------//
                     // Draw the roue between the two points using the Google Directions API
                     val apiKey = getString(R.string.google_maps_key)
                     val geoContext = GeoApiContext.Builder()
