@@ -63,7 +63,7 @@
         android:layout_height="15dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
-        android:background="@color/greenmenu"
+        android:background="@color/green1"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:text="@string/frecuencia"
             android:textAlignment="center"
-            android:textColor="@color/greenmenu"
+            android:textColor="@color/green1"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -108,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cumplimiento"
-        android:textColor="@color/greenmenu"
+        android:textColor="@color/green1"
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +124,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/greenmenu"
+        android:backgroundTint="@color/green1"
         android:text="@string/editar_h_bito"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -207,37 +207,37 @@
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
         </LinearLayout>
 
         <LinearLayout
@@ -250,37 +250,37 @@
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
         </LinearLayout>
 
         <LinearLayout
@@ -293,37 +293,37 @@
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
         </LinearLayout>
 
         <LinearLayout
@@ -336,37 +336,37 @@
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
 
             <Button
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:backgroundTint="@color/greenmenu" />
+                android:backgroundTint="@color/green1" />
         </LinearLayout>
     </LinearLayout>
 

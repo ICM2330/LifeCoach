@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/temporizador"
                         android:textAlignment="textStart"
-                        android:textColor="@color/greenmenu"
+                        android:textColor="@color/green1"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
