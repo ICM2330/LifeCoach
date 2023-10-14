@@ -104,8 +104,16 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         ) {
                             // If the location is different from the last one, update it
                             lastLocation = locationResult.lastLocation
-                            mMap.clear()
+
+                            // Update the location on the map
                             updateLocationOnMap()
+
+                            // Quit the lines of the route
+                            for (polyline in currentPolylines) {
+                                polyline.remove()
+                            }
+
+                            // Here quit the markers of the gyms
                             consumeRestVolley()
                         } else {
                             // If the location is the same, do nothing
@@ -156,6 +164,9 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         polyline.remove()
                     }
 
+                    // Show the snippet
+                    clickedMarker.showInfoWindow()
+
                     // ----------- DRAW ROUTE -------------//
                     // Draw the roue between the two points using the Google Directions API
                     val apiKey = getString(R.string.google_maps_key)
@@ -187,7 +198,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         // Show a Toast with the distance
                         Toast.makeText(
                             baseContext,
-                            "Distancia entre tu ubicación y el gimnasio ${gymMarker.title}: $distance mts",
+                            "Distancia hacía ${gymMarker.title}: $distance mts",
                             Toast.LENGTH_LONG
                         ).show()
                     }
