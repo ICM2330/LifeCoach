@@ -7,4 +7,7 @@ class Frequency(
     var notiMinute: Int,
     var days: MutableList<Int>
 ) : Serializable {
+    override fun toString(): String {
+        return "Frequency(Hour=$notiHour:$notiMinute, Days=$days)"
+    }
 }
