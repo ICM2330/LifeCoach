@@ -31,6 +31,6 @@
     <string name="objetivo_peso">Objetivo de Peso</string>
     <string name="_80_kg">80 kg</string>
     <string name="habito_destacado">Hábito Destacado</string>
-    <string name="google_maps_key">AIzaSyDk8O1e13bEDI4DDHogCC8_no75ljx2B8Q</string>
+    <string name="google_maps_key">API_KEY</string>
 
 </resources>
