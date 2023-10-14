@@ -5,6 +5,7 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.libraries.places.api.Places
 import com.google.gson.JsonParser
@@ -88,9 +90,27 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 if (locationResult.lastLocation != null) {
-                    lastLocation = locationResult.lastLocation
-                    updateLocationOnMap()
-                    consumeRestVolley()
+                    val currentLocation = locationResult.lastLocation!!
+
+                    if (lastLocation == null) {
+                        // If it's the first location, save it
+                        lastLocation = currentLocation
+                        updateLocationOnMap()
+                        consumeRestVolley()
+                    }
+                    else {
+                        if ((locationResult.lastLocation!!.latitude != lastLocation!!.latitude) &&
+                            (locationResult.lastLocation!!.longitude != lastLocation!!.longitude)
+                        ) {
+                            // If the location is different from the last one, update it
+                            lastLocation = locationResult.lastLocation
+                            mMap.clear()
+                            updateLocationOnMap()
+                            consumeRestVolley()
+                        } else {
+                            // If the location is the same, do nothing
+                        }
+                    }
                 }
             }
         }
@@ -114,9 +134,10 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         .title("Last Location")
                         .icon(bitmapDescriptorFromVector(baseContext, R.drawable.userpin))
                 )
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
             } else {
                 lastLocationMarker?.position = latLng
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
             }
         }
     }
@@ -125,29 +146,15 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
        putGymsWithinRangeMarkers()
     }
 
+    private val currentPolylines = mutableListOf<Polyline>()
     private fun putGymsWithinRangeMarkers() {
         mMap.setOnMarkerClickListener { clickedMarker ->
             for (gymMarker in gymMarkers) {
                 if (clickedMarker.position == gymMarker.position) {
-                    // Clear the map
-                    mMap.clear()
-
-                    // Add the user marker
-                    lastLocationMarker = mMap.addMarker(
-                        MarkerOptions()
-                            .position(lastLocationMarker!!.position)
-                            .title("Last Location")
-                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.userpin))
-                    )
-
-                    // Add the clicked marker
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(clickedMarker.position)
-                            .title(clickedMarker.title)
-                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
-                    )
-
+                    // Delete the Polyline if it exists
+                    for (polyline in currentPolylines) {
+                        polyline.remove()
+                    }
 
                     // ----------- DRAW ROUTE -------------//
                     // Draw the roue between the two points using the Google Directions API
@@ -170,18 +177,17 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         for (point in route) {
                             polylineOptions.add(LatLng(point.lat, point.lng))
                         }
-
-                        runOnUiThread {
-                            mMap.addPolyline(polylineOptions)
-                        }
+                        val polyline = mMap.addPolyline(polylineOptions)
+                        polyline.color = Color.BLUE
+                        currentPolylines.add(polyline)
 
                         // Get the distance and convert it to kilometers
-                        val distance = directionsResult.routes[0].legs[0].distance.inMeters / 1000
+                        val distance = directionsResult.routes[0].legs[0].distance.inMeters
 
                         // Show a Toast with the distance
                         Toast.makeText(
                             baseContext,
-                            "Distance between your location and selected marker: $distance km",
+                            "Distancia entre tu ubicación y el gimnasio ${gymMarker.title}: $distance mts",
                             Toast.LENGTH_LONG
                         ).show()
                     }
