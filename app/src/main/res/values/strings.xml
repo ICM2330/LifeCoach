@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LifeCoach</string>
+    <string name="app_name">LifeCoach365</string>
     <string name="duraci_n">Duración</string>
     <string name="frecuencia">Frecuencia</string>
     <string name="correr_por_el_parque">Correr por el Parque</string>
@@ -31,6 +31,6 @@
     <string name="objetivo_peso">Objetivo de Peso</string>
     <string name="_80_kg">80 kg</string>
     <string name="habito_destacado">Hábito Destacado</string>
-
+    <string name="google_maps_key">API_KEY</string>
 
 </resources>
