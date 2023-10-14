@@ -6,6 +6,8 @@
     <string name="habit_description">El habito generico te ayuda a organizarte con actividades basicas como tomar agua o lavar los platos</string>
     <string name="time_habit_description">El habito de control de tiempo es util en momentos en los que quieres realizar una accion por un determinado tiempo, como leer o no usar el celular</string>
     <string name="running_habit_description">El habito de correr te permite establecer un tiempo objetivo de ejercicio, podras tambien hacer el seguimiento de la ruta seguida durante una sesión</string>
+    <string name="steps_habit_description">El habito de pasos te permite definir unos pasos para realizar en un día, te ayudara a evitar el sedentarismo!</string>
+
 
     <string name="duraci_n">Duración</string>
     <string name="frecuencia">Frecuencia</string>
