@@ -3,7 +3,8 @@
     <string name="google_maps_key">AIzaSyDk8O1e13bEDI4DDHogCC8_no75ljx2B8Q</string>
 
 
-    <string name="habit_description">El habito te ayuda a organizarte con actividades basicas como tomar agua o lavar los platos</string>
+    <string name="habit_description">El habito generico te ayuda a organizarte con actividades basicas como tomar agua o lavar los platos</string>
+    <string name="time_habit_description">El habito de control de tiempo es util en momentos en los que quieres realizar una accion por un determinado tiempo, como leer o no usar el celular</string>
 
 
     <string name="duraci_n">Duración</string>

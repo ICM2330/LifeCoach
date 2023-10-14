@@ -93,10 +93,11 @@ class GenericHabitCreationActivity : AppCompatActivity() {
 
         var days = 0
         for (day in selectedDays) if (day) days++
-        if (days == 0)
+        if (days == 0) {
             Toast.makeText(baseContext, "Es necesario elegir almenos un dia", Toast.LENGTH_LONG)
                 .show()
-
+            return false
+        }
         if (binding.ghTimePick.text.isEmpty()) {
             binding.ghName.error = "campo necesario"
             return false
