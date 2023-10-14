@@ -111,7 +111,7 @@
                     android:background="@drawable/round_corner"
                     android:ems="10"
                     android:hint="Tiempo objetivo en minutos"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:padding="10dp"
                     android:text="" />
 
