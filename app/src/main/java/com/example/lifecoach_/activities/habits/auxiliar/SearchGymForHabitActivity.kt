@@ -7,6 +7,10 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -37,6 +41,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
@@ -63,6 +68,11 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     private var gymMarkers: MutableList<Marker> = mutableListOf()
 
     private val listGym = mutableListOf<Gym>()
+
+    // Sensor variables
+    private lateinit var sensorManager : SensorManager
+    private lateinit var lightSensor : Sensor
+    private lateinit var lightEventListener : SensorEventListener
 
     private val getPermissionLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -122,13 +132,22 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+
+        // Management of the sensor
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
+        lightEventListener = createLightSensorListener()
     }
 
     override fun onMapReady(gMap: GoogleMap) {
         mMap = gMap
         mMap.uiSettings.setAllGesturesEnabled(true)
         Places.initialize(this, getString(R.string.google_maps_key))
-        checkLocationPermission()
+        //checkLocationPermission()
+        //Set the default style
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+            baseContext, R.raw.
+            lightmodemap))
         manageButtons()
     }
 
@@ -189,7 +208,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                             polylineOptions.add(LatLng(point.lat, point.lng))
                         }
                         val polyline = mMap.addPolyline(polylineOptions)
-                        polyline.color = Color.BLUE
+                        polyline.color = Color.GREEN
                         currentPolylines.add(polyline)
 
                         // Get the distance and convert it to kilometers
@@ -298,11 +317,15 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         locationSettings()
+        sensorManager.registerListener(lightEventListener, lightSensor,
+            SensorManager.
+            SENSOR_DELAY_NORMAL)
     }
 
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
+        sensorManager.unregisterListener(lightEventListener)
     }
 
     private fun consumeRestVolley() {
@@ -353,6 +376,30 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
     }
+
+    // Method for managing the sensor listener
+    private fun createLightSensorListener() : SensorEventListener{
+        val ret : SensorEventListener = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent?) {
+                if (event != null) {
+                    if(event.values[0] < 5000){
+                        mMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                            baseContext, R.raw.
+                            darkmodemap))
+                    }else{
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                            baseContext, R.raw.
+                            lightmodemap))
+                    }
+                }
+            }
+            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+            }
+        }
+        return ret
+    }
+
 }
 
 class Gym(val name: String, val lat: Double, val lon: Double) {
