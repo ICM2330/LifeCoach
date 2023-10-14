@@ -99,7 +99,7 @@
                         android:id="@+id/fImageHabitS1"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/running" />
+                        android:src="@drawable/foot" />
 
                     <TextView
                         android:id="@+id/fStreakHabitS1"

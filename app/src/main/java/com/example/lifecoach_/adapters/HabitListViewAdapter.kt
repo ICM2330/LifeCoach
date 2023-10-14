@@ -24,6 +24,9 @@ class HabitListViewAdapter (context : Context, habits : MutableList<Habit>) :
             itemView = LayoutInflater.from(context).inflate(R.layout.habit_dashboard_layout, parent, false)
         }
 
+        val habitName = itemView!!.findViewById<TextView>(R.id.habitName)
+        habitName.text = item?.name
+
         when (item){
             is StepsHabit -> {
                 val imgCheck = itemView!!.findViewById<ImageView>(R.id.checkImage)
