@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#139709"
-    android:backgroundTint="#139709"
+    android:background="@color/green1"
+    android:backgroundTint="@color/green1"
     android:padding="5dp">
 
     <TextView
@@ -17,7 +17,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="monospace"
         android:text="LifeCoach 365"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

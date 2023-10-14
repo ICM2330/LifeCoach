@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="greenmenu">#139709</color>
+    <color name="green1">#139709</color>
+    <color name="green2">#74CC6A</color>
+    <color name="green3">#00BF62</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

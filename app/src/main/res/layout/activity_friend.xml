@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="@color/greenmenu"
+                android:backgroundTint="@color/green1"
                 android:text="Felicitar!"
                 android:textColor="@color/white" />
 
@@ -192,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="@color/greenmenu"
+                android:backgroundTint="@color/green1"
                 android:text="Motivar!"
                 android:textColor="@color/white" />
         </LinearLayout>

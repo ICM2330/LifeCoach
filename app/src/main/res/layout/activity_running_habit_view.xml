@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/h_bito"
                         android:textAlignment="textStart"
-                        android:textColor="@color/greenmenu"
+                        android:textColor="@color/green1"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/frecuencia"
                         android:textAlignment="textStart"
-                        android:textColor="@color/greenmenu"
+                        android:textColor="@color/green1"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/duraci_n"
                         android:textAlignment="textStart"
-                        android:textColor="@color/greenmenu"
+                        android:textColor="@color/green1"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
