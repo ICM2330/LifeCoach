@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LifeCoach_</string>
+    <string name="app_name">LifeCoach</string>
     <string name="duraci_n">Duración</string>
     <string name="frecuencia">Frecuencia</string>
     <string name="correr_por_el_parque">Correr por el Parque</string>
