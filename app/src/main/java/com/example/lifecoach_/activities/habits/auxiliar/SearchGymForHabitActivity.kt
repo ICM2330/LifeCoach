@@ -5,7 +5,12 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -36,8 +41,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.libraries.places.api.Places
 import com.google.gson.JsonParser
@@ -61,6 +68,11 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     private var gymMarkers: MutableList<Marker> = mutableListOf()
 
     private val listGym = mutableListOf<Gym>()
+
+    // Sensor variables
+    private lateinit var sensorManager : SensorManager
+    private lateinit var lightSensor : Sensor
+    private lateinit var lightEventListener : SensorEventListener
 
     private val getPermissionLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -88,19 +100,54 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 if (locationResult.lastLocation != null) {
-                    lastLocation = locationResult.lastLocation
-                    updateLocationOnMap()
-                    consumeRestVolley()
+                    val currentLocation = locationResult.lastLocation!!
+
+                    if (lastLocation == null) {
+                        // If it's the first location, save it
+                        lastLocation = currentLocation
+                        updateLocationOnMap()
+                        consumeRestVolley()
+                    }
+                    else {
+                        if ((locationResult.lastLocation!!.latitude != lastLocation!!.latitude) &&
+                            (locationResult.lastLocation!!.longitude != lastLocation!!.longitude)
+                        ) {
+                            // If the location is different from the last one, update it
+                            lastLocation = locationResult.lastLocation
+
+                            // Update the location on the map
+                            updateLocationOnMap()
+
+                            // Quit the lines of the route
+                            for (polyline in currentPolylines) {
+                                polyline.remove()
+                            }
+
+                            // Here quit the markers of the gyms
+                            consumeRestVolley()
+                        } else {
+                            // If the location is the same, do nothing
+                        }
+                    }
                 }
             }
         }
+
+        // Management of the sensor
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
+        lightEventListener = createLightSensorListener()
     }
 
     override fun onMapReady(gMap: GoogleMap) {
         mMap = gMap
         mMap.uiSettings.setAllGesturesEnabled(true)
         Places.initialize(this, getString(R.string.google_maps_key))
-        checkLocationPermission()
+        //checkLocationPermission()
+        //Set the default style
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+            baseContext, R.raw.
+            lightmodemap))
         manageButtons()
     }
 
@@ -114,9 +161,10 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         .title("Last Location")
                         .icon(bitmapDescriptorFromVector(baseContext, R.drawable.userpin))
                 )
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
             } else {
                 lastLocationMarker?.position = latLng
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
             }
         }
     }
@@ -125,29 +173,18 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
        putGymsWithinRangeMarkers()
     }
 
+    private val currentPolylines = mutableListOf<Polyline>()
     private fun putGymsWithinRangeMarkers() {
         mMap.setOnMarkerClickListener { clickedMarker ->
             for (gymMarker in gymMarkers) {
                 if (clickedMarker.position == gymMarker.position) {
-                    // Clear the map
-                    mMap.clear()
+                    // Delete the Polyline if it exists
+                    for (polyline in currentPolylines) {
+                        polyline.remove()
+                    }
 
-                    // Add the user marker
-                    lastLocationMarker = mMap.addMarker(
-                        MarkerOptions()
-                            .position(lastLocationMarker!!.position)
-                            .title("Last Location")
-                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.userpin))
-                    )
-
-                    // Add the clicked marker
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(clickedMarker.position)
-                            .title(clickedMarker.title)
-                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.pesoicon))
-                    )
-
+                    // Show the snippet
+                    clickedMarker.showInfoWindow()
 
                     // ----------- DRAW ROUTE -------------//
                     // Draw the roue between the two points using the Google Directions API
@@ -170,18 +207,17 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         for (point in route) {
                             polylineOptions.add(LatLng(point.lat, point.lng))
                         }
-
-                        runOnUiThread {
-                            mMap.addPolyline(polylineOptions)
-                        }
+                        val polyline = mMap.addPolyline(polylineOptions)
+                        polyline.color = Color.GREEN
+                        currentPolylines.add(polyline)
 
                         // Get the distance and convert it to kilometers
-                        val distance = directionsResult.routes[0].legs[0].distance.inMeters / 1000
+                        val distance = directionsResult.routes[0].legs[0].distance.inMeters
 
                         // Show a Toast with the distance
                         Toast.makeText(
                             baseContext,
-                            "Distance between your location and selected marker: $distance km",
+                            "Distancia hacía ${gymMarker.title}: $distance mts",
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -281,11 +317,15 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         locationSettings()
+        sensorManager.registerListener(lightEventListener, lightSensor,
+            SensorManager.
+            SENSOR_DELAY_NORMAL)
     }
 
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
+        sensorManager.unregisterListener(lightEventListener)
     }
 
     private fun consumeRestVolley() {
@@ -336,6 +376,30 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
     }
+
+    // Method for managing the sensor listener
+    private fun createLightSensorListener() : SensorEventListener{
+        val ret : SensorEventListener = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent?) {
+                if (event != null) {
+                    if(event.values[0] < 5000){
+                        mMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                            baseContext, R.raw.
+                            darkmodemap))
+                    }else{
+                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                            baseContext, R.raw.
+                            lightmodemap))
+                    }
+                }
+            }
+            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+            }
+        }
+        return ret
+    }
+
 }
 
 class Gym(val name: String, val lat: Double, val lon: Double) {
