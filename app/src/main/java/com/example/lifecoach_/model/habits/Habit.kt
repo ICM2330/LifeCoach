@@ -1,12 +1,10 @@
 package com.example.lifecoach_.model.habits
 
-import android.location.Location
 import java.io.Serializable
-import java.time.format.DateTimeFormatter
 
 open class Habit(
     var name: String,
-    var history: MutableList<DateTimeFormatter>,
-    var frecuency: Frecuency,
+    var frequency: Frequency
 ) : Serializable {
+    var accomplishment = mutableListOf<Accomplishment>()
 }

@@ -13,11 +13,9 @@ class User(
 {
     lateinit var picture: Uri
     var dark_mode: Int = 0
-    lateinit var steps: List<Steps>
-    lateinit var habits : MutableList<Habit>
+    var habits = mutableListOf<Habit>()
     lateinit var friends : List<Friend>
-    var loged: Boolean = false
     override fun toString(): String {
-        return "User(name='$name', picture=$picture, username='$username', email='$email', phone=$phone, dark_mode=$dark_mode, steps=$steps, friends=$friends, loged=$loged)"
+        return "User(name='$name', picture=$picture, username='$username', email='$email', phone=$phone, dark_mode=$dark_mode)"
     }
 }
