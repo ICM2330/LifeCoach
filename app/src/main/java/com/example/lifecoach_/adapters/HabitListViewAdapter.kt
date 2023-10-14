@@ -24,13 +24,16 @@ class HabitListViewAdapter (context : Context, habits : MutableList<Habit>) :
             itemView = LayoutInflater.from(context).inflate(R.layout.habit_dashboard_layout, parent, false)
         }
 
+        val habitName = itemView!!.findViewById<TextView>(R.id.habitName)
+        habitName.text = item?.name
+
         when (item){
             is StepsHabit -> {
                 val imgCheck = itemView!!.findViewById<ImageView>(R.id.checkImage)
                 imgCheck.setImageResource(R.drawable.checkpositive)
 
                 val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.foot)
+                imgHabit.setImageResource(R.drawable.stepscreate)
 
                 val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
                 textProgress.setText("50 pasos")
@@ -43,7 +46,7 @@ class HabitListViewAdapter (context : Context, habits : MutableList<Habit>) :
                 imgCheck.setImageResource(R.drawable.checknegative)
 
                 val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.running)
+                imgHabit.setImageResource(R.drawable.foot)
 
                 val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
                 textProgress.setText("1 hora")

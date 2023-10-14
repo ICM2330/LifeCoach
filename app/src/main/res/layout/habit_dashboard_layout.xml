@@ -1,75 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp">
+    app:cardCornerRadius="21dp">
 
-    <ImageView
-        android:id="@+id/checkImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageHabit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageHabit"
-        app:srcCompat="@drawable/checkpositive" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/imageHabit"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
-        app:layout_constraintStart_toEndOf="@+id/checkImage"
-        app:layout_constraintTop_toTopOf="@+id/progressHabitText"
-        app:srcCompat="@drawable/muscle_logo" />
+        <ImageView
+            android:id="@+id/checkImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageHabit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageHabit"
+            app:srcCompat="@drawable/checkpositive" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Llevas:"
-        android:textColorHighlight="#2BAE31"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/goalHabitText"
-        app:layout_constraintStart_toEndOf="@+id/imageHabit"
-        app:layout_constraintTop_toTopOf="@+id/goalHabitText"
-        app:layout_constraintVertical_bias="0.965" />
+        <ImageView
+            android:id="@+id/imageHabit"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintStart_toEndOf="@+id/checkImage"
+            app:layout_constraintTop_toTopOf="@+id/progressHabitText"
+            app:srcCompat="@drawable/muscle_logo" />
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="Falta:"
-        android:textColorHighlight="#2BAE31"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/progressHabitText"
-        app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/progressHabitText"
-        app:layout_constraintVertical_bias="0.425" />
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Falta:"
+            android:textColorHighlight="#2BAE31"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/goalHabitText"
+            app:layout_constraintStart_toEndOf="@+id/imageHabit"
+            app:layout_constraintTop_toTopOf="@+id/goalHabitText"
+            app:layout_constraintVertical_bias="0.965" />
 
-    <TextView
-        android:id="@+id/progressHabitText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Progress habit"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Llevas:"
+            android:textColorHighlight="#2BAE31"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/progressHabitText"
+            app:layout_constraintStart_toStartOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/progressHabitText"
+            app:layout_constraintVertical_bias="0.425" />
 
-    <TextView
-        android:id="@+id/goalHabitText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Goal Habit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintStart_toStartOf="@+id/progressHabitText" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/progressHabitText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Progress habit"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/habitName" />
+
+        <TextView
+            android:id="@+id/goalHabitText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Goal Habit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintStart_toStartOf="@+id/progressHabitText" />
+
+        <TextView
+            android:id="@+id/habitName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="HabitName"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
