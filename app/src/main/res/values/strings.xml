@@ -5,7 +5,7 @@
 
     <string name="habit_description">El habito generico te ayuda a organizarte con actividades basicas como tomar agua o lavar los platos</string>
     <string name="time_habit_description">El habito de control de tiempo es util en momentos en los que quieres realizar una accion por un determinado tiempo, como leer o no usar el celular</string>
-
+    <string name="strength_habit_description">El habito de fuerza será util para medir el progreso de tu musculatura a lo largo del tiempo qu desees</string>
 
     <string name="duraci_n">Duración</string>
     <string name="frecuencia">Frecuencia</string>
