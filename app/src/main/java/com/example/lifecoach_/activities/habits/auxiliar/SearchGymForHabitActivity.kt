@@ -172,11 +172,11 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun manageButtons() {
-        putGymsWithinRangeMarkers()
+        drawRouteClickedMarker()
     }
 
     private val currentPolylines = mutableListOf<Polyline>()
-    private fun putGymsWithinRangeMarkers() {
+    private fun drawRouteClickedMarker() {
         mMap.setOnMarkerClickListener { clickedMarker ->
             for (gymMarker in gymMarkers) {
                 if (clickedMarker.position == gymMarker.position) {
