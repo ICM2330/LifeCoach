@@ -1,5 +1,15 @@
 <resources>
-    <string name="app_name">LifeCoach_</string>
+    <string name="app_name">LifeCoach365</string>
+    <string name="google_maps_key">AIzaSyDk8O1e13bEDI4DDHogCC8_no75ljx2B8Q</string>
+
+
+    <string name="habit_description">El habito generico te ayuda a organizarte con actividades basicas como tomar agua o lavar los platos</string>
+    <string name="time_habit_description">El habito de control de tiempo es util en momentos en los que quieres realizar una accion por un determinado tiempo, como leer o no usar el celular</string>
+    <string name="strength_habit_description">El habito de fuerza será util para medir el progreso de tu musculatura a lo largo del tiempo qu desees</string>
+    <string name="running_habit_description">El habito de correr te permite establecer un tiempo objetivo de ejercicio, podras tambien hacer el seguimiento de la ruta seguida durante una sesión</string>
+    <string name="steps_habit_description">El habito de pasos te permite definir unos pasos para realizar en un día, te ayudara a evitar el sedentarismo!</string>
+
+
     <string name="duraci_n">Duración</string>
     <string name="frecuencia">Frecuencia</string>
     <string name="correr_por_el_parque">Correr por el Parque</string>
@@ -17,7 +27,6 @@
     <string name="historial_de_pasos">Historial de Pasos</string>
     <string name="temporizador">Temporizador</string>
     <string name="_00_00">00:00</string>
-
     <string-array name="frecuencias">
         <item>Cada 12 Horas</item>
         <item>Diariamente</item>
@@ -26,4 +35,10 @@
         <item>Semanalmente</item>
         <item>Mensualmente</item>
     </string-array>
+    <string name="fortalecimiento_muscular">Fortalecimiento Muscular</string>
+    <string name="peso_actual">Peso Actual</string>
+    <string name="_60_kg">60 kg</string>
+    <string name="objetivo_peso">Objetivo de Peso</string>
+    <string name="_80_kg">80 kg</string>
+    <string name="habito_destacado">Hábito Destacado</string>
 </resources>

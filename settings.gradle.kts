@@ -10,9 +10,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven{
+            setUrl("https://jitpack.io")
+        }
     }
 }
 
 rootProject.name = "LifeCoach_"
 include(":app")
- 

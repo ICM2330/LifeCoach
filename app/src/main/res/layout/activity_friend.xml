@@ -13,25 +13,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        style="@style/BottomNavigation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:itemTextColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav" />
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
@@ -42,7 +30,8 @@
             android:gravity="center"
             android:orientation="vertical"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="80dp">
+            tools:layout_editor_absoluteY="80dp"
+            android:padding="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -110,7 +99,7 @@
                         android:id="@+id/fImageHabitS1"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/running" />
+                        android:src="@drawable/foot" />
 
                     <TextView
                         android:id="@+id/fStreakHabitS1"
@@ -133,7 +122,7 @@
                         android:id="@+id/fImageHabitS2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/muscle" />
+                        android:src="@drawable/muscle_logo" />
 
                     <TextView
                         android:id="@+id/fStreakHabitS2"
@@ -152,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="@color/greenmenu"
+                android:backgroundTint="@color/green1"
                 android:text="Felicitar!"
                 android:textColor="@color/white" />
 
@@ -203,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
-                android:backgroundTint="@color/greenmenu"
+                android:backgroundTint="@color/green1"
                 android:text="Motivar!"
                 android:textColor="@color/white" />
         </LinearLayout>

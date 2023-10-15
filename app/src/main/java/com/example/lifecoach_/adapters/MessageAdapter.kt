@@ -1,7 +1,6 @@
 package com.example.lifecoach_.adapters
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,8 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
         val img : ImageView
         val frameForwarded = itemView!!.findViewById<FrameLayout>(R.id.frameForwarded)
         val frameReceived = itemView.findViewById<FrameLayout>(R.id.frameReceived)
-
+        frameForwarded.alpha = 1.0f
+        frameReceived.alpha = 1.0f
 
         if(item!!.forwarded){
             msg = itemView.findViewById(R.id.messageForwarded)
@@ -39,7 +39,7 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             paramsframe.weight = 3.0f
             frameForwarded.layoutParams = paramsframe
-            frameReceived.removeAllViews()
+            frameReceived.alpha = 0f
         }
         else {
             img = itemView.findViewById(R.id.messageImgReceived)
@@ -48,19 +48,20 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             paramsframe.weight = 3.0f
             frameReceived.layoutParams = paramsframe
-            frameForwarded.removeAllViews()
+            frameForwarded.alpha = 0f
         }
 
         when(item){
             is TextMessage-> {
                 msg.text = item.text
+                img.setImageResource(0)
             }
             is MediaMessage->{
                 val message = item
                 /*val imageStream = context.contentResolver.openInputStream(message.fileAttached!!)
                 val bitmap = BitmapFactory.decodeStream(imageStream)
                 img.setImageBitmap(bitmap)*/
-                img.setImageResource(R.drawable.logolong)
+                img.setImageResource(R.drawable.logopng)
                 msg.text = ""
             }
         }

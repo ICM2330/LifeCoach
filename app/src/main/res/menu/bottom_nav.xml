@@ -3,21 +3,20 @@
     android:theme="@style/BottomNavigation">
 
 
-
-    <item android:title="Perfil"
+    <item
         android:id="@+id/menuProfile"
         android:icon="@drawable/user_menu"
-        />
+        android:title="Perfil" />
 
-    <item android:title="Hábitos"
+    <item
         android:id="@+id/menuHabits"
         android:icon="@drawable/bar_menu"
-        />
+        android:title="Hábitos" />
 
 
-    <item android:title="Chat"
+    <item
         android:id="@+id/menuChat"
         android:icon="@drawable/chat_menu"
-        />
+        android:title="Chat" />
 
 </menu>

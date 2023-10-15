@@ -26,31 +26,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav" />
 
-    <ImageView
-        android:id="@+id/profileimage"
+
+    <ImageButton
+        android:id="@+id/uploadPhotoProfile"
+        android:layout_width="42dp"
+        android:layout_height="38dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintStart_toEndOf="@+id/card"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintVertical_bias="0.791"
+        app:srcCompat="@drawable/registercamera"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/juanfrapp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:elevation="12dp"
+        android:innerRadius="0dp"
+        android:shape="ring"
+        android:thicknessRatio="1.9"
+        app:cardCornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+        <ImageView
+            android:id="@+id/profProfPic"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/juanfrapp" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="12dp"
         android:background="#C7ECC3"
         android:orientation="horizontal"
         android:padding="5dp"
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileimage">
+        app:layout_constraintTop_toBottomOf="@+id/card">
 
         <TextView
             android:id="@+id/textView5"
@@ -180,104 +205,40 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageButton
-        android:id="@+id/uploadPhotoProfile"
-        android:layout_width="42dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/profileimage"
-        app:srcCompat="@drawable/registercamera"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-    <Button
-        android:id="@+id/uploadInfoProfileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="15dp"
-        android:backgroundTint="#1C571E"
-        android:fontFamily="sans-serif-black"
-        android:text="Actualizar"
-        android:textSize="12sp"
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <Button
-        android:id="@+id/notificationsButtonProfile"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="21dp"
-        android:backgroundTint="#1C571E"
-        android:fontFamily="sans-serif-black"
-        android:text="Notificaciones"
-        android:textSize="12sp"
-        android:textStyle="normal|bold"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/uploadInfoProfileButton"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <Button
-        android:id="@+id/logOutButtonProfile"
-        android:layout_width="129dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="21dp"
-        android:backgroundTint="#1C571E"
-        android:fontFamily="sans-serif-black"
-        android:text="Cerrar Sesión"
-        android:textSize="12sp"
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
-        app:layout_constraintEnd_toStartOf="@+id/uploadInfoProfileButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        tools:ignore="TouchTargetSizeCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="20dp"
-        android:layout_height="22dp"
-        app:layout_constraintBottom_toBottomOf="@+id/notificationsButtonProfile"
-        app:layout_constraintEnd_toEndOf="@+id/notificationsButtonProfile"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="@+id/notificationsButtonProfile"
-        app:layout_constraintTop_toTopOf="@+id/notificationsButtonProfile"
-        app:layout_constraintVertical_bias="0.538"
-        app:srcCompat="@drawable/notifications" />
+        <Button
+            android:id="@+id/uploadInfoProfileButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="3dp"
+            android:layout_weight="1"
+            android:backgroundTint="#1C571E"
+            android:fontFamily="sans-serif-black"
+            android:text="Actualizar"
+            android:textSize="12sp"
+            android:textStyle="normal|bold" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="18dp"
-        android:layout_height="21dp"
-        app:layout_constraintBottom_toBottomOf="@+id/uploadInfoProfileButton"
-        app:layout_constraintEnd_toEndOf="@+id/uploadInfoProfileButton"
-        app:layout_constraintStart_toStartOf="@+id/uploadInfoProfileButton"
-        app:srcCompat="@drawable/upload" />
+        <Button
+            android:id="@+id/logOutButtonProfile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="3dp"
+            android:layout_weight="1"
+            android:backgroundTint="#1C571E"
+            android:fontFamily="sans-serif-black"
+            android:text="Cerrar Sesión"
+            android:textSize="12sp"
+            android:textStyle="normal|bold" />
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/logOutButtonProfile"
-        app:layout_constraintEnd_toEndOf="@+id/logOutButtonProfile"
-        app:layout_constraintHorizontal_bias="0.043"
-        app:layout_constraintStart_toStartOf="@+id/logOutButtonProfile"
-        app:layout_constraintTop_toTopOf="@+id/logOutButtonProfile"
-        app:layout_constraintVertical_bias="0.437"
-        app:srcCompat="@drawable/baseline_lock_person_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

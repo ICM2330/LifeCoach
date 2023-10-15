@@ -6,9 +6,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.lifecoach_.activities.habits.CreateHabitsActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
@@ -30,38 +28,37 @@ class ProfileActivity : AppCompatActivity() {
         manageButtons(binding, userProof)
     }
 
-    fun fillInformation (binding: ActivityProfileBinding, user : User){
+    private fun fillInformation(binding: ActivityProfileBinding, user: User) {
         binding.emailProfile.setText(user.email)
         binding.nameProfile.setText(user.name)
         binding.userProfile.setText(user.username)
 
-        var stringPhone = user.phone.toString()
+        val stringPhone = user.phone.toString()
         binding.phoneProfile.setText(stringPhone)
     }
 
 
-
-    fun manageButtons(binding: ActivityProfileBinding, user : User){
-        bottomNavigationBarManagement(binding, user)
+    private fun manageButtons(binding: ActivityProfileBinding, user: User) {
+        bottomNavigationBarManagement(user)
         uploadInfo(binding, user)
         logOut(binding)
         uploadPhotoProfile(binding)
     }
 
-    fun uploadPhotoProfile (binding: ActivityProfileBinding){
+    private fun uploadPhotoProfile(binding: ActivityProfileBinding) {
         binding.uploadPhotoProfile.setOnClickListener {
             getContentGallery.launch("image/*")
         }
     }
 
-    fun logOut (binding : ActivityProfileBinding){
+    private fun logOut(binding: ActivityProfileBinding) {
         binding.logOutButtonProfile.setOnClickListener {
             intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
         }
     }
 
-    fun uploadInfo (binding : ActivityProfileBinding, user : User) {
+    private fun uploadInfo(binding: ActivityProfileBinding, user: User) {
         binding.uploadInfoProfileButton.setOnClickListener {
             if (blankSpaces()) {
                 Toast.makeText(
@@ -80,57 +77,49 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun blankSpaces () : Boolean{
-        if (binding.emailProfile.toString().isNullOrBlank() || binding.nameProfile.text.toString().isNullOrBlank() ||
-            binding.userProfile.text.toString().isNullOrBlank() || binding.phoneProfile.text.toString().isNullOrBlank()
-        )
-            return true
-        else
-            return false
+    private fun blankSpaces(): Boolean {
+        return binding.emailProfile.toString().isBlank() || binding.nameProfile.text.toString()
+            .isBlank() ||
+                binding.userProfile.text.toString()
+                    .isBlank() || binding.phoneProfile.text.toString().isBlank()
     }
 
 
-
-    fun bottomNavigationBarManagement(binding: ActivityProfileBinding, user : User) {
+    private fun bottomNavigationBarManagement(user: User) {
         binding.bottomNavigationViewCreate.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.menuProfile -> {
-                    //Do an intent with the profile activity
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    intent.putExtra("user", user)
-                    startActivity(intent)
-                    true
-                }
                 R.id.menuChat -> {
                     // Do an intent with the chat activity
                     val intent = Intent(this, ChatMenuActivity::class.java)
                     startActivity(intent)
-                    true
+                    false
                 }
+
                 R.id.menuHabits -> {
                     // Do an intent with the dashboard of habits activity
                     val intent = Intent(this, DashBoardHabitsActivity::class.java)
                     intent.putExtra("user", user)
                     startActivity(intent)
-                    true
+                    finish()
+                    false
                 }
+
                 else -> false
             }
         }
     }
 
-    val getContentGallery = registerForActivityResult(
-        ActivityResultContracts.GetContent(),
-        ActivityResultCallback {
-            if (it != null) {
-                loadImage(it)
-            }
+    private val getContentGallery = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) {
+        if (it != null) {
+            loadImage(it)
         }
-    )
+    }
 
-    fun loadImage (uri : Uri){
-        val imageStream = getContentResolver().openInputStream(uri)
+    private fun loadImage(uri: Uri) {
+        val imageStream = contentResolver.openInputStream(uri)
         val bitmap = BitmapFactory.decodeStream(imageStream)
-        binding.profileimage.setImageBitmap(bitmap)
+        binding.profProfPic.setImageBitmap(bitmap)
     }
 }

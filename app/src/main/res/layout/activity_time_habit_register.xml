@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/temporizador"
                         android:textAlignment="textStart"
-                        android:textColor="@color/greenmenu"
+                        android:textColor="@color/green1"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -88,15 +88,4 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationViewCreate"
-        style="@style/BottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:itemTextColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav" />
 </androidx.constraintlayout.widget.ConstraintLayout>
