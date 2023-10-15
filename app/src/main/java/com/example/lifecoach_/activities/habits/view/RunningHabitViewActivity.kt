@@ -52,7 +52,6 @@ class RunningHabitViewActivity : AppCompatActivity() {
         binding.btnStart.setOnClickListener {
             intent = Intent(baseContext, RunningActionHabitActivity::class.java)
             startForResultGetDistance.launch(intent)
-
             displayHabitInfo()
         }
     }

@@ -20,24 +20,23 @@ class RunningActionHabitActivity : AppCompatActivity() {
 
     private fun manageButtons() {
         binding.actionsRunningButton.setOnClickListener {
-            if (binding.actionsRunningButton.text == "Iniciar"){
+            if (binding.actionsRunningButton.text == "Iniciar") {
                 binding.chronometerRunning.base = SystemClock.elapsedRealtime()
                 binding.chronometerRunning.start()
 
                 // Change button text
                 binding.actionsRunningButton.text = "Detener"
-            }
-            else{
+            } else {
                 // Stop Running
+                binding.chronometerRunning.stop()
+                val minutesRanByChrono = (SystemClock.elapsedRealtime() - binding.chronometerRunning.base) / 60000
                 val intent = Intent().apply {
-                    binding.chronometerRunning.stop()
-                    val minutesRanByChrono = (SystemClock.elapsedRealtime() - binding.chronometerRunning.base) / 60000
                     putExtra("minutesRan", minutesRanByChrono.toInt())
-                    setResult(RESULT_OK, intent)
-                    finish()
                 }
+                setResult(RESULT_OK, intent)
+                finish()
             }
         }
     }
-    
+
 }
