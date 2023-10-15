@@ -74,33 +74,30 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // ON HABIT CLICK
         binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
+            val intent: Intent
             when (userTest.habits[position]) {
                 is StrengthHabit -> {
-                    val intent = Intent(baseContext, MuscularHabitViewActivity::class.java)
-                    startActivity(intent)
+                    intent = Intent(baseContext, MuscularHabitViewActivity::class.java)
                 }
 
                 is RunningHabit -> {
-                    val intent = Intent(baseContext, RunningHabitViewActivity::class.java)
-                    startActivity(intent)
+                    intent = Intent(baseContext, RunningHabitViewActivity::class.java)
                 }
 
                 is StepsHabit -> {
-                    val intent = Intent(baseContext, StepHabitViewActivity::class.java)
-                    startActivity(intent)
+                    intent = Intent(baseContext, StepHabitViewActivity::class.java)
                 }
 
                 is TimeControlHabit -> {
-                    val intent = Intent(baseContext, TimeHabitViewActivity::class.java)
-                    startActivity(intent)
+                    intent = Intent(baseContext, TimeHabitViewActivity::class.java)
                 }
 
                 else -> {
-                    val intent = Intent(baseContext, GenericHabitViewActivity::class.java)
-                    startActivity(intent)
+                    intent = Intent(baseContext, GenericHabitViewActivity::class.java)
                 }
             }
-
+            intent.putExtra("habit", userTest.habits[position])
+            startActivity(intent)
         }
 
         bottomNavigationBarManagement(user)
