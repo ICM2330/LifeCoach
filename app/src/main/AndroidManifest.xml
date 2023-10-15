@@ -17,9 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LifeCoach_"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.habits.auxiliar.RunningActionHabitActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name=".activities.habits.auxiliar.SearchGymForHabitActivity"
             android:exported="false" />

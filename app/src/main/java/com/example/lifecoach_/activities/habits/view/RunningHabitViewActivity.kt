@@ -1,16 +1,38 @@
 package com.example.lifecoach_.activities.habits.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
+import com.example.lifecoach_.activities.habits.auxiliar.RunningActionHabitActivity
 import com.example.lifecoach_.databinding.ActivityRunningHabitViewBinding
-import com.example.lifecoach_.model.habits.Accomplishment
 import com.example.lifecoach_.model.habits.RunningHabit
 import java.util.Date
 
 class RunningHabitViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRunningHabitViewBinding
+
+    private val startForResultGetDistance = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val intent = result.data
+            val minutesRanToday = intent?.getIntExtra("minutesRan", 0)
+            // Show the minutes ran today
+            Log.i("HABIT", "Minutes ran today: $minutesRanToday")
+
+            // Find the day of today at accomplishment and add the minutes ran
+            val today = Date()
+            val todayDay = today.day
+            for (accomplishment in habit.accomplishment) {
+                if (accomplishment.date.day == todayDay) {
+                    accomplishment.accomplishment += minutesRanToday!!
+                    break
+                }
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRunningHabitViewBinding.inflate(layoutInflater)
@@ -28,7 +50,8 @@ class RunningHabitViewActivity : AppCompatActivity() {
 
     private fun manageButtons() {
         binding.btnStart.setOnClickListener {
-            // TODO : Iniciar actividad de correr
+            intent = Intent(baseContext, RunningActionHabitActivity::class.java)
+            startForResultGetDistance.launch(intent)
             displayHabitInfo()
         }
     }
