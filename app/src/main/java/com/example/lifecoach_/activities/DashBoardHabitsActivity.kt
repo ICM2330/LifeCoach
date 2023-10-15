@@ -27,11 +27,13 @@ import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.StepsHabit
 import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
+import java.util.Calendar
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
     private lateinit var uriImage: Uri
     private lateinit var userTest: User
+    private var todayHabits = mutableListOf<Habit>()
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -60,7 +62,12 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     }
 
     private fun updateHabits() {
-        val adapter = HabitListViewAdapter(this, userTest.habits)
+        todayHabits.clear()
+        for(habit in userTest.habits){
+            if(habit.shouldDoToday())
+                todayHabits.add(habit)
+        }
+        val adapter = HabitListViewAdapter(this, todayHabits)
         binding.habitsListView.adapter = adapter
     }
 

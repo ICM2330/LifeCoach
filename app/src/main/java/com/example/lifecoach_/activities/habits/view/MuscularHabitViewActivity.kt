@@ -86,11 +86,6 @@ class MuscularHabitViewActivity : AppCompatActivity() {
             notificationDays[day].setTextColor(getColor(R.color.white))
         }
 
-        habit.accomplishment.clear()
-        habit.accomplishment.add(Accomplishment(Date(), 0))
-        habit.accomplishment.add(Accomplishment(Date(), 1))
-        habit.accomplishment.add(Accomplishment(Date(), 2))
-
         updateAccomplishment()
     }
 
