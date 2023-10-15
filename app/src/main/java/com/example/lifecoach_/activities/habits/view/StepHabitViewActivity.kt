@@ -61,11 +61,6 @@ class StepHabitViewActivity : AppCompatActivity() {
             notificationDays[day].setTextColor(getColor(R.color.white))
         }
 
-        habit.accomplishment.clear()
-        habit.accomplishment.add(Accomplishment(Date(), 10))
-        habit.accomplishment.add(Accomplishment(Date(), 20))
-        habit.accomplishment.add(Accomplishment(Date(), 30))
-
         for (i in 0..6) {
             if (habit.accomplishment.size > i) {
                 if (habit.accomplishment[habit.accomplishment.size - 1 - i].accomplishment >= habit.objectiveSteps)

@@ -38,17 +38,17 @@ class MuscularHabitViewActivity : AppCompatActivity() {
 
         // TODAY FEELING
         binding.btnGood.setOnClickListener {
-            habit.accomplishment[habit.accomplishment.size-1].accomplishment = 2
+            habit.setTodayAccomplishment(2)
             updateAccomplishment()
         }
 
         binding.btnMeh.setOnClickListener {
-            habit.accomplishment[habit.accomplishment.size-1].accomplishment = 1
+            habit.setTodayAccomplishment(1)
             updateAccomplishment()
         }
 
         binding.btnBad.setOnClickListener {
-            habit.accomplishment[habit.accomplishment.size-1].accomplishment = 0
+            habit.setTodayAccomplishment(0)
             updateAccomplishment()
         }
     }
@@ -85,11 +85,6 @@ class MuscularHabitViewActivity : AppCompatActivity() {
             notificationDays[day].setBackgroundColor(getColor(R.color.green1))
             notificationDays[day].setTextColor(getColor(R.color.white))
         }
-
-        habit.accomplishment.clear()
-        habit.accomplishment.add(Accomplishment(Date(), 0))
-        habit.accomplishment.add(Accomplishment(Date(), 1))
-        habit.accomplishment.add(Accomplishment(Date(), 2))
 
         updateAccomplishment()
     }

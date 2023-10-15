@@ -3,13 +3,10 @@ package com.example.lifecoach_.activities
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.CallSuper
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
@@ -32,6 +29,9 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
     private lateinit var uriImage: Uri
     private lateinit var userTest: User
+    private var todayHabits = mutableListOf<Habit>()
+    private var otherHabits = mutableListOf<Habit>()
+    private var showToday = true
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -60,8 +60,18 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     }
 
     private fun updateHabits() {
-        val adapter = HabitListViewAdapter(this, userTest.habits)
-        binding.habitsListView.adapter = adapter
+        todayHabits.clear()
+        otherHabits.clear()
+        for (habit in userTest.habits) {
+            if (habit.shouldDoToday())
+                todayHabits.add(habit)
+            else
+                otherHabits.add(habit)
+        }
+        if (showToday)
+            binding.todayHabits.adapter = HabitListViewAdapter(this, todayHabits)
+        else
+            binding.todayHabits.adapter = HabitListViewAdapter(this, otherHabits)
     }
 
 
@@ -73,36 +83,67 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         }
 
         // ON HABIT CLICK
-        binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
-            val intent: Intent
-            when (userTest.habits[position]) {
-                is StrengthHabit -> {
-                    intent = Intent(baseContext, MuscularHabitViewActivity::class.java)
-                }
-
-                is RunningHabit -> {
-                    intent = Intent(baseContext, RunningHabitViewActivity::class.java)
-                }
-
-                is StepsHabit -> {
-                    intent = Intent(baseContext, StepHabitViewActivity::class.java)
-                }
-
-                is TimeControlHabit -> {
-                    intent = Intent(baseContext, TimeHabitViewActivity::class.java)
-                }
-
-                else -> {
-                    intent = Intent(baseContext, GenericHabitViewActivity::class.java)
-                }
-            }
-            intent.putExtra("habit", userTest.habits[position])
-            startActivity(intent)
+        binding.todayHabits.setOnItemClickListener { _, _, position, _ ->
+            onHabitClick(position)
         }
+
+        // SHOW TODAY HABITS
+        binding.showToday.setOnClickListener {
+            binding.showOthers.setBackgroundColor(getColor(R.color.gray))
+            binding.showOthers.setTextColor(getColor(R.color.black))
+
+            binding.showToday.setBackgroundColor(getColor(R.color.green1))
+            binding.showToday.setTextColor(getColor(R.color.white))
+
+            showToday = true
+            updateHabits()
+        }
+
+        binding.showOthers.setOnClickListener {
+            binding.showToday.setBackgroundColor(getColor(R.color.gray))
+            binding.showToday.setTextColor(getColor(R.color.black))
+
+            binding.showOthers.setBackgroundColor(getColor(R.color.green1))
+            binding.showOthers.setTextColor(getColor(R.color.white))
+
+            showToday = false
+            updateHabits()
+        }
+
 
         bottomNavigationBarManagement(user)
     }
 
+    private fun onHabitClick(position: Int) {
+        val intent: Intent
+        var habits: MutableList<Habit>
+        if (showToday) habits = todayHabits
+        else habits = otherHabits
+
+        when (habits[position]) {
+            is StrengthHabit -> {
+                intent = Intent(baseContext, MuscularHabitViewActivity::class.java)
+            }
+
+            is RunningHabit -> {
+                intent = Intent(baseContext, RunningHabitViewActivity::class.java)
+            }
+
+            is StepsHabit -> {
+                intent = Intent(baseContext, StepHabitViewActivity::class.java)
+            }
+
+            is TimeControlHabit -> {
+                intent = Intent(baseContext, TimeHabitViewActivity::class.java)
+            }
+
+            else -> {
+                intent = Intent(baseContext, GenericHabitViewActivity::class.java)
+            }
+        }
+        intent.putExtra("habit", habits[position])
+        startActivity(intent)
+    }
 
     private fun bottomNavigationBarManagement(user: User) {
         binding.bottomNavigationViewCreate.setOnNavigationItemSelectedListener { menuItem ->
