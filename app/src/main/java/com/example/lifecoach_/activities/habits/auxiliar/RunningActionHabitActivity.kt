@@ -7,6 +7,10 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -61,6 +65,11 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val currentPolylines = mutableListOf<Polyline>()
 
+    // Sensor variables
+    private lateinit var sensorManager: SensorManager
+    private lateinit var lightSensor: Sensor
+    private lateinit var lightEventListener: SensorEventListener
+
     private val getPermissionLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -107,6 +116,11 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+
+        // Management of the sensor
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
+        lightEventListener = createLightSensorListener()
     }
 
 
@@ -295,11 +309,42 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         locationSettings()
+        sensorManager.registerListener(
+            lightEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL
+        )
     }
 
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
+        sensorManager.unregisterListener(lightEventListener)
+    }
+
+    // Method for managing the sensor listener
+    private fun createLightSensorListener(): SensorEventListener {
+        val ret: SensorEventListener = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent?) {
+                if (event != null && ::mMap.isInitialized) {
+                    if (event.values[0] < 5000) {
+                        mMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                baseContext, R.raw.darkmodemap
+                            )
+                        )
+                    } else {
+                        mMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                baseContext, R.raw.lightmodemap
+                            )
+                        )
+                    }
+                }
+            }
+
+            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+            }
+        }
+        return ret
     }
 
 }
