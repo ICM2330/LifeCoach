@@ -10,7 +10,7 @@ open class Habit(
 ) : Serializable {
     var accomplishment = mutableListOf<Accomplishment>()
 
-    public fun shouldDoToday(): Boolean {
+    fun shouldDoToday(): Boolean {
         var isToday = false
 
         val today = (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) + 5) % 7
@@ -40,7 +40,7 @@ open class Habit(
                 calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH))
     }
 
-    public fun setTodayAccomplishment(acc: Int) {
+    fun setTodayAccomplishment(acc: Int) {
         if (accomplishment.size == 0) {
             accomplishment.add(Accomplishment(Date(), 0))
         }
