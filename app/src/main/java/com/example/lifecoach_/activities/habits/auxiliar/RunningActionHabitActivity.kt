@@ -99,6 +99,9 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         // Update the location
                         lastLocation = currentLocation
 
+                        // Update the text
+                        binding.distanceRanModifyText.text = metersRan.toString() + " mts"
+
                         updateLocationOnMap()
                     }
                 }
