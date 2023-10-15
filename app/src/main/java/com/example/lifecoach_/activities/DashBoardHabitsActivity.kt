@@ -34,6 +34,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var uriImage: Uri
     private lateinit var userTest: User
     private var todayHabits = mutableListOf<Habit>()
+    private var otherHabits = mutableListOf<Habit>()
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -66,9 +67,11 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         for(habit in userTest.habits){
             if(habit.shouldDoToday())
                 todayHabits.add(habit)
+            else
+                otherHabits.add(habit)
         }
-        val adapter = HabitListViewAdapter(this, todayHabits)
-        binding.habitsListView.adapter = adapter
+        binding.todayHabits.adapter = HabitListViewAdapter(this, todayHabits)
+        binding.otherHabits.adapter = HabitListViewAdapter(this, otherHabits)
     }
 
 
@@ -80,7 +83,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         }
 
         // ON HABIT CLICK
-        binding.habitsListView.setOnItemClickListener { parent, view, position, id ->
+        binding.todayHabits.setOnItemClickListener { _, _, position, _ ->
             val intent: Intent
             when (userTest.habits[position]) {
                 is StrengthHabit -> {
