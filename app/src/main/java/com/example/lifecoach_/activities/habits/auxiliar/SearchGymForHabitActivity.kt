@@ -93,7 +93,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.googleMapFragment) as SupportMapFragment
+            .findFragmentById(R.id.mapsFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         // Location features
