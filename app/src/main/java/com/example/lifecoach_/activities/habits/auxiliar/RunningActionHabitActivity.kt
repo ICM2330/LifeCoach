@@ -13,6 +13,6 @@ class RunningActionHabitActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Do a chronometer since the activity is loaded
-        
+
     }
 }
