@@ -1,6 +1,5 @@
 package com.example.lifecoach_.activities
 
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -9,16 +8,40 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityMainBinding
+import com.google.firebase.auth.ActionCodeSettings
+import com.google.firebase.auth.ktx.actionCodeSettings
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
     private lateinit var uriImage : Uri
+
+    private lateinit var actionCodeSettings: ActionCodeSettings
+
+    companion object {
+        const val FIREBASE_URL = "https://lifecoach-9f291.firebaseapp.com"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        configureFirebase()
         buttonsManager()
+    }
+
+    private fun configureFirebase() {
+        actionCodeSettings = actionCodeSettings {
+            url = "$FIREBASE_URL/finishSignUp"
+            handleCodeInApp = true
+            setAndroidPackageName(
+                "com.example.lifecoach_",
+                true,
+                null
+            )
+        }
     }
 
     private fun buttonsManager (){
@@ -32,10 +55,25 @@ class MainActivity : AppCompatActivity() {
             if (!blankSpaces()) {
                 //If there is not any blank or nut spaces, register and verify the user
                 val userTest = getUserTest()
-                intent = Intent(this, DashBoardHabitsActivity::class.java)
-                intent.putExtra("user", userTest)
-                startActivity(intent)
-                finish()
+                Firebase.auth.sendSignInLinkToEmail(userTest.email, actionCodeSettings)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            val t = Toast.makeText(baseContext,
+                                "Correo de verificación enviado. Por favor, revise el correo",
+                                Toast.LENGTH_LONG)
+                            t.show()
+                        }
+                    }
+                    .addOnFailureListener {
+                        val t = Toast.makeText(baseContext,
+                            "Error: No se pudo enviar el correo",
+                            Toast.LENGTH_LONG)
+                        t.show()
+                    }
+                // intent = Intent(this, DashBoardHabitsActivity::class.java)
+                // intent.putExtra("user", userTest)
+                // startActivity(intent)
+                // finish()
             }
             else{
                 //Say that is not possible to do the register
