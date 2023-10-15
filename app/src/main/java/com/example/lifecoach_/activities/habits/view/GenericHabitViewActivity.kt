@@ -30,7 +30,7 @@ class GenericHabitViewActivity : AppCompatActivity() {
     private fun manageButtons() {
         binding.btnCompletado.setOnClickListener {
             binding.btnCompletado.setIconTintResource(R.color.white)
-            habit.accomplishment[habit.accomplishment.size - 1].accomplishment = 1
+            habit.setTodayAccomplishment(1)
             updateAccomplishment()
         }
     }

@@ -38,17 +38,17 @@ class MuscularHabitViewActivity : AppCompatActivity() {
 
         // TODAY FEELING
         binding.btnGood.setOnClickListener {
-            habit.accomplishment[habit.accomplishment.size-1].accomplishment = 2
+            habit.setTodayAccomplishment(2)
             updateAccomplishment()
         }
 
         binding.btnMeh.setOnClickListener {
-            habit.accomplishment[habit.accomplishment.size-1].accomplishment = 1
+            habit.setTodayAccomplishment(1)
             updateAccomplishment()
         }
 
         binding.btnBad.setOnClickListener {
-            habit.accomplishment[habit.accomplishment.size-1].accomplishment = 0
+            habit.setTodayAccomplishment(0)
             updateAccomplishment()
         }
     }
