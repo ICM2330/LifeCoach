@@ -52,6 +52,11 @@ import com.google.maps.DirectionsApi
 import com.google.maps.GeoApiContext
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.roundToInt
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 
 class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -70,9 +75,9 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     private val listGym = mutableListOf<Gym>()
 
     // Sensor variables
-    private lateinit var sensorManager : SensorManager
-    private lateinit var lightSensor : Sensor
-    private lateinit var lightEventListener : SensorEventListener
+    private lateinit var sensorManager: SensorManager
+    private lateinit var lightSensor: Sensor
+    private lateinit var lightEventListener: SensorEventListener
 
     private val getPermissionLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -91,11 +96,10 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.googleMapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        // Location features
         locationClient = LocationServices.getFusedLocationProviderClient(this)
-
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setWaitForAccurateLocation(true).setMinUpdateIntervalMillis(5000).build()
-
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
@@ -107,26 +111,18 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         lastLocation = currentLocation
                         updateLocationOnMap()
                         consumeRestVolley()
-                    }
-                    else {
-                        if ((locationResult.lastLocation!!.latitude != lastLocation!!.latitude) &&
-                            (locationResult.lastLocation!!.longitude != lastLocation!!.longitude)
-                        ) {
+                    } else {
+                        if(distance(locationResult.lastLocation!!, lastLocation!!) > 30) {
                             // If the location is different from the last one, update it
                             lastLocation = locationResult.lastLocation
-
                             // Update the location on the map
                             updateLocationOnMap()
-
                             // Quit the lines of the route
                             for (polyline in currentPolylines) {
                                 polyline.remove()
                             }
-
                             // Here quit the markers of the gyms
                             consumeRestVolley()
-                        } else {
-                            // If the location is the same, do nothing
                         }
                     }
                 }
@@ -142,35 +138,41 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(gMap: GoogleMap) {
         mMap = gMap
         mMap.uiSettings.setAllGesturesEnabled(true)
+
         Places.initialize(this, getString(R.string.google_maps_key))
-        //checkLocationPermission()
+
         //Set the default style
-        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-            baseContext, R.raw.
-            lightmodemap))
+        mMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                baseContext, R.raw.lightmodemap
+            )
+        )
+
         manageButtons()
     }
 
     private fun updateLocationOnMap() {
         lastLocation?.let {
             val latLng = LatLng(it.latitude, it.longitude)
-            if (lastLocationMarker == null) {
-                lastLocationMarker = mMap.addMarker(
-                    MarkerOptions()
-                        .position(latLng)
-                        .title("Last Location")
-                        .icon(bitmapDescriptorFromVector(baseContext, R.drawable.userpin))
-                )
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-            } else {
-                lastLocationMarker?.position = latLng
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+            if (::mMap.isInitialized) {
+                if (lastLocationMarker == null) {
+                    lastLocationMarker = mMap.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title("Last Location")
+                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.userpin))
+                    )
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                } else {
+                    lastLocationMarker?.position = latLng
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                }
             }
         }
     }
 
     private fun manageButtons() {
-       putGymsWithinRangeMarkers()
+        putGymsWithinRangeMarkers()
     }
 
     private val currentPolylines = mutableListOf<Polyline>()
@@ -317,9 +319,10 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         locationSettings()
-        sensorManager.registerListener(lightEventListener, lightSensor,
-            SensorManager.
-            SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(
+            lightEventListener, lightSensor,
+            SensorManager.SENSOR_DELAY_NORMAL
+        )
     }
 
     override fun onPause() {
@@ -378,26 +381,46 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // Method for managing the sensor listener
-    private fun createLightSensorListener() : SensorEventListener{
-        val ret : SensorEventListener = object : SensorEventListener {
+    private fun createLightSensorListener(): SensorEventListener {
+        val ret: SensorEventListener = object : SensorEventListener {
             override fun onSensorChanged(event: SensorEvent?) {
-                if (event != null) {
-                    if(event.values[0] < 5000){
+                if (event != null && ::mMap.isInitialized) {
+                    if (event.values[0] < 5000) {
                         mMap.setMapStyle(
                             MapStyleOptions.loadRawResourceStyle(
-                            baseContext, R.raw.
-                            darkmodemap))
-                    }else{
-                        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                            baseContext, R.raw.
-                            lightmodemap))
+                                baseContext, R.raw.darkmodemap
+                            )
+                        )
+                    } else {
+                        mMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                baseContext, R.raw.lightmodemap
+                            )
+                        )
                     }
                 }
             }
+
             override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
             }
         }
         return ret
+    }
+
+    private fun distance(location1: Location, location2: Location): Double {
+        val lat1 = location1.latitude
+        val lat2 = location2.latitude
+        val long1 = location1.longitude
+        val long2 = location2.longitude
+        val radius = 6371
+        val latDistance = Math.toRadians(lat1 - lat2)
+        val lngDistance = Math.toRadians(long1 - long2)
+        val a = sin(latDistance / 2) * sin(latDistance / 2) +
+                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                sin(lngDistance / 2) * sin(lngDistance / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        val result = radius * c
+        return ((result * 100.0).roundToInt() / 100.0) * 1000.0
     }
 
 }
