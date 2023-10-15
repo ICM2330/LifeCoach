@@ -66,12 +66,6 @@ class TimeHabitViewActivity : AppCompatActivity() {
             notificationDays[day].setBackgroundColor(getColor(R.color.green1))
             notificationDays[day].setTextColor(getColor(R.color.white))
         }
-
-        habit.accomplishment.clear()
-        habit.accomplishment.add(Accomplishment(Date(), 10))
-        habit.accomplishment.add(Accomplishment(Date(), 20))
-        habit.accomplishment.add(Accomplishment(Date(), 30))
-
         updateAccomplishment()
     }
 

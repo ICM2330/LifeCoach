@@ -30,7 +30,7 @@ class GenericHabitViewActivity : AppCompatActivity() {
     private fun manageButtons() {
         binding.btnCompletado.setOnClickListener {
             binding.btnCompletado.setIconTintResource(R.color.white)
-            habit.accomplishment[habit.accomplishment.size - 1].accomplishment = 1
+            habit.setTodayAccomplishment(1)
             updateAccomplishment()
         }
     }
@@ -67,11 +67,6 @@ class GenericHabitViewActivity : AppCompatActivity() {
             notificationDays[day].setBackgroundColor(getColor(R.color.green1))
             notificationDays[day].setTextColor(getColor(R.color.white))
         }
-
-        habit.accomplishment.clear()
-        habit.accomplishment.add(Accomplishment(Date(), 1))
-        habit.accomplishment.add(Accomplishment(Date(), 0))
-        habit.accomplishment.add(Accomplishment(Date(), 0))
 
         updateAccomplishment()
     }
