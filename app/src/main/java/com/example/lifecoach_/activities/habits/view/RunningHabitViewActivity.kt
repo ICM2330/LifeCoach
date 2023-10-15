@@ -71,6 +71,10 @@ class RunningHabitViewActivity : AppCompatActivity() {
         habit.accomplishment.add(Accomplishment(Date(), 20))
         habit.accomplishment.add(Accomplishment(Date(), 30))
 
+        updateAccomplishment()
+    }
+
+    private fun updateAccomplishment() {
         for (i in 0..6) {
             if (habit.accomplishment.size > i) {
                 if (habit.accomplishment[habit.accomplishment.size - 1 - i].accomplishment >= habit.objectiveMins)

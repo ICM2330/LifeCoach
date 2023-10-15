@@ -146,7 +146,7 @@
             android:backgroundTint="#00BF62"
             android:text="Crear hábito"
             android:textColor="@color/white"
-            app:icon="@drawable/pencil"
+            app:icon="@drawable/add"
             app:iconTint="@color/white" />
 
     </FrameLayout>

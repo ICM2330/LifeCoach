@@ -31,7 +31,7 @@ class GenericHabitViewActivity : AppCompatActivity() {
         binding.btnCompletado.setOnClickListener {
             binding.btnCompletado.setIconTintResource(R.color.white)
             habit.accomplishment[habit.accomplishment.size - 1].accomplishment = 1
-            displayHabitInfo()
+            updateAccomplishment()
         }
     }
 
@@ -73,6 +73,10 @@ class GenericHabitViewActivity : AppCompatActivity() {
         habit.accomplishment.add(Accomplishment(Date(), 0))
         habit.accomplishment.add(Accomplishment(Date(), 0))
 
+        updateAccomplishment()
+    }
+
+    private fun updateAccomplishment() {
         for (i in 0..6) {
             if (habit.accomplishment.size > i) {
                 if (habit.accomplishment[habit.accomplishment.size - 1 - i].accomplishment >= 1)
