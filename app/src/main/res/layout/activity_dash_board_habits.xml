@@ -25,173 +25,178 @@
         app:menu="@menu/bottom_nav" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="0dp"
-        android:layout_height="99dp"
-        android:background="#C7ECC3"
-        android:padding="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include">
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="16dp"
-            android:text="Amigos"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            android:id="@+id/constraintLayout2"
+            android:layout_width="0dp"
+            android:layout_height="99dp"
+            android:background="#C7ECC3"
+            android:padding="1dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/streakText"
-            app:layout_constraintTop_toBottomOf="@+id/buttonFriendsDashboard" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include">
 
         <TextView
-            android:id="@+id/streakText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
-            android:text="Racha"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textView18"
-            app:layout_constraintStart_toEndOf="@+id/card"
-            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="16dp"
+                android:text="Amigos"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/streakText"
+                app:layout_constraintTop_toBottomOf="@+id/buttonFriendsDashboard" />
+
+        <TextView
+                android:id="@+id/streakText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:text="Racha"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/textView18"
+                app:layout_constraintStart_toEndOf="@+id/card"
+                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
         <ImageView
-            android:id="@+id/buttonFriendsDashboard"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:backgroundTint="#C7ECC3"
-            android:src="@drawable/friendsdashboard"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-            app:layout_constraintEnd_toEndOf="@+id/textView18"
-            app:layout_constraintStart_toStartOf="@+id/textView18"
-            app:layout_constraintTop_toTopOf="@+id/imageView5"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                android:id="@+id/buttonFriendsDashboard"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:backgroundTint="#C7ECC3"
+                android:src="@drawable/friendsdashboard"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                app:layout_constraintEnd_toEndOf="@+id/textView18"
+                app:layout_constraintStart_toStartOf="@+id/textView18"
+                app:layout_constraintTop_toTopOf="@+id/imageView5"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/streak"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/streakText"
-            app:layout_constraintStart_toStartOf="@+id/streakText"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/imageView5"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/streak"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/streakText"
+                app:layout_constraintStart_toStartOf="@+id/streakText"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="50dp"
-            android:elevation="12dp"
-            android:innerRadius="0dp"
-            android:shape="ring"
-            android:thicknessRatio="1.9"
-            app:cardCornerRadius="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+                android:id="@+id/card"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="50dp"
+                android:elevation="12dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/dashProfPic"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/juanfrapp" />
+                    android:id="@+id/dashProfPic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/juanfrapp" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#EDEDED"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#EDEDED"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewCreate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            android:id="@+id/frameLayout">
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView13">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView13">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:paddingHorizontal="20dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:paddingHorizontal="20dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/showToday"
-                    android:layout_width="150dp"
-                    android:layout_height="58dp"
-                    android:background="@color/green1"
-                    android:layout_marginHorizontal="15dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:gravity="center"
-                    android:text="Habitos de hoy"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                        android:id="@+id/showToday"
+                        android:layout_width="150dp"
+                        android:layout_height="58dp"
+                        android:background="@drawable/round_corner"
+                        android:backgroundTint="@color/green1"
+                        android:layout_marginHorizontal="15dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:text="Habitos de hoy"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_marginTop="7dp"
+                        android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showOthers"
-                    android:layout_width="150dp"
-                    android:layout_height="58dp"
-                    android:background="@color/gray"
-                    android:layout_marginHorizontal="15dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:gravity="center"
-                    android:text="Otros"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                        android:id="@+id/showOthers"
+                        android:layout_width="150dp"
+                        android:layout_height="58dp"
+                        android:background="@drawable/round_corner"
+                        android:backgroundTint="@color/gray"
+                        android:layout_marginHorizontal="15dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center"
+                        android:text="Otros"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="7dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
             </LinearLayout>
 
             <ListView
-                android:id="@+id/todayHabits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:divider="#EDEDED"
-                android:dividerHeight="8dp"
-                android:nestedScrollingEnabled="false"
-                android:padding="16dp"
-                android:paddingBottom="60dp" />
+                    android:id="@+id/todayHabits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:divider="#EDEDED"
+                    android:dividerHeight="8dp"
+                    android:nestedScrollingEnabled="false"
+                    android:padding="16dp"
+                    android:paddingBottom="60dp" />
         </LinearLayout>
 
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/createHabitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="47dp"
-            android:layout_gravity="center|bottom"
-            android:layout_margin="16dp"
-            android:backgroundTint="#00BF62"
-            android:text="Crear hábito"
-            android:textColor="@color/white"
-            app:icon="@drawable/add"
-            app:iconTint="@color/white" />
+                android:id="@+id/createHabitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_gravity="center|bottom"
+                android:layout_margin="16dp"
+                android:backgroundTint="#00BF62"
+                android:text="Crear hábito"
+                android:textColor="@color/white"
+                app:icon="@drawable/add"
+                app:iconTint="@color/white" />
 
     </FrameLayout>
 
