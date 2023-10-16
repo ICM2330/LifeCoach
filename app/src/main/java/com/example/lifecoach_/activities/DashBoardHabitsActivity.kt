@@ -31,8 +31,9 @@ import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.StepsHabit
 import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
+import com.example.lifecoach_.sensor_controllers.ThemeController
 
-class DashBoardHabitsActivity : AppCompatActivity(), SensorEventListener {
+class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
     private lateinit var uriImage: Uri
     private lateinit var userTest: User
@@ -40,8 +41,7 @@ class DashBoardHabitsActivity : AppCompatActivity(), SensorEventListener {
     private var otherHabits = mutableListOf<Habit>()
     private var showToday = true
 
-    private lateinit var sensorManager: SensorManager
-    private var lightSensor: Sensor? = null
+    private lateinit var themeController: ThemeController
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -72,7 +72,21 @@ class DashBoardHabitsActivity : AppCompatActivity(), SensorEventListener {
         // Set click listeners
         manageButtons(userTest)
 
-        configureLightSensor(this)
+        configureThemeController()
+    }
+
+    private fun configureThemeController() {
+        themeController = ThemeController.getThemeController()
+        themeController.configureLightSensor(baseContext)
+        themeController.registerThemeModeListeners({
+            userTest.dark_mode = 1
+            startActivity(intent)
+            finish()
+        }, {
+            userTest.dark_mode = 0
+            startActivity(intent)
+            finish()
+        })
     }
 
     override fun getTheme(): Resources.Theme {
@@ -83,41 +97,6 @@ class DashBoardHabitsActivity : AppCompatActivity(), SensorEventListener {
         }
 
         return theme
-    }
-
-    private fun configureLightSensor(sensorEventListener: SensorEventListener) {
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
-
-        Log.i("SENSOR", "Registering Sensor Listener")
-        if (lightSensor != null) {
-            sensorManager.registerListener(sensorEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
-        }
-    }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (event != null) {
-            if (event.sensor.type == Sensor.TYPE_LIGHT) {
-                Log.i("SENSOR", "Sensor Light: " + event.values[0])
-                if (event.values[0] < 100) {
-                    if (userTest.dark_mode != 1) {
-                        userTest.dark_mode = 1
-                        startActivity(intent)
-                        finish()
-                    }
-                } else {
-                    if (userTest.dark_mode != 0) {
-                        userTest.dark_mode = 0
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        Log.i("SENSOR", "Sensor Accurracy Changed")
     }
 
     private fun updateHabits() {
