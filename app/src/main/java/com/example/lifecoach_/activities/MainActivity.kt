@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             t.show()
             val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
             i.putExtra("user", user)
-            startActivity(intent)
+            startActivity(i)
             finish()
         }
 
