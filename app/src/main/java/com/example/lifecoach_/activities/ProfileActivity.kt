@@ -7,10 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import com.example.lifecoach_.R
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
+import java.io.File
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
@@ -42,12 +44,18 @@ class ProfileActivity : AppCompatActivity() {
         bottomNavigationBarManagement(user)
         uploadInfo(binding, user)
         logOut(binding)
-        uploadPhotoProfile(binding)
+        uploadPhotoProfile()
     }
 
-    private fun uploadPhotoProfile(binding: ActivityProfileBinding) {
-        binding.uploadPhotoProfile.setOnClickListener {
+    private fun uploadPhotoProfile() {
+        binding.uploadFromGalleryButton.setOnClickListener {
             getContentGallery.launch("image/*")
+        }
+
+        binding.uploadFromCameraButton.setOnClickListener {
+            val file = File(filesDir, "picFromCamera")
+            cameraUri = FileProvider.getUriForFile(baseContext,baseContext.packageName + ".fileprovider", file)
+            getContentCamera.launch(cameraUri)
         }
     }
 
@@ -109,6 +117,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Attributes of the gallery
     private val getContentGallery = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) {
@@ -117,9 +126,22 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Attributes of the camera
+    private lateinit var cameraUri: Uri
+    private val getContentCamera = registerForActivityResult(ActivityResultContracts.TakePicture()
+    ) {
+        if (it) {
+            loadImage(cameraUri)
+        }
+    }
+
     private fun loadImage(uri: Uri) {
         val imageStream = contentResolver.openInputStream(uri)
         val bitmap = BitmapFactory.decodeStream(imageStream)
         binding.profProfPic.setImageBitmap(bitmap)
+
+        // Asign the image to the user
+        val user = intent.getSerializableExtra("user") as User
+        user.picture = uri
     }
 }
