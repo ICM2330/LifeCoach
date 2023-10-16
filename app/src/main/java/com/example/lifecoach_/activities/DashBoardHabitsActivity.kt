@@ -56,7 +56,6 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // Update photo
         updatePhoto()
-        Log.i("USER URI", userTest.picture)
 
         // Show habits
         updateHabits()
@@ -67,7 +66,6 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
     private fun updatePhoto(){
         if (userTest.picture != "") {
-
             // Update the photo
             val uri = Uri.parse(userTest.picture)
             val imageStream = contentResolver.openInputStream(uri)
@@ -75,6 +73,10 @@ class DashBoardHabitsActivity : AppCompatActivity() {
             binding.dashProfPic.setImageBitmap(bitmap)
 
             Log.i("Uri DashBoard", uri.toString())
+        }
+        else{
+            // Set default photo
+            binding.dashProfPic.setImageDrawable(getDrawable(R.drawable.usuario))
         }
     }
     private fun updateHabits() {

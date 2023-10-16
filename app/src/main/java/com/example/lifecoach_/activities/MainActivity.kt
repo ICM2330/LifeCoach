@@ -13,8 +13,8 @@ import com.example.lifecoach_.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
-    private lateinit var uriImage : Uri
+    private lateinit var binding: ActivityMainBinding
+    private var uriImage: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         buttonsManager()
     }
 
-    private fun buttonsManager (){
+    private fun buttonsManager() {
         //Button of attach photo from the registering proccess
         binding.headercameraButton.setOnClickListener {
             getContentGallery.launch("image/*")
@@ -37,10 +37,13 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("user", userTest)
                 startActivity(intent)
                 finish()
-            }
-            else{
+            } else {
                 //Say that is not possible to do the register
-                Toast.makeText(this, "No puedes dejar campos de registro vacíos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "No puedes dejar campos de registro vacíos",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -51,13 +54,17 @@ class MainActivity : AppCompatActivity() {
             binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong()
         )
 
-        user.picture = uriImage.toString()
+        if (uriImage != null) {
+            user.picture = uriImage.toString()
+        }
         return user
     }
 
-    private fun blankSpaces () : Boolean{
-        return binding.nameRegister.text.toString().isBlank() || binding.userRegister.text.toString().isBlank() ||
-                binding.emailRegister.text.toString().isBlank() || binding.phoneRegister.text.toString().isBlank()
+    private fun blankSpaces(): Boolean {
+        return binding.nameRegister.text.toString()
+            .isBlank() || binding.userRegister.text.toString().isBlank() ||
+                binding.emailRegister.text.toString()
+                    .isBlank() || binding.phoneRegister.text.toString().isBlank()
     }
 
     private val getContentGallery = registerForActivityResult(
@@ -68,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadImage (uri : Uri){
+    private fun loadImage(uri: Uri) {
         uriImage = uri
         val imageStream = contentResolver.openInputStream(uri)
         val bitmap = BitmapFactory.decodeStream(imageStream)
