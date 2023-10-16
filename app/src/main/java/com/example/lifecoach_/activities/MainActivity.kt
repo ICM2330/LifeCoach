@@ -13,6 +13,9 @@ import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+import java.io.File
+import java.io.FileWriter
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var uriImage : Uri
 
     private lateinit var actionCodeSettings: ActionCodeSettings
+    private val gson = Gson()
 
     private var user: User? = null
 
@@ -76,7 +80,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (auth.isSignInWithEmailLink(emailLink) && user != null) {
-            Log.i("LOGIN", "Verificando emailLink")
+            Log.i("LOGIN", "Verificando emailLink: $emailLink")
+
             auth.signInWithEmailLink(user!!.email, emailLink)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -88,8 +93,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
         } else {
-            Log.i("LOGIN", "No es emailLink o el usuario es nulo")
-            errorLogin()
+            Log.i("LOGIN", "No es emailLink o el usuario es nulo. User: $user")
         }
     }
 
@@ -104,6 +108,7 @@ class MainActivity : AppCompatActivity() {
             if (!blankSpaces()) {
                 //If there is not any blank or nut spaces, register and verify the user
                 user = getUserTest()
+                storeUser()
                 Firebase.auth.sendSignInLinkToEmail(user!!.email, actionCodeSettings)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
@@ -136,6 +141,22 @@ class MainActivity : AppCompatActivity() {
             binding.nameRegister.text.toString(), binding.userRegister.text.toString(),
             binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong()
         )
+    }
+
+    private fun storeUser() {
+        val userFile = File(baseContext.filesDir, "user.json")
+        if (userFile.createNewFile()) {
+            Log.i("SAVEUSER", "User File Created")
+        } else {
+            Log.i("SAVEUSER", "User File Already Exists")
+        }
+
+        userFile.setWritable(true)
+        userFile.setReadable(true)
+
+        val writer = FileWriter(userFile)
+        writer.write(gson.toJson(user))
+        writer.close()
     }
 
     private fun blankSpaces () : Boolean{
