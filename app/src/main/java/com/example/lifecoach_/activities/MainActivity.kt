@@ -15,6 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import java.io.File
+import java.io.FileReader
 import java.io.FileWriter
 
 class MainActivity : AppCompatActivity() {
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         Log.i("LOGIN", "Checking if logged")
+        loadUser()
         checkIfLogged()
     }
 
@@ -157,6 +159,14 @@ class MainActivity : AppCompatActivity() {
         val writer = FileWriter(userFile)
         writer.write(gson.toJson(user))
         writer.close()
+    }
+
+    private fun loadUser() {
+        val userFile = File(baseContext.filesDir, "user.json")
+        if (userFile.exists()) {
+            val reader = FileReader(userFile)
+            user = gson.fromJson(reader, User::class.java)
+        }
     }
 
     private fun blankSpaces () : Boolean{
