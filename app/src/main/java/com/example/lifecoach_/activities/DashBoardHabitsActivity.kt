@@ -2,6 +2,7 @@ package com.example.lifecoach_.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -89,22 +90,22 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // SHOW TODAY HABITS
         binding.showToday.setOnClickListener {
-            binding.showOthers.setBackgroundColor(getColor(R.color.gray))
-            binding.showOthers.setTextColor(getColor(R.color.black))
+            binding.showOthers.backgroundTintList = ColorStateList.valueOf(getColor(R.color.dark_gray))
+            binding.showOthers.setTextColor(getColor(R.color.white))
 
-            binding.showToday.setBackgroundColor(getColor(R.color.green1))
-            binding.showToday.setTextColor(getColor(R.color.white))
+            binding.showToday.backgroundTintList = ColorStateList.valueOf(getColor(R.color.light_gray))
+            binding.showToday.setTextColor(getColor(R.color.dark_gray))
 
             showToday = true
             updateHabits()
         }
 
         binding.showOthers.setOnClickListener {
-            binding.showToday.setBackgroundColor(getColor(R.color.gray))
-            binding.showToday.setTextColor(getColor(R.color.black))
+            binding.showToday.backgroundTintList = ColorStateList.valueOf(getColor(R.color.dark_gray))
+            binding.showToday.setTextColor(getColor(R.color.white))
 
-            binding.showOthers.setBackgroundColor(getColor(R.color.green1))
-            binding.showOthers.setTextColor(getColor(R.color.white))
+            binding.showOthers.backgroundTintList = ColorStateList.valueOf(getColor(R.color.light_gray))
+            binding.showOthers.setTextColor(getColor(R.color.dark_gray))
 
             showToday = false
             updateHabits()
@@ -116,7 +117,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
     private fun onHabitClick(position: Int) {
         val intent: Intent
-        var habits: MutableList<Habit>
+        val habits: MutableList<Habit>
         if (showToday) habits = todayHabits
         else habits = otherHabits
 
