@@ -86,21 +86,27 @@ class MainActivity : AppCompatActivity() {
             t.show()
         }
 
-        if (auth.isSignInWithEmailLink(emailLink) && user != null) {
-            Log.i("LOGIN", "Verificando emailLink: $emailLink")
+        val fbUser = auth.currentUser
 
-            auth.signInWithEmailLink(user!!.email, emailLink)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.i("LOGIN", "Verificación exitosa")
-                        successLogin()
-                    } else {
-                        Log.i("LOGIN", "Verificación Fallida")
-                        errorLogin()
+        if (fbUser == null) {
+            if (auth.isSignInWithEmailLink(emailLink) && user != null) {
+                Log.i("LOGIN", "Verificando emailLink: $emailLink")
+
+                auth.signInWithEmailLink(user!!.email, emailLink)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.i("LOGIN", "Verificación exitosa")
+                            successLogin()
+                        } else {
+                            Log.i("LOGIN", "Verificación Fallida")
+                            errorLogin()
+                        }
                     }
-                }
-        } else {
-            Log.i("LOGIN", "No es emailLink o el usuario es nulo. User: $user")
+            } else {
+                Log.i("LOGIN", "No es emailLink o el usuario es nulo. User: $user")
+            }
+        } else  if (user != null){
+            successLogin()
         }
     }
 
