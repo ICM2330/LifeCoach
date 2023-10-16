@@ -89,13 +89,31 @@ class DashBoardHabitsActivity : AppCompatActivity(), SensorEventListener {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
 
+        Log.i("SENSOR", "Registering Sensor Listener")
         if (lightSensor != null) {
             sensorManager.registerListener(sensorEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        // TODO: Handle Sensor Changed
+        if (event != null) {
+            if (event.sensor.type == Sensor.TYPE_LIGHT) {
+                Log.i("SENSOR", "Sensor Light: " + event.values[0])
+                if (event.values[0] < 100) {
+                    if (userTest.dark_mode != 1) {
+                        userTest.dark_mode = 1
+                        startActivity(intent)
+                        finish()
+                    }
+                } else {
+                    if (userTest.dark_mode != 0) {
+                        userTest.dark_mode = 0
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
+        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
