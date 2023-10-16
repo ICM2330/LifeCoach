@@ -130,11 +130,11 @@ class MainActivity : AppCompatActivity() {
                             "Error: No se pudo enviar el correo",
                             Toast.LENGTH_LONG)
                         t.show()
+                        val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
+                        i.putExtra("user", user)
+                        startActivity(i)
+                        finish()
                     }
-                // intent = Intent(this, DashBoardHabitsActivity::class.java)
-                // intent.putExtra("user", userTest)
-                // startActivity(intent)
-                // finish()
             }
             else{
                 //Say that is not possible to do the register
