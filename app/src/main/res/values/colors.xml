@@ -7,6 +7,8 @@
     <color name="green3">#00BF62</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="gray">#90C6C6C6</color>
+    <color name="light_gray">#EDEDED</color>
+    <color name="dark_gray">#5A5A5A</color>
     <color name="red">#90FF0000</color>
     <color name="orange">#FF9800</color>
 </resources>
