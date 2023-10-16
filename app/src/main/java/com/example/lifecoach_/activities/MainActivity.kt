@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var actionCodeSettings: ActionCodeSettings
 
+    private var user: User? = null
+
     companion object {
         const val FIREBASE_URL = "https://lifecoach-9f291.firebaseapp.com"
     }
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         configureFirebase()
         buttonsManager()
+        checkIfLogged()
     }
 
     private fun configureFirebase() {
@@ -44,6 +47,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkIfLogged() {
+        val auth = Firebase.auth
+        val intent = intent
+        val emailLink = intent.data.toString()
+
+        val successLogin = {
+            val t = Toast.makeText(baseContext,
+                "Se ha iniciado sesión correctamente",
+                Toast.LENGTH_LONG)
+            t.show()
+        }
+
+        val errorLogin = {
+            val t = Toast.makeText(baseContext,
+                "Falló el inicio de sesión",
+                Toast.LENGTH_LONG)
+            t.show()
+        }
+
+        if (auth.isSignInWithEmailLink(emailLink) && user != null) {
+            auth.signInWithEmailLink(user!!.email, emailLink)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        successLogin()
+                    } else {
+                        errorLogin()
+                    }
+                }
+        }
+    }
+
     private fun buttonsManager (){
         //Button of attach photo from the registering proccess
         binding.headercameraButton.setOnClickListener {
@@ -54,8 +88,8 @@ class MainActivity : AppCompatActivity() {
         binding.registerButton.setOnClickListener {
             if (!blankSpaces()) {
                 //If there is not any blank or nut spaces, register and verify the user
-                val userTest = getUserTest()
-                Firebase.auth.sendSignInLinkToEmail(userTest.email, actionCodeSettings)
+                user = getUserTest()
+                Firebase.auth.sendSignInLinkToEmail(user!!.email, actionCodeSettings)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             val t = Toast.makeText(baseContext,
