@@ -11,6 +11,8 @@ import com.example.lifecoach_.R
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
@@ -53,6 +55,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun logOut(binding: ActivityProfileBinding) {
         binding.logOutButtonProfile.setOnClickListener {
+            Firebase.auth.signOut()
             intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
         }
