@@ -16,6 +16,7 @@ import com.example.lifecoach_.model.habits.TimeControlHabit
 
 class HabitListViewAdapter (context : Context, habits : MutableList<Habit>) :
     ArrayAdapter<Habit>(context, 0, habits) {
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var itemView = convertView
         val item = getItem(position)
@@ -25,77 +26,53 @@ class HabitListViewAdapter (context : Context, habits : MutableList<Habit>) :
         }
 
         val habitName = itemView!!.findViewById<TextView>(R.id.habitName)
-        habitName.text = item?.name
+        val imgCheck = itemView.findViewById<ImageView>(R.id.checkImage)
+        val imgHabit = itemView.findViewById<ImageView>(R.id.imageHabit)
+        val objective = itemView.findViewById<TextView>(R.id.objective)
+        val objectiveTV = itemView.findViewById<TextView>(R.id.objectiveText)
+        val notification = itemView.findViewById<TextView>(R.id.notificationTime)
 
+        var objectiveTxt = ""
+        var img = 0
         when (item){
             is StepsHabit -> {
-                val imgCheck = itemView!!.findViewById<ImageView>(R.id.checkImage)
-                imgCheck.setImageResource(R.drawable.checkpositive)
-
-                val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.stepscreate)
-
-                val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
-                textProgress.setText("50 pasos")
-
-                val goalProgress = itemView!!.findViewById<TextView>(R.id.goalHabitText)
-                goalProgress.setText("100 pasos")
+                img = R.drawable.stepscreate
+                objectiveTxt = "${item.objectiveSteps} pasos"
             }
             is RunningHabit -> {
-                val imgCheck = itemView!!.findViewById<ImageView>(R.id.checkImage)
-                imgCheck.setImageResource(R.drawable.checknegative)
-
-                val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.foot)
-
-                val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
-                textProgress.setText("1 hora")
-
-                val goalProgress = itemView!!.findViewById<TextView>(R.id.goalHabitText)
-                goalProgress.setText("30 minutos")
+                img = R.drawable.foot
+                objectiveTxt = "${item.objectiveMins} minutos"
             }
             is TimeControlHabit -> {
-                val imgCheck = itemView!!.findViewById<ImageView>(R.id.checkImage)
-                imgCheck.setImageResource(R.drawable.checknegative)
-
-                val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.clock)
-
-                val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
-                textProgress.setText("1 hora")
-
-                val goalProgress = itemView!!.findViewById<TextView>(R.id.goalHabitText)
-                goalProgress.setText("40 minutos")
+                img = R.drawable.clock
+                objectiveTxt = "${item.objectiveMins} minutos"
             }
             is StrengthHabit -> {
-                val imgCheck = itemView!!.findViewById<ImageView>(R.id.checkImage)
-                imgCheck.setImageResource(R.drawable.checkpositive)
-
-                val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.muscle_logo)
-
-                val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
-                textProgress.setText("Completado!")
-
-                val goalProgress = itemView!!.findViewById<TextView>(R.id.goalHabitText)
-                goalProgress.setText("Completado!")
+                img = R.drawable.muscle_logo
+                objectiveTxt = item.muscularGroup
+                objectiveTV.text = "Grupo Muscular"
             }
             is Habit -> {
-                val imgCheck = itemView!!.findViewById<ImageView>(R.id.checkImage)
-                imgCheck.setImageResource(R.drawable.checkpositive)
-
-                val imgHabit = itemView!!.findViewById<ImageView>(R.id.imageHabit)
-                imgHabit.setImageResource(R.drawable.pencil)
-
-                val textProgress = itemView!!.findViewById<TextView>(R.id.progressHabitText)
-                textProgress.setText("Completado")
-
-                val goalProgress = itemView!!.findViewById<TextView>(R.id.goalHabitText)
-                goalProgress.setText("Completado")
+                img = R.drawable.pencil
+                if (item.doneToday()) objectiveTxt = "Completado!"
+                else objectiveTxt = "Pendiente"
+                objectiveTV.text = "Estado"
             }
         }
 
-        return itemView!!
+        // HABIT NAME
+        habitName.text = item?.name
+        // HABIT IMAGE
+        imgHabit.setImageResource(img)
+        // HABIT ACC
+        if(item!!.doneToday()) imgCheck.setImageResource(R.drawable.checkpositive)
+        else imgCheck.setImageResource(R.drawable.checknegative)
+        // HABIT OB
+        objective.text = objectiveTxt
+        // HABIT NOTIFICATION
+        notification.text = item.frequency.toString()
+
+        return itemView
     }
 }
 

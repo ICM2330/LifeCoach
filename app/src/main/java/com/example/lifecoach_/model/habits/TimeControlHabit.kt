@@ -7,4 +7,9 @@ open class TimeControlHabit(
     frequency: Frequency,
     var objectiveMins: Int
 ) : Habit(name, frequency), Serializable {
+
+    override fun doneToday(): Boolean {
+        return if (lastAccIsToday()) accomplishment[accomplishment.size - 1].accomplishment >= objectiveMins
+        else false
+    }
 }

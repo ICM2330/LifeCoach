@@ -244,22 +244,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/buttonGimnasiosSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="16dp"
-                    android:backgroundTint="@color/green3"
-                    android:contentDescription="Buscar gimnasios cercanos"
-                    android:text="Gimnasios cercanos"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:icon="@drawable/question"
-                    app:iconSize="30sp"
-                    app:iconTint="@color/white" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -303,6 +287,22 @@
                         android:scaleType="fitCenter"
                         android:src="@drawable/feel_bad" />
                 </LinearLayout>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/buttonGimnasiosSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="16dp"
+                    android:backgroundTint="@color/green3"
+                    android:contentDescription="Buscar gimnasios cercanos"
+                    android:text="Gimnasios cercanos"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:icon="@drawable/question"
+                    app:iconSize="30sp"
+                    app:iconTint="@color/white" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
