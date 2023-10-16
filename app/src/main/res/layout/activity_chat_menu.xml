@@ -42,31 +42,30 @@
             android:padding="15dp">
 
             <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/search"
-                    android:background="@drawable/rounded_color_corner"
-                    android:scaleType="fitCenter"
-                    android:cropToPadding="false" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:cropToPadding="false"
+                android:scaleType="fitCenter"
+                android:src="@drawable/search" />
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/cmBusqueda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="9"
-                    android:hint="Buscar" />
+                android:id="@+id/cmBusqueda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:hint="Buscar" />
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="monospace"
+            android:paddingVertical="6dp"
+            android:background="@color/green1"
+            android:textColor="@color/white"
             android:paddingStart="25dp"
             android:paddingEnd="25dp"
             android:text="Mis &quot;Life Coaches&quot;"
-                android:background="@color/green2"
             android:textSize="18sp"
             android:textStyle="bold" />
 
