@@ -2,6 +2,7 @@ package com.example.lifecoach_.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -57,6 +58,12 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // Set click listeners
         manageButtons(userTest)
+    }
+
+    override fun getTheme(): Resources.Theme {
+        val theme = super.getTheme()
+        theme.applyStyle(R.style.Base_Theme_LifeCoachDarkTheme, true)
+        return theme
     }
 
     private fun updateHabits() {

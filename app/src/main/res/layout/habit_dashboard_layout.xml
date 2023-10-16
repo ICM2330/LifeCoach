@@ -41,7 +41,9 @@
             app:layout_constraintBottom_toBottomOf="@+id/goalHabitText"
             app:layout_constraintStart_toEndOf="@+id/imageHabit"
             app:layout_constraintTop_toTopOf="@+id/goalHabitText"
-            app:layout_constraintVertical_bias="0.965" />
+            app:layout_constraintVertical_bias="0.965"
+            android:textColor="?textColorValue"
+            />
 
         <TextView
             android:id="@+id/textView13"
@@ -54,7 +56,9 @@
             app:layout_constraintBottom_toBottomOf="@+id/progressHabitText"
             app:layout_constraintStart_toStartOf="@+id/textView6"
             app:layout_constraintTop_toTopOf="@+id/progressHabitText"
-            app:layout_constraintVertical_bias="0.425" />
+            app:layout_constraintVertical_bias="0.425"
+            android:textColor="?textColorValue"
+            />
 
         <TextView
             android:id="@+id/progressHabitText"
@@ -65,7 +69,9 @@
             android:fontFamily="sans-serif-condensed"
             android:text="Progress habit"
             app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/habitName" />
+            app:layout_constraintTop_toBottomOf="@+id/habitName"
+            android:textColor="?textColorValue"
+            />
 
         <TextView
             android:id="@+id/goalHabitText"
@@ -75,7 +81,9 @@
             android:text="Goal Habit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintStart_toStartOf="@+id/progressHabitText" />
+            app:layout_constraintStart_toStartOf="@+id/progressHabitText"
+            android:textColor="?textColorValue"
+            />
 
         <TextView
             android:id="@+id/habitName"
@@ -86,7 +94,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="?textColorValue"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
