@@ -9,6 +9,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResult
@@ -54,12 +55,16 @@ class DashBoardHabitsActivity : AppCompatActivity(), SensorEventListener {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Fill the info. with the login activity
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            userTest = intent.getSerializableExtra("user") as User
+        } else {
+            userTest = intent.getSerializableExtra("user", User::class.java)!!
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityDashBoardHabitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //Fill the info. with the login activity
-        userTest = intent.getSerializableExtra("user") as User
 
         // Show habits
         updateHabits()
