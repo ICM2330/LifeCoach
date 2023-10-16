@@ -1,5 +1,6 @@
 package com.example.lifecoach_.activities
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -72,6 +73,10 @@ class MainActivity : AppCompatActivity() {
                 "Se ha iniciado sesión correctamente",
                 Toast.LENGTH_LONG)
             t.show()
+            val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
+            i.putExtra("user", user)
+            startActivity(intent)
+            finish()
         }
 
         val errorLogin = {
