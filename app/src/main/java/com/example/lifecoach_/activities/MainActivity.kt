@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.lifecoach_.model.User
@@ -45,10 +46,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUserTest(): User {
-        return User(
+        val user = User(
             binding.nameRegister.text.toString(), binding.userRegister.text.toString(),
             binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong()
         )
+
+        user.picture = uriImage.toString()
+        return user
     }
 
     private fun blankSpaces () : Boolean{

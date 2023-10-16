@@ -34,9 +34,14 @@ class ProfileActivity : AppCompatActivity() {
         binding.emailProfile.setText(user.email)
         binding.nameProfile.setText(user.name)
         binding.userProfile.setText(user.username)
-
         val stringPhone = user.phone.toString()
         binding.phoneProfile.setText(stringPhone)
+
+        // Load image
+        val uri = Uri.parse(user.picture)
+        val imageStream = contentResolver.openInputStream(uri)
+        val bitmap = BitmapFactory.decodeStream(imageStream)
+        binding.profProfPic.setImageBitmap(bitmap)
     }
 
 
@@ -142,6 +147,7 @@ class ProfileActivity : AppCompatActivity() {
 
         // Asign the image to the user
         val user = intent.getSerializableExtra("user") as User
-        user.picture = uri
+        val uriString = uri.toString()
+        user.picture = uriString
     }
 }

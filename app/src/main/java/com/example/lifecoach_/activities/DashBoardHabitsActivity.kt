@@ -3,6 +3,7 @@ package com.example.lifecoach_.activities
 import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -53,6 +54,10 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         //Fill the info. with the login activity
         userTest = intent.getSerializableExtra("user") as User
 
+        // Update photo
+        updatePhoto()
+        Log.i("USER URI", userTest.picture)
+
         // Show habits
         updateHabits()
 
@@ -60,6 +65,18 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         manageButtons(userTest)
     }
 
+    private fun updatePhoto(){
+        if (userTest.picture != "") {
+
+            // Update the photo
+            val uri = Uri.parse(userTest.picture)
+            val imageStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(imageStream)
+            binding.dashProfPic.setImageBitmap(bitmap)
+
+            Log.i("Uri DashBoard", uri.toString())
+        }
+    }
     private fun updateHabits() {
         todayHabits.clear()
         otherHabits.clear()
