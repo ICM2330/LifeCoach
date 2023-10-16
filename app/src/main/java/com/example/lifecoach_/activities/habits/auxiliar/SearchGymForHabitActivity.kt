@@ -93,7 +93,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.googleMapFragment) as SupportMapFragment
+            .findFragmentById(R.id.mapsFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         // Location features
@@ -172,11 +172,11 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun manageButtons() {
-        putGymsWithinRangeMarkers()
+        drawRouteClickedMarker()
     }
 
     private val currentPolylines = mutableListOf<Polyline>()
-    private fun putGymsWithinRangeMarkers() {
+    private fun drawRouteClickedMarker() {
         mMap.setOnMarkerClickListener { clickedMarker ->
             for (gymMarker in gymMarkers) {
                 if (clickedMarker.position == gymMarker.position) {
