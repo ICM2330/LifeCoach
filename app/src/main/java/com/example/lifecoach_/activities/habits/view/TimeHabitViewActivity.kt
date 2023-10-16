@@ -59,6 +59,7 @@ class TimeHabitViewActivity : AppCompatActivity() {
     private fun displayHabitInfo() {
         binding.vthHabitName.text = habit.name
         binding.vthHour.text = habit.frequency.hourString()
+        binding.vthObj.text = "${habit.objectiveMins} minutos"
 
         // Days of notification
         for (day in habit.frequency.days) {

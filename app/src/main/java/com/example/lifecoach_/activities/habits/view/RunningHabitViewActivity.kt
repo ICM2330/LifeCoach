@@ -76,6 +76,7 @@ class RunningHabitViewActivity : AppCompatActivity() {
     private fun displayHabitInfo() {
         binding.vrhHabitName.text = habit.name
         binding.vrhHour.text = habit.frequency.hourString()
+        binding.vrhObj.text = "${habit.objectiveMins} minutos"
 
         // Days of notification
         for (day in habit.frequency.days) {

@@ -53,6 +53,7 @@ class StepHabitViewActivity : AppCompatActivity() {
     private fun displayHabitInfo() {
         binding.vshHabitName.text = habit.name
         binding.vshHour.text = habit.frequency.hourString()
+        binding.vshObj.text = "${habit.objectiveSteps} pasos"
 
         // Days of notification
         for (day in habit.frequency.days) {
