@@ -77,8 +77,7 @@ class MuscularHabitViewActivity : AppCompatActivity() {
 
     private fun displayHabitInfo() {
         binding.vmhHabitName.text = habit.name
-        val hour = "${habit.frequency.notiHour}:${habit.frequency.notiMinute}"
-        binding.vmhHour.text = hour
+        binding.vmhHour.text = habit.frequency.hourString()
 
         // Days of notification
         for (day in habit.frequency.days) {

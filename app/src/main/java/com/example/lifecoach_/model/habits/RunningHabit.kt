@@ -8,4 +8,9 @@ class RunningHabit(
     objectiveMins: Int,
 ) : TimeControlHabit(name, frequency, objectiveMins), Serializable {
     var listDistances = mutableListOf<Int>()
+
+    override fun doneToday() : Boolean {
+        return if(lastAccIsToday()) accomplishment[accomplishment.size-1].accomplishment >= objectiveMins
+        else false
+    }
 }

@@ -59,8 +59,7 @@ class GenericHabitViewActivity : AppCompatActivity() {
 
     private fun displayHabitInfo() {
         binding.vghHabitName.text = habit.name
-        val hour = "${habit.frequency.notiHour}:${habit.frequency.notiMinute}"
-        binding.vghHour.text = hour
+        binding.vghHour.text = habit.frequency.hourString()
 
         // Days of notification
         for (day in habit.frequency.days) {

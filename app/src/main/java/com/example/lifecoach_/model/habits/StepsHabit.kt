@@ -7,4 +7,9 @@ class StepsHabit(
     frequency: Frequency,
     var objectiveSteps: Int
 ) : Habit(name, frequency), Serializable {
+
+    override fun doneToday() : Boolean {
+        return if(lastAccIsToday()) accomplishment[accomplishment.size-1].accomplishment >= objectiveSteps
+        else false
+    }
 }
