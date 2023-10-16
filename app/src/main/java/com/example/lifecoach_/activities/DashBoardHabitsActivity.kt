@@ -1,8 +1,13 @@
 package com.example.lifecoach_.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -26,13 +31,16 @@ import com.example.lifecoach_.model.habits.StepsHabit
 import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
 
-class DashBoardHabitsActivity : AppCompatActivity() {
+class DashBoardHabitsActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var binding: ActivityDashBoardHabitsBinding
     private lateinit var uriImage: Uri
     private lateinit var userTest: User
     private var todayHabits = mutableListOf<Habit>()
     private var otherHabits = mutableListOf<Habit>()
     private var showToday = true
+
+    private lateinit var sensorManager: SensorManager
+    private var lightSensor: Sensor? = null
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -58,12 +66,35 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // Set click listeners
         manageButtons(userTest)
+
+        configureLightSensor(this)
     }
 
     override fun getTheme(): Resources.Theme {
         val theme = super.getTheme()
-        theme.applyStyle(R.style.Base_Theme_LifeCoachDarkTheme, true)
+
+        if (userTest.dark_mode == 1) {
+            theme.applyStyle(R.style.Base_Theme_LifeCoachDarkTheme, true)
+        }
+
         return theme
+    }
+
+    private fun configureLightSensor(sensorEventListener: SensorEventListener) {
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+
+        if (lightSensor != null) {
+            sensorManager.registerListener(sensorEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        // TODO: Handle Sensor Changed
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        Log.i("SENSOR", "Sensor Accurracy Changed")
     }
 
     private fun updateHabits() {
