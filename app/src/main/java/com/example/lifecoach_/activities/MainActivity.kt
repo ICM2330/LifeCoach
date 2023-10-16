@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.lifecoach_.model.User
@@ -32,6 +33,12 @@ class MainActivity : AppCompatActivity() {
 
         configureFirebase()
         buttonsManager()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Log.i("LOGIN", "Checking if logged")
         checkIfLogged()
     }
 
@@ -52,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         val intent = intent
         val emailLink = intent.data.toString()
 
+        Log.i("LOGIN", "Recuperados datos del intent")
+
         val successLogin = {
             val t = Toast.makeText(baseContext,
                 "Se ha iniciado sesión correctamente",
@@ -67,14 +76,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (auth.isSignInWithEmailLink(emailLink) && user != null) {
+            Log.i("LOGIN", "Verificando emailLink")
             auth.signInWithEmailLink(user!!.email, emailLink)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        Log.i("LOGIN", "Verificación exitosa")
                         successLogin()
                     } else {
+                        Log.i("LOGIN", "Verificación Fallida")
                         errorLogin()
                     }
                 }
+        } else {
+            Log.i("LOGIN", "No es emailLink o el usuario es nulo")
+            errorLogin()
         }
     }
 
