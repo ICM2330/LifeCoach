@@ -33,14 +33,16 @@ class ThemeController private constructor(): SensorEventListener {
     }
 
     fun configureLightSensor(context: Context) {
-        sensorManager = ContextCompat.getSystemService(context, SensorManager::class.java)
-        sensorManager?.let {
-            synchronized(it) {
-                if (sensorManager != null) {
-                    lightSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_LIGHT)
-                    Log.i("SENSOR", "Registering Sensor Listener")
-                    if (lightSensor != null) {
-                        sensorManager!!.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+        if (sensorManager == null) {
+            sensorManager = ContextCompat.getSystemService(context, SensorManager::class.java)
+            sensorManager?.let {
+                synchronized(it) {
+                    if (sensorManager != null) {
+                        lightSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_LIGHT)
+                        Log.i("SENSOR", "Registering Sensor Listener")
+                        if (lightSensor != null) {
+                            sensorManager!!.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL)
+                        }
                     }
                 }
             }
