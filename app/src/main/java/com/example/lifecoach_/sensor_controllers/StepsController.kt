@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.example.lifecoach_.model.internal.StepCounter
 
 class StepsController private constructor(): SensorEventListener {
     companion object {
@@ -27,7 +28,8 @@ class StepsController private constructor(): SensorEventListener {
     private var sensorManager: SensorManager? = null
     private var sensor: Sensor? = null
 
-    private var listeners: MutableList<() -> Unit> = mutableListOf()
+    private var stepCount: Int? = null
+    private var listeners: MutableList<StepCounter> = mutableListOf()
 
     fun configureStepSensor(context: Context) {
         if (sensorManager == null) {
@@ -39,18 +41,24 @@ class StepsController private constructor(): SensorEventListener {
         }
     }
 
-    fun registerStepsListener(listener: () -> Unit) {
-        listeners.add(listener)
+    fun registerStepsListener(listener: (steps: Int) -> Unit) {
+        listeners.add(StepCounter(listener))
     }
 
-    fun unregisterListener(listener: () -> Unit) {
-        listeners.remove(listener)
+    fun unregisterListener(listener: (steps: Int) -> Unit) {
+        listeners.remove(StepCounter(listener))
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
             if (event.sensor.type == Sensor.TYPE_STEP_COUNTER) {
-
+                stepCount = event.values[0].toInt()
+                listeners.forEach {
+                    if (it.prevStepsCount == null) {
+                        it.prevStepsCount = stepCount
+                    }
+                    it.listener(stepCount!! - it.prevStepsCount!!)
+                }
             }
         }
     }
