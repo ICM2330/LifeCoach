@@ -3,6 +3,7 @@ package com.example.lifecoach_.activities
 import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -28,7 +29,6 @@ import com.example.lifecoach_.model.habits.TimeControlHabit
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
-    private lateinit var uriImage: Uri
     private lateinit var userTest: User
     private var todayHabits = mutableListOf<Habit>()
     private var otherHabits = mutableListOf<Habit>()
@@ -64,6 +64,13 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         //Fill the info. with the login activity
         userTest = intent.getSerializableExtra("user") as User
 
+        // Grant URI permissions
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+        // Update photo
+        updatePhoto()
+
         // Show habits
         updateHabits()
 
@@ -71,6 +78,21 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         manageButtons(userTest)
     }
 
+    private fun updatePhoto(){
+        if (userTest.picture.isNotEmpty()) {
+            // Update the photo
+            val uri = Uri.parse(userTest.picture)
+            val imageStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(imageStream)
+            binding.dashProfPic.setImageBitmap(bitmap)
+
+            Log.i("Uri DashBoard", uri.toString())
+        }
+        else{
+            // Set default photo
+            binding.dashProfPic.setImageDrawable(getDrawable(R.drawable.usuario))
+        }
+    }
     private fun updateHabits() {
         todayHabits.clear()
         otherHabits.clear()
@@ -172,6 +194,8 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 R.id.menuChat -> {
                     // Do an intent with the chat activity
                     val intent = Intent(this, ChatMenuActivity::class.java)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     startActivity(intent)
                     false
                 }

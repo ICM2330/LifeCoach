@@ -11,7 +11,7 @@ class User(
     var phone: Long
 ):Serializable
 {
-    lateinit var picture: Uri
+    var picture: String = ""
     var dark_mode: Int = 0
     var habits = mutableListOf<Habit>()
     lateinit var friends : List<Friend>
