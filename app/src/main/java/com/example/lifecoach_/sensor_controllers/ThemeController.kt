@@ -54,6 +54,11 @@ class ThemeController private constructor(): SensorEventListener {
         lightListeners.add(disableDarkMode)
     }
 
+    fun unregisterThemeModeListeners(enableDarkMode: () -> Unit, disableDarkMode: () -> Unit) {
+        darkListeners.remove(enableDarkMode)
+        lightListeners.remove(disableDarkMode)
+    }
+
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
             if (event.sensor.type == Sensor.TYPE_LIGHT) {

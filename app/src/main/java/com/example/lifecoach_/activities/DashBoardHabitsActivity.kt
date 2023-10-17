@@ -72,22 +72,34 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // Set click listeners
         manageButtons(userTest)
+    }
 
+    private lateinit var enableDarkMode: () -> Unit
+    private lateinit var disableDarkMode: () -> Unit
+
+    private fun configureThemeController() {
+        enableDarkMode = {
+            userTest.dark_mode = 1
+            recreate()
+        }
+        disableDarkMode = {
+            userTest.dark_mode = 0
+            recreate()
+        }
+
+        themeController = ThemeController.getThemeController()
+        themeController.configureLightSensor(baseContext)
+        themeController.registerThemeModeListeners(enableDarkMode, disableDarkMode)
+    }
+
+    override fun onResume() {
+        super.onResume()
         configureThemeController()
     }
 
-    private fun configureThemeController() {
-        themeController = ThemeController.getThemeController()
-        themeController.configureLightSensor(baseContext)
-        themeController.registerThemeModeListeners({
-            userTest.dark_mode = 1
-            startActivity(intent)
-            finish()
-        }, {
-            userTest.dark_mode = 0
-            startActivity(intent)
-            finish()
-        })
+    override fun onPause() {
+        super.onPause()
+        themeController.unregisterThemeModeListeners(enableDarkMode, disableDarkMode)
     }
 
     override fun getTheme(): Resources.Theme {
