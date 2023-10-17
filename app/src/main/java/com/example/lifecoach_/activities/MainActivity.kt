@@ -11,8 +11,10 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.example.lifecoach_.databinding.ActivityMainBinding
 import com.example.lifecoach_.model.User
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,8 +29,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun buttonsManager() {
         //Button of attach photo from the registering proccess
-        binding.headercameraButton.setOnClickListener {
+        binding.photoFromGallery.setOnClickListener {
             getContentGallery.launch("image/*")
+        }
+
+        // Button of attach photo from camera ah the registering proccess
+        binding.photoFromCamera.setOnClickListener {
+            val file = File(filesDir, "picFromCamera")
+            cameraUri = FileProvider.getUriForFile(baseContext,baseContext.packageName + ".fileprovider", file)
+            getContentCamera.launch(cameraUri)
         }
 
         //Button of Registering
@@ -103,6 +112,23 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    // Attributes of the camera
+    private lateinit var cameraUri: Uri
+    private val getContentCamera = registerForActivityResult(ActivityResultContracts.TakePicture()
+    ) {
+        if (it) {
+            loadImage(cameraUri)
+        }
+    }
+
+    private fun loadImage(uri: Uri) {
+        val imageStream = contentResolver.openInputStream(uri)
+        val bitmap = BitmapFactory.decodeStream(imageStream)
+        binding.photoload.setImageBitmap(bitmap)
+
+        uriImage = uri
     }
 
 }
