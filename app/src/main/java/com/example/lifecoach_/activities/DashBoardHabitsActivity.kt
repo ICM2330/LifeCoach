@@ -1,10 +1,17 @@
 package com.example.lifecoach_.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResult
@@ -26,6 +33,8 @@ import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.StepsHabit
 import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
+import com.example.lifecoach_.sensor_controllers.MotionController
+import com.example.lifecoach_.sensor_controllers.ThemeController
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
@@ -34,6 +43,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     private var otherHabits = mutableListOf<Habit>()
     private var showToday = true
 
+    private lateinit var themeController: ThemeController
     private var selectedHabit = 0
 
     private val startForResult =
@@ -57,6 +67,13 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Fill the info. with the login activity
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            userTest = intent.getSerializableExtra("user") as User
+        } else {
+            userTest = intent.getSerializableExtra("user", User::class.java)!!
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityDashBoardHabitsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -78,6 +95,44 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         manageButtons(userTest)
     }
 
+    private lateinit var enableDarkMode: () -> Unit
+    private lateinit var disableDarkMode: () -> Unit
+
+    private fun configureThemeController() {
+        enableDarkMode = {
+            userTest.dark_mode = 1
+            recreate()
+        }
+        disableDarkMode = {
+            userTest.dark_mode = 0
+            recreate()
+        }
+
+        themeController = ThemeController.getThemeController()
+        themeController.configureLightSensor(baseContext)
+        themeController.registerThemeModeListeners(enableDarkMode, disableDarkMode)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        configureThemeController()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        themeController.unregisterThemeModeListeners(enableDarkMode, disableDarkMode)
+    }
+
+    override fun getTheme(): Resources.Theme {
+        val theme = super.getTheme()
+
+        if (userTest.dark_mode == 1) {
+            theme.applyStyle(R.style.Base_Theme_LifeCoachDarkTheme, true)
+        }
+
+        return theme
+    }
+
     private fun updatePhoto(){
         if (userTest.picture.isNotEmpty()) {
             // Update the photo
@@ -93,6 +148,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
             binding.dashProfPic.setImageDrawable(getDrawable(R.drawable.usuario))
         }
     }
+
     private fun updateHabits() {
         todayHabits.clear()
         otherHabits.clear()

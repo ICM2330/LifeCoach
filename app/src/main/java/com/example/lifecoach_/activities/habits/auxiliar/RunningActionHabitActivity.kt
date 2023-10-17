@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.lifecoach_.R
 import com.example.lifecoach_.databinding.ActivityRunningActionHabitBinding
+import com.example.lifecoach_.sensor_controllers.MotionController
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -121,6 +122,19 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
         lightEventListener = createLightSensorListener()
+
+        configureMotionController()
+    }
+
+    private lateinit var motionController: MotionController
+    private fun configureMotionController() {
+        motionController = MotionController.getMotionController()
+        motionController.configureAccelerometer(baseContext)
+        motionController.registerMotionListener({
+            binding.motionText.text = "Corriendo ..."
+        }, {
+            binding.motionText.text = "No te detengas. Sigue moviendote!"
+        })
     }
 
 

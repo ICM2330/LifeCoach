@@ -1,9 +1,17 @@
 package com.example.lifecoach_.activities.habits.view
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,6 +20,8 @@ import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.creation.StepHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityStepHabitViewBinding
 import com.example.lifecoach_.model.habits.StepsHabit
+import com.example.lifecoach_.sensor_controllers.StepsController
+import java.util.Date
 
 class StepHabitViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStepHabitViewBinding
@@ -35,6 +45,57 @@ class StepHabitViewActivity : AppCompatActivity() {
         startLists()
         displayHabitInfo()
         manageButtons()
+
+        configureStepsController()
+    }
+
+    private lateinit var stepsController: StepsController
+
+    private fun configureStepsController() {
+        val perm = Manifest.permission.ACTIVITY_RECOGNITION
+
+        val granted = {
+            Log.i("STEPS", "Configuring Steps Controller")
+            stepsController = StepsController.getStepsController()
+            stepsController.configureStepSensor(baseContext)
+            stepsController.registerStepsListener {
+                binding.stepCount.text = it.toString()
+            }
+        }
+
+        val denied = {
+            val t = Toast.makeText(baseContext,
+                "Se necesita el permiso de ver la actividad física. Por favor, activarlo desde la configuración.",
+                Toast.LENGTH_LONG)
+            t.show()
+        }
+
+        val requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                granted()
+            } else {
+                denied()
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            when {
+                ContextCompat.checkSelfPermission(baseContext, perm)
+                        == PackageManager.PERMISSION_GRANTED -> {
+                    granted()
+                }
+                shouldShowRequestPermissionRationale(perm) -> {
+                    denied()
+                }
+                else -> {
+                    requestPermissionLauncher.launch(perm)
+                }
+            }
+        } else {
+            granted()
+        }
     }
 
     private lateinit var habit: StepsHabit
