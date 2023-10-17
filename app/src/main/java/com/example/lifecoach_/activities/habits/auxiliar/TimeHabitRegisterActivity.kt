@@ -1,10 +1,9 @@
 package com.example.lifecoach_.activities.habits.auxiliar
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
-import com.example.lifecoach_.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.databinding.ActivityTimeHabitRegisterBinding
 
 class TimeHabitRegisterActivity : AppCompatActivity() {

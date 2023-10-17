@@ -111,7 +111,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/juanfrapp" />
+                android:src="@drawable/usuario" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

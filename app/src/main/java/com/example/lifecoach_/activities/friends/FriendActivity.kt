@@ -1,7 +1,7 @@
 package com.example.lifecoach_.activities.friends
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.databinding.ActivityFriendBinding
 import com.example.lifecoach_.model.Friend
 

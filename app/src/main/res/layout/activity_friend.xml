@@ -173,7 +173,7 @@
                         android:id="@+id/fImageHabit1"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/read" />
+                        android:src="@drawable/pencil" />
 
                     <TextView
                         android:id="@+id/fStreakHabit1"
@@ -181,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="monospace"
-                        android:text="Leer"
+                        android:text="Tomar agua"
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>

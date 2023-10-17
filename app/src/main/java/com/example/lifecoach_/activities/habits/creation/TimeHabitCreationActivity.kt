@@ -1,18 +1,14 @@
 package com.example.lifecoach_.activities.habits.creation
 
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.TimePickerFragment
 import com.example.lifecoach_.databinding.ActivityTimeHabitCreationBinding
 import com.example.lifecoach_.model.habits.Frequency
-import com.example.lifecoach_.model.habits.Habit
-import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
 
 class TimeHabitCreationActivity : AppCompatActivity() {
