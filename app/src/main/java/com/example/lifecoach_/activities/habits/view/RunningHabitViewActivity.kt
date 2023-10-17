@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
@@ -48,6 +49,12 @@ class RunningHabitViewActivity : AppCompatActivity() {
             intent = Intent(baseContext, RunningActionHabitActivity::class.java)
             startForResultGetDistance.launch(intent)
             displayHabitInfo()
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            val intent = Intent().apply { putExtra("habit", habit) }
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 

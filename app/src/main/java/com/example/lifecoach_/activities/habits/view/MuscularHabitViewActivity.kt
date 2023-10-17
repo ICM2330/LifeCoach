@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.addCallback
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.SearchGymForHabitActivity
 import com.example.lifecoach_.databinding.ActivityMuscularHabitViewBinding
@@ -34,6 +35,12 @@ class MuscularHabitViewActivity : AppCompatActivity() {
         // SEARCH NEAR GYMS
         binding.buttonGimnasiosSearch.setOnClickListener {
             startActivity(Intent(baseContext, SearchGymForHabitActivity::class.java))
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            val intent = Intent().apply { putExtra("habit", habit) }
+            setResult(RESULT_OK, intent)
+            finish()
         }
 
         // TODAY FEELING
