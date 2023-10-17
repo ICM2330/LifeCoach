@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.example.lifecoach_.R
@@ -45,7 +46,10 @@ class StepHabitViewActivity : AppCompatActivity() {
         }
 
         val denied = {
-
+            val t = Toast.makeText(baseContext,
+                "Se necesita el permiso de ver la actividad física. Por favor, activarlo desde la configuración.",
+                Toast.LENGTH_LONG)
+            t.show()
         }
 
         val requestPermissionLauncher = registerForActivityResult(
