@@ -29,7 +29,6 @@ import com.example.lifecoach_.model.habits.TimeControlHabit
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
-    private lateinit var uriImage: Uri
     private lateinit var userTest: User
     private var todayHabits = mutableListOf<Habit>()
     private var otherHabits = mutableListOf<Habit>()
@@ -54,6 +53,10 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         //Fill the info. with the login activity
         userTest = intent.getSerializableExtra("user") as User
 
+        // Grant URI permissions
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
         // Update photo
         updatePhoto()
 
@@ -65,7 +68,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     }
 
     private fun updatePhoto(){
-        if (userTest.picture != "") {
+        if (userTest.picture.isNotEmpty()) {
             // Update the photo
             val uri = Uri.parse(userTest.picture)
             val imageStream = contentResolver.openInputStream(uri)
@@ -179,6 +182,8 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 R.id.menuChat -> {
                     // Do an intent with the chat activity
                     val intent = Intent(this, ChatMenuActivity::class.java)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     startActivity(intent)
                     false
                 }

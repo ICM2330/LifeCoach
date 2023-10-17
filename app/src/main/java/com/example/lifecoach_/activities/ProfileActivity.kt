@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -13,17 +15,24 @@ import com.example.lifecoach_.model.User
 import com.example.lifecoach_.databinding.ActivityProfileBinding
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
 import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Fill the info. with the login activity
+        //Fill the info with the login activity
         val userProof = intent.getSerializableExtra("user") as User
+        user = userProof
+
+        //Grant URI permissions
         fillInformation(binding, userProof)
 
         //Instructions of buttons
@@ -36,13 +45,23 @@ class ProfileActivity : AppCompatActivity() {
         binding.userProfile.setText(user.username)
         val stringPhone = user.phone.toString()
         binding.phoneProfile.setText(stringPhone)
+        Log.i("Uri PROFILE", user.picture)
 
-        // Load image
-        val uri = Uri.parse(user.picture)
-        val imageStream = contentResolver.openInputStream(uri)
-        val bitmap = BitmapFactory.decodeStream(imageStream)
-        binding.profProfPic.setImageBitmap(bitmap)
+        updatePhoto()
     }
+
+    private fun updatePhoto() {
+        if (user!!.picture.isNotEmpty()) {
+            val uri = Uri.parse(user!!.picture)
+            val imageStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(imageStream)
+            binding.profProfPic.setImageBitmap(bitmap)
+
+        } else {
+            binding.profProfPic.setImageDrawable(getDrawable(R.drawable.usuario))
+        }
+    }
+
 
 
     private fun manageButtons(binding: ActivityProfileBinding, user: User) {
