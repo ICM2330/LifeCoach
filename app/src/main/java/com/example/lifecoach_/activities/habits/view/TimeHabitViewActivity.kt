@@ -2,18 +2,16 @@ package com.example.lifecoach_.activities.habits.view
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.TimeHabitRegisterActivity
-import com.example.lifecoach_.activities.habits.creation.RunningHabitCreationActivity
 import com.example.lifecoach_.activities.habits.creation.TimeHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityTimeHabitViewBinding
-import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
 
 class TimeHabitViewActivity : AppCompatActivity() {

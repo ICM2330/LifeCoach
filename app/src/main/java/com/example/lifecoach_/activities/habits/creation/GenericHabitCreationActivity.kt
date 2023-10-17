@@ -1,21 +1,15 @@
 package com.example.lifecoach_.activities.habits.creation
 
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.TimePickerFragment
 import com.example.lifecoach_.databinding.ActivityGenericHabitCreationBinding
 import com.example.lifecoach_.model.habits.Frequency
 import com.example.lifecoach_.model.habits.Habit
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
-import com.google.android.material.timepicker.TimeFormat
 
 class GenericHabitCreationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGenericHabitCreationBinding

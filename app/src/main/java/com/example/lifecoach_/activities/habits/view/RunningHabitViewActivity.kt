@@ -11,12 +11,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.RunningActionHabitActivity
-import com.example.lifecoach_.activities.habits.creation.GenericHabitCreationActivity
 import com.example.lifecoach_.activities.habits.creation.RunningHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityRunningHabitViewBinding
-import com.example.lifecoach_.model.habits.Habit
 import com.example.lifecoach_.model.habits.RunningHabit
-import java.util.Date
 
 class RunningHabitViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRunningHabitViewBinding

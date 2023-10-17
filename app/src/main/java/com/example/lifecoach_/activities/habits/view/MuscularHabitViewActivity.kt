@@ -2,21 +2,17 @@ package com.example.lifecoach_.activities.habits.view
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.SearchGymForHabitActivity
-import com.example.lifecoach_.activities.habits.creation.GenericHabitCreationActivity
 import com.example.lifecoach_.activities.habits.creation.MuscularHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityMuscularHabitViewBinding
-import com.example.lifecoach_.model.habits.Accomplishment
-import com.example.lifecoach_.model.habits.Habit
 import com.example.lifecoach_.model.habits.StrengthHabit
-import java.util.Date
 
 class MuscularHabitViewActivity : AppCompatActivity() {
 

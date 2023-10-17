@@ -5,22 +5,19 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.lifecoach_.R
-import com.example.lifecoach_.model.User
-import com.example.lifecoach_.databinding.ActivityProfileBinding
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
+import com.example.lifecoach_.databinding.ActivityProfileBinding
+import com.example.lifecoach_.model.User
 import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
