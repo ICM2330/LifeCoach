@@ -7,6 +7,7 @@ import com.example.lifecoach_.R
 import com.example.lifecoach_.databinding.ActivityStepHabitViewBinding
 import com.example.lifecoach_.model.habits.Accomplishment
 import com.example.lifecoach_.model.habits.StepsHabit
+import com.example.lifecoach_.sensor_controllers.StepsController
 import java.util.Date
 
 class StepHabitViewActivity : AppCompatActivity() {
@@ -19,6 +20,18 @@ class StepHabitViewActivity : AppCompatActivity() {
         startLists()
         displayHabitInfo()
         manageButtons()
+
+        configureStepsController()
+    }
+
+    private lateinit var stepsController: StepsController
+
+    fun configureStepsController() {
+        stepsController = StepsController.getStepsController()
+        stepsController.configureStepSensor(baseContext)
+        stepsController.registerStepsListener {
+            binding.stepCount.text = it.toString()
+        }
     }
 
     private lateinit var habit: StepsHabit

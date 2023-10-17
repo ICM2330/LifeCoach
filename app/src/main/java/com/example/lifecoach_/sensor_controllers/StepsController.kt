@@ -14,7 +14,7 @@ class StepsController private constructor(): SensorEventListener {
         @Volatile
         private var instance: StepsController? = null
 
-        fun getStepsController() {
+        fun getStepsController(): StepsController {
             if (instance == null) {
                 synchronized(this) {
                     if (instance == null) {
@@ -22,6 +22,7 @@ class StepsController private constructor(): SensorEventListener {
                     }
                 }
             }
+            return instance!!
         }
     }
 
