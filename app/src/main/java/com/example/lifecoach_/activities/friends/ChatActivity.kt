@@ -1,22 +1,11 @@
 package com.example.lifecoach_.activities.friends
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
-import com.example.lifecoach_.R
-import com.example.lifecoach_.activities.ProfileActivity
-import com.example.lifecoach_.activities.habits.CreateHabitsActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.adapters.MessageAdapter
 import com.example.lifecoach_.databinding.ActivityChatBinding
-import com.example.lifecoach_.databinding.ActivityProfileBinding
 import com.example.lifecoach_.model.Friend
-import com.example.lifecoach_.model.User
-import com.example.lifecoach_.model.messages.MediaMessage
-import com.example.lifecoach_.model.messages.MessageApp
-import com.example.lifecoach_.model.messages.TextMessage
-import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding

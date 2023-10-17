@@ -1,14 +1,18 @@
 package com.example.lifecoach_.activities
 
+import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.os.Environment
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.lifecoach_.model.User
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.example.lifecoach_.databinding.ActivityMainBinding
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.ktx.actionCodeSettings
@@ -18,15 +22,16 @@ import com.google.gson.Gson
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
+import com.example.lifecoach_.model.User
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
-    private lateinit var uriImage : Uri
+    private var uriImage: Uri? = null
 
     private lateinit var actionCodeSettings: ActionCodeSettings
     private val gson = Gson()
-
     private var user: User? = null
 
     companion object {
@@ -109,11 +114,18 @@ class MainActivity : AppCompatActivity() {
             successLogin()
         }
     }
-
-    private fun buttonsManager (){
+    
+    private fun buttonsManager() {
         //Button of attach photo from the registering proccess
-        binding.headercameraButton.setOnClickListener {
+        binding.photoFromGallery.setOnClickListener {
             getContentGallery.launch("image/*")
+        }
+
+        // Button of attach photo from camera ah the registering proccess
+        binding.photoFromCamera.setOnClickListener {
+            val file = File(filesDir, "picFromCamera")
+            cameraUri = FileProvider.getUriForFile(baseContext,baseContext.packageName + ".fileprovider", file)
+            getContentCamera.launch(cameraUri)
         }
 
         //Button of Registering
@@ -144,16 +156,32 @@ class MainActivity : AppCompatActivity() {
             }
             else{
                 //Say that is not possible to do the register
-                Toast.makeText(this, "No puedes dejar campos de registro vacíos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "No puedes dejar campos de registro vacíos",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
     private fun getUserTest(): User {
-        return User(
+        val user = User(
             binding.nameRegister.text.toString(), binding.userRegister.text.toString(),
             binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong()
         )
+
+        if (uriImage != null) {
+            user.picture = uriImage.toString()
+        }
+        return user
+    }
+
+    private fun blankSpaces(): Boolean {
+        return binding.nameRegister.text.toString()
+            .isBlank() || binding.userRegister.text.toString().isBlank() ||
+                binding.emailRegister.text.toString()
+                    .isBlank() || binding.phoneRegister.text.toString().isBlank()
     }
 
     private fun storeUser() {
@@ -183,20 +211,58 @@ class MainActivity : AppCompatActivity() {
     private fun blankSpaces () : Boolean{
         return binding.nameRegister.text.toString().isBlank() || binding.userRegister.text.toString().isBlank() ||
                 binding.emailRegister.text.toString().isBlank() || binding.phoneRegister.text.toString().isBlank()
-    }
+     }
 
-    private val getContentGallery = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) {
-        if (it != null) {
-            loadImage(it)
+    private val getContentGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            // Load Image implemented
+            val imageStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(imageStream)
+            binding.photoload.setImageBitmap(bitmap)
+
+            // Call this function to save the image to the gallery
+            saveImageToGallery(bitmap)
         }
     }
 
-    private fun loadImage (uri : Uri){
-        uriImage = uri
+    private fun saveImageToGallery(bitmap: Bitmap) {
+        val displayName = "MyImage.jpg"
+        val mimeType = "image/jpeg"
+        val values = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, displayName)
+            put(MediaStore.Images.Media.MIME_TYPE, mimeType)
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        }
+
+        val contentResolver = contentResolver
+        val imageUri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        uriImage = imageUri
+
+        imageUri?.let {
+            contentResolver.openOutputStream(it).use { outputStream ->
+                if (outputStream != null) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                }
+            }
+        }
+    }
+
+    // Attributes of the camera
+    private lateinit var cameraUri: Uri
+    private val getContentCamera = registerForActivityResult(ActivityResultContracts.TakePicture()
+    ) {
+        if (it) {
+            loadImage(cameraUri)
+        }
+    }
+
+    private fun loadImage(uri: Uri) {
         val imageStream = contentResolver.openInputStream(uri)
         val bitmap = BitmapFactory.decodeStream(imageStream)
         binding.photoload.setImageBitmap(bitmap)
+
+        uriImage = uri
     }
+
 }

@@ -1,14 +1,12 @@
 package com.example.lifecoach_.activities.friends
 
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.adapters.FriendChatAdapter
 import com.example.lifecoach_.databinding.ActivityChatMenuBinding
 import com.example.lifecoach_.model.Friend
 import com.example.lifecoach_.model.User
-import com.example.lifecoach_.model.messages.MediaMessage
 import com.example.lifecoach_.model.messages.MessageApp
 import com.example.lifecoach_.model.messages.TextMessage
 import java.util.Date

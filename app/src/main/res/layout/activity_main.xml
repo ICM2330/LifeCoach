@@ -50,19 +50,15 @@
             app:layout_constraintVertical_bias="0.6" />
 
         <ImageButton
-            android:id="@+id/headercameraButton"
+            android:id="@+id/photoFromGallery"
             android:layout_width="41dp"
             android:layout_height="38dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="68dp"
+            android:layout_marginBottom="100dp"
             android:backgroundTint="#FFFFFF"
-            android:src="@drawable/registercamera"
-            app:layout_constraintBottom_toBottomOf="@+id/photoload"
+            android:src="@drawable/gallerydrawable"
+            app:layout_constraintBottom_toTopOf="@+id/layoutData"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/photoload"
-            app:layout_constraintStart_toStartOf="@+id/photoload"
-            app:layout_constraintTop_toTopOf="@+id/photoload"
-            app:layout_constraintVertical_bias="0.919"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -251,6 +247,16 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include" />
+
+        <ImageButton
+            android:id="@+id/photoFromCamera"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="68dp"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutData"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/registercamera" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

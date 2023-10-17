@@ -1,6 +1,5 @@
 package com.example.lifecoach_.model
 
-import android.net.Uri
 import com.example.lifecoach_.model.habits.Habit
 import java.io.Serializable
 
@@ -11,7 +10,7 @@ class User(
     var phone: Long
 ):Serializable
 {
-    lateinit var picture: Uri
+    var picture: String = ""
     var dark_mode: Int = 0
     var habits = mutableListOf<Habit>()
     lateinit var friends : List<Friend>

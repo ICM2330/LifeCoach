@@ -7,4 +7,8 @@ class StrengthHabit(
     frequency: Frequency,
     var muscularGroup: String
 ) : Habit(name, frequency), Serializable {
+    override fun doneToday() : Boolean {
+        return if(lastAccIsToday()) accomplishment[accomplishment.size-1].accomplishment >= 1
+        else false
+    }
 }

@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -36,13 +38,7 @@
             android:name=".activities.habits.view.MuscularHabitViewActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.StepsReviewActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.habits.creation.MuscularHabitCreationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.habits.register.RunningHabitRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".activities.habits.view.TimeHabitViewActivity"
@@ -57,7 +53,7 @@
             android:name=".activities.habits.creation.GenericHabitCreationActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.habits.register.TimeHabitRegisterActivity"
+            android:name=".activities.habits.auxiliar.TimeHabitRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".activities.habits.view.StepHabitViewActivity"
@@ -79,13 +75,13 @@
             android:exported="false" />
         <activity
             android:name=".activities.ProfileActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activities.friends.FriendActivity"
             android:exported="false" />
         <activity
             android:name=".activities.DashBoardHabitsActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activities.friends.ChatMenuActivity"
             android:exported="false" />
@@ -98,6 +94,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+           android:authorities="com.example.lifecoach_.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

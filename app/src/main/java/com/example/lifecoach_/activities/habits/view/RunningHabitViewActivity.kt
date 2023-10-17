@@ -1,19 +1,33 @@
 package com.example.lifecoach_.activities.habits.view
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.activity.addCallback
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.RunningActionHabitActivity
+import com.example.lifecoach_.activities.habits.creation.RunningHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityRunningHabitViewBinding
 import com.example.lifecoach_.model.habits.RunningHabit
-import java.util.Date
 
 class RunningHabitViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRunningHabitViewBinding
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                var rHabit = intent?.getSerializableExtra("habit") as RunningHabit
+                rHabit.accomplishment = habit.accomplishment
+                habit = rHabit
+                displayHabitInfo()
+            }
+        }
 
     private val startForResultGetDistance =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -49,6 +63,19 @@ class RunningHabitViewActivity : AppCompatActivity() {
             startForResultGetDistance.launch(intent)
             displayHabitInfo()
         }
+
+        binding.btnEditar.setOnClickListener {
+            startForResult.launch(Intent(this, RunningHabitCreationActivity::class.java)
+                .apply {
+                    putExtra("habit", habit)
+                })
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            val intent = Intent().apply { putExtra("habit", habit) }
+            setResult(RESULT_OK, intent)
+            finish()
+        }
     }
 
     private fun startLists() {
@@ -75,10 +102,14 @@ class RunningHabitViewActivity : AppCompatActivity() {
 
     private fun displayHabitInfo() {
         binding.vrhHabitName.text = habit.name
-        val hour = "${habit.frequency.notiHour}:${habit.frequency.notiMinute}"
-        binding.vrhHour.text = hour
+        binding.vrhHour.text = habit.frequency.hourString()
+        binding.vrhObj.text = "${habit.objectiveMins} minutos"
 
         // Days of notification
+        for (not in notificationDays) {
+            not.setBackgroundColor(getColor(R.color.gray))
+            not.setTextColor(getColor(R.color.black))
+        }
         for (day in habit.frequency.days) {
             notificationDays[day].setBackgroundColor(getColor(R.color.green1))
             notificationDays[day].setTextColor(getColor(R.color.white))
