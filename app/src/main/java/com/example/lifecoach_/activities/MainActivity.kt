@@ -23,7 +23,6 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 import com.example.lifecoach_.model.User
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -207,11 +206,6 @@ class MainActivity : AppCompatActivity() {
             user = gson.fromJson(reader, User::class.java)
         }
     }
-
-    private fun blankSpaces () : Boolean{
-        return binding.nameRegister.text.toString().isBlank() || binding.userRegister.text.toString().isBlank() ||
-                binding.emailRegister.text.toString().isBlank() || binding.phoneRegister.text.toString().isBlank()
-     }
 
     private val getContentGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {

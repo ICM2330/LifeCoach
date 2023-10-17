@@ -15,10 +15,7 @@ class User(
     var habits = mutableListOf<Habit>()
     lateinit var friends : List<Friend>
     override fun toString(): String {
-        var p = ""
-        if (this::picture.isInitialized) {
-            p = " picture=$picture,"
-        }
+        var p = " picture=$picture,"
         return "User(name='$name',$p username='$username', email='$email', phone=$phone, dark_mode=$dark_mode)"
     }
 }
