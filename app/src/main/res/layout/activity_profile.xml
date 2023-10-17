@@ -28,14 +28,14 @@
 
 
     <ImageButton
-        android:id="@+id/uploadPhotoProfile"
-        android:layout_width="42dp"
-        android:layout_height="38dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        android:id="@+id/uploadFromGalleryButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintStart_toEndOf="@+id/card"
         app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintVertical_bias="0.791"
-        app:srcCompat="@drawable/registercamera"
+        app:srcCompat="@drawable/gallerydrawable"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <androidx.cardview.widget.CardView
@@ -62,6 +62,7 @@
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter"
             android:src="@drawable/juanfrapp" />
+
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -239,6 +240,19 @@
             android:textSize="12sp"
             android:textStyle="normal|bold" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/uploadFromCameraButton"
+        android:layout_width="42dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintStart_toEndOf="@+id/card"
+        app:layout_constraintTop_toBottomOf="@+id/uploadFromGalleryButton"
+        app:layout_constraintVertical_bias="0.437"
+        app:srcCompat="@drawable/registercamera" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
