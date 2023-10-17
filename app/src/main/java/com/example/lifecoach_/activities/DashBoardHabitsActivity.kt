@@ -74,13 +74,6 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         manageButtons(userTest)
 
         configureThemeController()
-        configureMotionController()
-    }
-
-    private lateinit var motionController: MotionController
-    private fun configureMotionController() {
-        motionController = MotionController.getMotionController()
-        motionController.configureAccelerometer(baseContext)
     }
 
     private fun configureThemeController() {
