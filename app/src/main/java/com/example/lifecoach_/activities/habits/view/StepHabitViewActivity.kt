@@ -1,9 +1,14 @@
 package com.example.lifecoach_.activities.habits.view
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.example.lifecoach_.R
 import com.example.lifecoach_.databinding.ActivityStepHabitViewBinding
 import com.example.lifecoach_.model.habits.Accomplishment
@@ -28,11 +33,46 @@ class StepHabitViewActivity : AppCompatActivity() {
     private lateinit var stepsController: StepsController
 
     private fun configureStepsController() {
-        Log.i("STEPS", "Configuring Steps Controller")
-        stepsController = StepsController.getStepsController()
-        stepsController.configureStepSensor(baseContext)
-        stepsController.registerStepsListener {
-            binding.stepCount.text = it.toString()
+        val perm = Manifest.permission.ACTIVITY_RECOGNITION
+
+        val granted = {
+            Log.i("STEPS", "Configuring Steps Controller")
+            stepsController = StepsController.getStepsController()
+            stepsController.configureStepSensor(baseContext)
+            stepsController.registerStepsListener {
+                binding.stepCount.text = it.toString()
+            }
+        }
+
+        val denied = {
+
+        }
+
+        val requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                granted()
+            } else {
+                denied()
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            when {
+                ContextCompat.checkSelfPermission(baseContext, perm)
+                        == PackageManager.PERMISSION_GRANTED -> {
+                    granted()
+                }
+                shouldShowRequestPermissionRationale(perm) -> {
+                    denied()
+                }
+                else -> {
+                    requestPermissionLauncher.launch(perm)
+                }
+            }
+        } else {
+            granted()
         }
     }
 
