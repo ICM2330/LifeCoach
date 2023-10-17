@@ -71,7 +71,7 @@
             android:layout_height="236dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
-            android:background="#C7ECC3"
+            android:background="?colorAccent"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="15dp"
@@ -93,7 +93,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/white"
+                />
 
             <TextView
                 android:id="@+id/textView12"
