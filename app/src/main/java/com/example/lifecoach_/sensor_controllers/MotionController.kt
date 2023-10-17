@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.util.Log
 import androidx.core.content.ContextCompat
+import java.util.Date
 
 class MotionController private constructor(): SensorEventListener {
     companion object {
@@ -28,6 +29,8 @@ class MotionController private constructor(): SensorEventListener {
 
     private var sensorManager: SensorManager? = null
     private var accelerometer: Sensor? = null
+    private var isMoving = true
+    private var lastTimeAccelerated = Date().time
 
     fun configureAccelerometer(context: Context) {
         if (sensorManager == null) {
@@ -45,6 +48,17 @@ class MotionController private constructor(): SensorEventListener {
         if (event != null) {
             if (event.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION) {
                 Log.i("ACCEL", "Aceleration ${event.values[0]}, ${event.values[1]}, ${event.values[2]}")
+                val threshold = 1.0f
+                if (event.values[0] > threshold || event.values[1] > threshold || event.values[2] > threshold) {
+                    lastTimeAccelerated = Date().time
+                }
+
+                val currentTime = Date().time
+                if (currentTime-lastTimeAccelerated > 1000) {
+                    Log.i("MOTION", "Not moving")
+                } else {
+                    Log.i("MOTION", "Moving")
+                }
             }
         }
     }

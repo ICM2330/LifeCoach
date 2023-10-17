@@ -31,6 +31,7 @@ import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.StepsHabit
 import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
+import com.example.lifecoach_.sensor_controllers.MotionController
 import com.example.lifecoach_.sensor_controllers.ThemeController
 
 class DashBoardHabitsActivity : AppCompatActivity() {
@@ -73,6 +74,13 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         manageButtons(userTest)
 
         configureThemeController()
+        configureMotionController()
+    }
+
+    private lateinit var motionController: MotionController
+    private fun configureMotionController() {
+        motionController = MotionController.getMotionController()
+        motionController.configureAccelerometer(baseContext)
     }
 
     private fun configureThemeController() {
