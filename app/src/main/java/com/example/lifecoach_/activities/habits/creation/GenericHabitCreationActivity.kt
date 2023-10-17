@@ -25,7 +25,6 @@ class GenericHabitCreationActivity : AppCompatActivity() {
     private var selectedMin = 0
     private var habit : Habit? = null
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGenericHabitCreationBinding.inflate(layoutInflater)
@@ -56,7 +55,7 @@ class GenericHabitCreationActivity : AppCompatActivity() {
             }
         }
 
-        habit = intent.getSerializableExtra("habit", Habit::class.java)
+        habit = intent.getSerializableExtra("habit") as Habit?
         if(habit != null)
             displayHabitInfo()
 

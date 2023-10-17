@@ -24,7 +24,6 @@ class StepHabitCreationActivity : AppCompatActivity() {
     private var selectedMin = 0
     private var habit : StepsHabit? = null
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStepHabitCreationBinding.inflate(layoutInflater)
@@ -32,12 +31,11 @@ class StepHabitCreationActivity : AppCompatActivity() {
 
         manageButtons()
 
-        habit = intent.getSerializableExtra("habit", StepsHabit::class.java)
+        habit = intent.getSerializableExtra("habit") as StepsHabit?
         if(habit != null)
             displayHabitInfo()
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun manageButtons() {
         // Day selection
         days = mutableListOf(

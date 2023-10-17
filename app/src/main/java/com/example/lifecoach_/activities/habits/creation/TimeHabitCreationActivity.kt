@@ -23,14 +23,14 @@ class TimeHabitCreationActivity : AppCompatActivity() {
     private var selectedHour = 0
     private var selectedMin = 0
     private var habit : TimeControlHabit? = null
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTimeHabitCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         manageButtons()
-        habit = intent.getSerializableExtra("habit", TimeControlHabit::class.java)
+        habit = intent.getSerializableExtra("habit") as TimeControlHabit?
         if(habit != null)
             displayHabitInfo()
     }

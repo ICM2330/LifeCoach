@@ -30,7 +30,7 @@ class RunningHabitCreationActivity : AppCompatActivity() {
         setContentView(binding.root)
         manageButtons()
 
-        habit = intent.getSerializableExtra("habit", RunningHabit::class.java)
+        habit = intent.getSerializableExtra("habit") as RunningHabit?
         if(habit != null)
             displayHabitInfo()
     }

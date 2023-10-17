@@ -22,7 +22,6 @@ class MuscularHabitCreationActivity : AppCompatActivity() {
     private var selectedMin = 0
     private var habit : StrengthHabit? = null
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMuscularHabitCreationBinding.inflate(layoutInflater)
@@ -53,7 +52,7 @@ class MuscularHabitCreationActivity : AppCompatActivity() {
             }
         }
 
-        habit = intent.getSerializableExtra("habit", StrengthHabit::class.java)
+        habit = intent.getSerializableExtra("habit") as StrengthHabit?
         if(habit != null)
             displayHabitInfo()
 
