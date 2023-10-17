@@ -2,6 +2,7 @@ package com.example.lifecoach_.activities.habits.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import com.example.lifecoach_.R
 import com.example.lifecoach_.databinding.ActivityStepHabitViewBinding
@@ -26,7 +27,8 @@ class StepHabitViewActivity : AppCompatActivity() {
 
     private lateinit var stepsController: StepsController
 
-    fun configureStepsController() {
+    private fun configureStepsController() {
+        Log.i("STEPS", "Configuring Steps Controller")
         stepsController = StepsController.getStepsController()
         stepsController.configureStepSensor(baseContext)
         stepsController.registerStepsListener {

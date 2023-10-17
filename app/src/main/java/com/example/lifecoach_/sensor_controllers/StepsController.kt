@@ -34,15 +34,20 @@ class StepsController private constructor(): SensorEventListener {
 
     fun configureStepSensor(context: Context) {
         if (sensorManager == null) {
+            Log.i("STEPS", "Getting Sensor Manager")
             sensorManager = ContextCompat.getSystemService(context, SensorManager::class.java)
             if (sensorManager != null) {
+                Log.i("STEPS", "Got Sensor Manager. Configuring Sensor")
                 sensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+                Log.i("STEPS", "Registering listener")
                 sensorManager!!.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+                Log.i("STEPS", "Listener Registered")
             }
         }
     }
 
     fun registerStepsListener(listener: (steps: Int) -> Unit) {
+        Log.i("STEPS", "Added Step Counter to Controller")
         listeners.add(StepCounter(listener))
     }
 
@@ -52,7 +57,9 @@ class StepsController private constructor(): SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event != null) {
+            Log.i("STEPS", "Sensor Change Detected")
             if (event.sensor.type == Sensor.TYPE_STEP_COUNTER) {
+                Log.i("STEPS", "Sensor is Step Counter")
                 stepCount = event.values[0].toInt()
                 listeners.forEach {
                     if (it.prevStepsCount == null) {
