@@ -32,6 +32,9 @@ class MotionController private constructor(): SensorEventListener {
     private var isMoving = true
     private var lastTimeAccelerated = Date().time
 
+    private var motionListeners = mutableListOf<() -> Unit>()
+    private var noMotionListeners = mutableListOf<() -> Unit>()
+
     fun configureAccelerometer(context: Context) {
         if (sensorManager == null) {
             sensorManager = ContextCompat.getSystemService(context, SensorManager::class.java)
@@ -42,6 +45,11 @@ class MotionController private constructor(): SensorEventListener {
                 }
             }
         }
+    }
+
+    fun registerMotionListener(motionDetected: () -> Unit, noMotionDetected: () -> Unit) {
+        motionListeners.add(motionDetected)
+        noMotionListeners.add(noMotionDetected)
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -56,8 +64,14 @@ class MotionController private constructor(): SensorEventListener {
                 val currentTime = Date().time
                 if (currentTime-lastTimeAccelerated > 1000) {
                     Log.i("MOTION", "Not moving")
+                    motionListeners.forEach {
+                        it()
+                    }
                 } else {
                     Log.i("MOTION", "Moving")
+                    noMotionListeners.forEach {
+                        it()
+                    }
                 }
             }
         }
