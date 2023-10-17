@@ -50,10 +50,10 @@ class ProfileActivity : AppCompatActivity() {
         binding.phoneProfile.setText(stringPhone)
         Log.i("Uri PROFILE", user.picture)
 
-        updatePhoto()
+        chargePhoto()
     }
 
-    private fun updatePhoto() {
+    private fun chargePhoto() {
         if (user!!.picture.isNotEmpty()) {
             val uri = Uri.parse(user!!.picture)
             val imageStream = contentResolver.openInputStream(uri)
@@ -153,8 +153,6 @@ class ProfileActivity : AppCompatActivity() {
 
             // Call this function to save the image to the gallery
             saveImageToGallery(bitmap)
-
-
         }
     }
 

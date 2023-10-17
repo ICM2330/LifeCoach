@@ -1,15 +1,18 @@
 package com.example.lifecoach_.activities
 
+import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.os.Environment
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.lifecoach_.model.User
+import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.databinding.ActivityMainBinding
+import com.example.lifecoach_.model.User
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,18 +70,39 @@ class MainActivity : AppCompatActivity() {
                     .isBlank() || binding.phoneRegister.text.toString().isBlank()
     }
 
-    private val getContentGallery = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) {
-        if (it != null) {
-            loadImage(it)
+    private val getContentGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            // Load Image implemented
+            val imageStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(imageStream)
+            binding.photoload.setImageBitmap(bitmap)
+
+            // Call this function to save the image to the gallery
+            saveImageToGallery(bitmap)
         }
     }
 
-    private fun loadImage(uri: Uri) {
-        uriImage = uri
-        val imageStream = contentResolver.openInputStream(uri)
-        val bitmap = BitmapFactory.decodeStream(imageStream)
-        binding.photoload.setImageBitmap(bitmap)
+    private fun saveImageToGallery(bitmap: Bitmap) {
+        val displayName = "MyImage.jpg"
+        val mimeType = "image/jpeg"
+        val values = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, displayName)
+            put(MediaStore.Images.Media.MIME_TYPE, mimeType)
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_DCIM)
+        }
+
+        val contentResolver = contentResolver
+        val imageUri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+        uriImage = imageUri
+
+        imageUri?.let {
+            contentResolver.openOutputStream(it).use { outputStream ->
+                if (outputStream != null) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                }
+            }
+        }
     }
+
 }
