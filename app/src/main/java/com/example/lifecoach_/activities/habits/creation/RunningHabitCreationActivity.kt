@@ -1,14 +1,17 @@
 package com.example.lifecoach_.activities.habits.creation
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.TimePickerFragment
 import com.example.lifecoach_.databinding.ActivityRunningHabitCreationBinding
 import com.example.lifecoach_.model.habits.Frequency
+import com.example.lifecoach_.model.habits.Habit
 import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
 
@@ -19,12 +22,17 @@ class RunningHabitCreationActivity : AppCompatActivity() {
     private var selectedDays = mutableListOf<Boolean>()
     private var selectedHour = 0
     private var selectedMin = 0
+    private var habit : RunningHabit? = null
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRunningHabitCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
         manageButtons()
+
+        habit = intent.getSerializableExtra("habit", RunningHabit::class.java)
+        if(habit != null)
+            displayHabitInfo()
     }
 
     private fun manageButtons() {
@@ -77,6 +85,20 @@ class RunningHabitCreationActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun displayHabitInfo() {
+        binding.rhName.setText(habit!!.name)
+        // Days of notification
+        for (day in habit!!.frequency.days) {
+            days[day].setBackgroundColor(getColor(R.color.green1))
+            days[day].setTextColor(getColor(R.color.white))
+            selectedDays[day] = true
+        }
+        binding.rhObjective.setText(habit!!.objectiveMins.toString())
+        binding.rhTimePick.setText(habit!!.frequency.hourString())
+        selectedHour = habit!!.frequency.notiHour
+        selectedMin = habit!!.frequency.notiMinute
     }
 
     private fun showTimePickerDialog() {

@@ -1,20 +1,36 @@
 package com.example.lifecoach_.activities.habits.view
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.TimeHabitRegisterActivity
+import com.example.lifecoach_.activities.habits.creation.RunningHabitCreationActivity
+import com.example.lifecoach_.activities.habits.creation.TimeHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityTimeHabitViewBinding
+import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
 
 class TimeHabitViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTimeHabitViewBinding
 
     private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                var rHabit = intent?.getSerializableExtra("habit") as TimeControlHabit
+                rHabit.accomplishment = habit.accomplishment
+                habit = rHabit
+                displayHabitInfo()
+            }
+        }
+
+    private val startForTimeResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val intent = result.data
@@ -42,8 +58,15 @@ class TimeHabitViewActivity : AppCompatActivity() {
     private fun manageButtons() {
         binding.btnStart.setOnClickListener {
             intent = Intent(baseContext, TimeHabitRegisterActivity::class.java)
-            startForResult.launch(intent)
+            startForTimeResult.launch(intent)
             displayHabitInfo()
+        }
+
+        binding.btnEditar.setOnClickListener {
+            startForResult.launch(Intent(this, TimeHabitCreationActivity::class.java)
+                .apply {
+                    putExtra("habit", habit)
+                })
         }
 
         onBackPressedDispatcher.addCallback(this) {
@@ -81,6 +104,10 @@ class TimeHabitViewActivity : AppCompatActivity() {
         binding.vthObj.text = "${habit.objectiveMins} minutos"
 
         // Days of notification
+        for (not in notificationDays) {
+            not.setBackgroundColor(getColor(R.color.gray))
+            not.setTextColor(getColor(R.color.black))
+        }
         for (day in habit.frequency.days) {
             notificationDays[day].setBackgroundColor(getColor(R.color.green1))
             notificationDays[day].setTextColor(getColor(R.color.white))
