@@ -34,13 +34,24 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     private var otherHabits = mutableListOf<Habit>()
     private var showToday = true
 
+    private var selectedHabit = 0
+
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 val habit = intent?.getSerializableExtra("habit") as Habit
-                Log.i("HABIT", "${habit.name}, ${habit.frequency}")
                 userTest.habits.add(habit)
+                updateHabits()
+            }
+        }
+
+    private val startForUpdate =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val habit = intent?.getSerializableExtra("habit") as Habit
+                userTest.habits[selectedHabit] = habit
                 updateHabits()
             }
         }
@@ -164,8 +175,9 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 intent = Intent(baseContext, GenericHabitViewActivity::class.java)
             }
         }
+        selectedHabit = userTest.habits.indexOf(habits[position])
         intent.putExtra("habit", habits[position])
-        startActivity(intent)
+        startForUpdate.launch(intent)
     }
 
     private fun bottomNavigationBarManagement(user: User) {

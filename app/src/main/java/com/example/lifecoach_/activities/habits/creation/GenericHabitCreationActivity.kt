@@ -1,10 +1,12 @@
 package com.example.lifecoach_.activities.habits.creation
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.TimePickerFragment
@@ -21,6 +23,7 @@ class GenericHabitCreationActivity : AppCompatActivity() {
     private var selectedDays = mutableListOf<Boolean>()
     private var selectedHour = 0
     private var selectedMin = 0
+    private var habit : Habit? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +55,10 @@ class GenericHabitCreationActivity : AppCompatActivity() {
             }
         }
 
+        habit = intent.getSerializableExtra("habit") as Habit?
+        if(habit != null)
+            displayHabitInfo()
+
         binding.ghTimePick.setOnClickListener {
             showTimePickerDialog()
         }
@@ -73,6 +80,19 @@ class GenericHabitCreationActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun displayHabitInfo() {
+        binding.ghName.setText(habit!!.name)
+        // Days of notification
+        for (day in habit!!.frequency.days) {
+            days[day].setBackgroundColor(getColor(R.color.green1))
+            days[day].setTextColor(getColor(R.color.white))
+            selectedDays[day] = true
+        }
+        binding.ghTimePick.setText(habit!!.frequency.hourString())
+        selectedHour = habit!!.frequency.notiHour
+        selectedMin = habit!!.frequency.notiMinute
     }
 
     private fun showTimePickerDialog() {

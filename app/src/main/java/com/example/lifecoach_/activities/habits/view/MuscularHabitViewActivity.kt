@@ -1,19 +1,37 @@
 package com.example.lifecoach_.activities.habits.view
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.addCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.SearchGymForHabitActivity
+import com.example.lifecoach_.activities.habits.creation.GenericHabitCreationActivity
+import com.example.lifecoach_.activities.habits.creation.MuscularHabitCreationActivity
 import com.example.lifecoach_.databinding.ActivityMuscularHabitViewBinding
 import com.example.lifecoach_.model.habits.Accomplishment
+import com.example.lifecoach_.model.habits.Habit
 import com.example.lifecoach_.model.habits.StrengthHabit
 import java.util.Date
 
 class MuscularHabitViewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMuscularHabitViewBinding
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                var rHabit = intent?.getSerializableExtra("habit") as StrengthHabit
+                rHabit.accomplishment = habit.accomplishment
+                habit = rHabit
+                displayHabitInfo()
+            }
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMuscularHabitViewBinding.inflate(layoutInflater)
@@ -34,6 +52,19 @@ class MuscularHabitViewActivity : AppCompatActivity() {
         // SEARCH NEAR GYMS
         binding.buttonGimnasiosSearch.setOnClickListener {
             startActivity(Intent(baseContext, SearchGymForHabitActivity::class.java))
+        }
+
+        binding.btnEditar.setOnClickListener {
+            startForResult.launch(Intent(this, MuscularHabitCreationActivity::class.java)
+                .apply {
+                    putExtra("habit", habit)
+                })
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            val intent = Intent().apply { putExtra("habit", habit) }
+            setResult(RESULT_OK, intent)
+            finish()
         }
 
         // TODAY FEELING
@@ -80,6 +111,10 @@ class MuscularHabitViewActivity : AppCompatActivity() {
         binding.vmhHour.text = habit.frequency.hourString()
 
         // Days of notification
+        for (not in notificationDays) {
+            not.setBackgroundColor(getColor(R.color.gray))
+            not.setTextColor(getColor(R.color.black))
+        }
         for (day in habit.frequency.days) {
             notificationDays[day].setBackgroundColor(getColor(R.color.green1))
             notificationDays[day].setTextColor(getColor(R.color.white))

@@ -35,13 +35,7 @@
             android:name=".activities.habits.view.MuscularHabitViewActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.StepsReviewActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.habits.creation.MuscularHabitCreationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.habits.register.RunningHabitRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".activities.habits.view.TimeHabitViewActivity"
@@ -56,7 +50,7 @@
             android:name=".activities.habits.creation.GenericHabitCreationActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.habits.register.TimeHabitRegisterActivity"
+            android:name=".activities.habits.auxiliar.TimeHabitRegisterActivity"
             android:exported="false" />
         <activity
             android:name=".activities.habits.view.StepHabitViewActivity"

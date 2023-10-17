@@ -1,10 +1,12 @@
 package com.example.lifecoach_.activities.habits.creation
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.habits.auxiliar.TimePickerFragment
 import com.example.lifecoach_.databinding.ActivityMuscularHabitCreationBinding
@@ -18,6 +20,8 @@ class MuscularHabitCreationActivity : AppCompatActivity() {
     private var selectedDays = mutableListOf<Boolean>()
     private var selectedHour = 0
     private var selectedMin = 0
+    private var habit : StrengthHabit? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMuscularHabitCreationBinding.inflate(layoutInflater)
@@ -48,6 +52,10 @@ class MuscularHabitCreationActivity : AppCompatActivity() {
             }
         }
 
+        habit = intent.getSerializableExtra("habit") as StrengthHabit?
+        if(habit != null)
+            displayHabitInfo()
+
         binding.mhTimePick.setOnClickListener {
             showTimePickerDialog()
         }
@@ -70,6 +78,20 @@ class MuscularHabitCreationActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun displayHabitInfo() {
+        binding.mhName.setText(habit!!.name)
+        // Days of notification
+        for (day in habit!!.frequency.days) {
+            days[day].setBackgroundColor(getColor(R.color.green1))
+            days[day].setTextColor(getColor(R.color.white))
+            selectedDays[day] = true
+        }
+        binding.mhMuscularGroup.setText(habit!!.muscularGroup)
+        binding.mhTimePick.setText(habit!!.frequency.hourString())
+        selectedHour = habit!!.frequency.notiHour
+        selectedMin = habit!!.frequency.notiMinute
     }
 
     private fun showTimePickerDialog() {
