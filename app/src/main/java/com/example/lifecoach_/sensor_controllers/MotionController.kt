@@ -64,12 +64,12 @@ class MotionController private constructor(): SensorEventListener {
                 val currentTime = Date().time
                 if (currentTime-lastTimeAccelerated > 1000) {
                     Log.i("MOTION", "Not moving")
-                    motionListeners.forEach {
+                    noMotionListeners.forEach {
                         it()
                     }
                 } else {
                     Log.i("MOTION", "Moving")
-                    noMotionListeners.forEach {
+                    motionListeners.forEach {
                         it()
                     }
                 }

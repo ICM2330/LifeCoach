@@ -122,12 +122,19 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
         lightEventListener = createLightSensorListener()
+
+        configureMotionController()
     }
 
     private lateinit var motionController: MotionController
     private fun configureMotionController() {
         motionController = MotionController.getMotionController()
         motionController.configureAccelerometer(baseContext)
+        motionController.registerMotionListener({
+            binding.motionText.text = "Corriendo ..."
+        }, {
+            binding.motionText.text = "No te detengas. Sigue moviendote!"
+        })
     }
 
 
