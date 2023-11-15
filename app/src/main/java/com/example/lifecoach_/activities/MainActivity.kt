@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG)
             t.show()
             val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
-            i.putExtra("user", user)
+            i.putExtra("user", it)
             startActivity(i)
             finish()
         }
