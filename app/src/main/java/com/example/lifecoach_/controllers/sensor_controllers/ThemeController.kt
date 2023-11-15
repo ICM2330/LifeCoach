@@ -1,4 +1,4 @@
-package com.example.lifecoach_.sensor_controllers
+package com.example.lifecoach_.controllers.sensor_controllers
 
 import android.content.Context
 import android.hardware.Sensor

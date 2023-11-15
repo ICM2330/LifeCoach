@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import com.example.lifecoach_.controllers.activities_controllers.MainActivityAuthController
 import com.example.lifecoach_.databinding.ActivityMainBinding
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.ktx.actionCodeSettings
@@ -27,10 +28,10 @@ import com.example.lifecoach_.model.User
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
+    private lateinit var authController: MainActivityAuthController
+
     private var uriImage: Uri? = null
 
-    private lateinit var actionCodeSettings: ActionCodeSettings
-    private val gson = Gson()
     private var user: User? = null
 
     companion object {
@@ -41,38 +42,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        configureFirebase()
+        authController = MainActivityAuthController(intent, baseContext)
         buttonsManager()
     }
 
     override fun onResume() {
         super.onResume()
-
-        Log.i("LOGIN", "Checking if logged")
-        loadUser()
-        checkIfLogged()
-    }
-
-    private fun configureFirebase() {
-        actionCodeSettings = actionCodeSettings {
-            url = "$FIREBASE_URL/finishSignUp"
-            handleCodeInApp = true
-            setAndroidPackageName(
-                "com.example.lifecoach_",
-                true,
-                null
-            )
-        }
-    }
-
-    private fun checkIfLogged() {
-        val auth = Firebase.auth
-        val intent = intent
-        val emailLink = intent.data.toString()
-
-        Log.i("LOGIN", "Recuperados datos del intent")
-
-        val successLogin = {
+        authController.runIfLogged {
             val t = Toast.makeText(baseContext,
                 "Se ha iniciado sesión correctamente",
                 Toast.LENGTH_LONG)
@@ -81,36 +57,6 @@ class MainActivity : AppCompatActivity() {
             i.putExtra("user", user)
             startActivity(i)
             finish()
-        }
-
-        val errorLogin = {
-            val t = Toast.makeText(baseContext,
-                "Falló el inicio de sesión",
-                Toast.LENGTH_LONG)
-            t.show()
-        }
-
-        val fbUser = auth.currentUser
-
-        if (fbUser == null) {
-            if (auth.isSignInWithEmailLink(emailLink) && user != null) {
-                Log.i("LOGIN", "Verificando emailLink: $emailLink")
-
-                auth.signInWithEmailLink(user!!.email, emailLink)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.i("LOGIN", "Verificación exitosa")
-                            successLogin()
-                        } else {
-                            Log.i("LOGIN", "Verificación Fallida")
-                            errorLogin()
-                        }
-                    }
-            } else {
-                Log.i("LOGIN", "No es emailLink o el usuario es nulo. User: $user")
-            }
-        } else  if (user != null){
-            successLogin()
         }
     }
     
@@ -132,26 +78,12 @@ class MainActivity : AppCompatActivity() {
             if (!blankSpaces()) {
                 //If there is not any blank or nut spaces, register and verify the user
                 user = getUserTest()
-                storeUser()
-                Firebase.auth.sendSignInLinkToEmail(user!!.email, actionCodeSettings)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            val t = Toast.makeText(baseContext,
-                                "Correo de verificación enviado. Por favor, revise el correo",
-                                Toast.LENGTH_LONG)
-                            t.show()
-                        }
-                    }
-                    .addOnFailureListener {
-                        val t = Toast.makeText(baseContext,
-                            "Error: No se pudo enviar el correo",
-                            Toast.LENGTH_LONG)
-                        t.show()
-                        val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
-                        i.putExtra("user", user)
-                        startActivity(i)
-                        finish()
-                    }
+                authController.register(user!!) {
+                    val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
+                    i.putExtra("user", user)
+                    startActivity(i)
+                    finish()
+                }
             }
             else{
                 //Say that is not possible to do the register
@@ -181,30 +113,6 @@ class MainActivity : AppCompatActivity() {
             .isBlank() || binding.userRegister.text.toString().isBlank() ||
                 binding.emailRegister.text.toString()
                     .isBlank() || binding.phoneRegister.text.toString().isBlank()
-    }
-
-    private fun storeUser() {
-        val userFile = File(baseContext.filesDir, "user.json")
-        if (userFile.createNewFile()) {
-            Log.i("SAVEUSER", "User File Created")
-        } else {
-            Log.i("SAVEUSER", "User File Already Exists")
-        }
-
-        userFile.setWritable(true)
-        userFile.setReadable(true)
-
-        val writer = FileWriter(userFile)
-        writer.write(gson.toJson(user))
-        writer.close()
-    }
-
-    private fun loadUser() {
-        val userFile = File(baseContext.filesDir, "user.json")
-        if (userFile.exists()) {
-            val reader = FileReader(userFile)
-            user = gson.fromJson(reader, User::class.java)
-        }
     }
 
     private val getContentGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->

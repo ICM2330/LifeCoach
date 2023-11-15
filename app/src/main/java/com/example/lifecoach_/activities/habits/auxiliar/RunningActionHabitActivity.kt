@@ -23,7 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.lifecoach_.R
 import com.example.lifecoach_.databinding.ActivityRunningActionHabitBinding
-import com.example.lifecoach_.sensor_controllers.MotionController
+import com.example.lifecoach_.controllers.sensor_controllers.MotionController
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback

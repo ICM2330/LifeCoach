@@ -33,8 +33,8 @@ import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.StepsHabit
 import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
-import com.example.lifecoach_.sensor_controllers.MotionController
-import com.example.lifecoach_.sensor_controllers.ThemeController
+import com.example.lifecoach_.controllers.sensor_controllers.MotionController
+import com.example.lifecoach_.controllers.sensor_controllers.ThemeController
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
