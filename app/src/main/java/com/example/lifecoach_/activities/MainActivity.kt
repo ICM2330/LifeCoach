@@ -98,6 +98,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getUserTest(): User {
         val user = User(
+            null,
             binding.nameRegister.text.toString(), binding.userRegister.text.toString(),
             binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong()
         )
