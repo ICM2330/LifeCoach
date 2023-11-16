@@ -20,7 +20,8 @@ class UsersService {
         user: User,
         callback: () -> Unit
     ) {
-        userRepository.saveUser(user, callback)
+        var picRef: String? = null
+        userRepository.saveUser(user, picRef, callback)
     }
 
     fun updateUser(
