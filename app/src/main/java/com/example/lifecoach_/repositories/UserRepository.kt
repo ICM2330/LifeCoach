@@ -12,11 +12,12 @@ class UserRepository {
 
     fun saveUser(
         user: User,
+        picRef: String?,
         callback: () -> Unit
     ) {
         val userRef = db.collection("users")
         userRef.add(
-            userMapper.userToMap(user)
+            userMapper.userToMap(user, picRef)
         ).addOnSuccessListener {
             callback()
         }
