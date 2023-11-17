@@ -1,6 +1,7 @@
 package com.example.lifecoach_.services.firebase
 
 import android.net.Uri
+import android.util.Log
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.repositories.PicRepository
 import com.example.lifecoach_.repositories.UserRepository
@@ -10,11 +11,14 @@ class UsersService {
     private val picRepository: PicRepository = PicRepository()
 
     fun registerUser(user: User, picUri: Uri?, callback: () -> Unit) {
+        Log.i("REGISTER", "Looking for user ${user.email}")
         tryFindUser(user) {docId: String? ->
             if (docId == null) {
+                Log.i("REGISTER", "User ${user.email} not found")
                 saveNewUser(user, picUri, callback)
             } else {
-                updateUser(docId, user, callback)
+                Log.i("REGISTER", "User ${user.email} found at $docId")
+                updateUser(docId, user, picUri, callback)
             }
         }
     }
@@ -36,9 +40,16 @@ class UsersService {
     private fun updateUser(
         docId: String,
         user: User,
+        picUri: Uri?,
         callback: () -> Unit
     ) {
-        userRepository.updateUser(docId, user, callback)
+        if (picUri != null) {
+            picRepository.saveImage(picUri) {
+                userRepository.updateUser(docId, user, it, callback)
+            }
+        } else {
+            userRepository.updateUser(docId, user, null, callback)
+        }
     }
 
     private fun tryFindUser(

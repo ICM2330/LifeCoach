@@ -34,8 +34,12 @@ class UserRepository {
     fun updateUser(
         docId: String,
         user: User,
+        picRef: String?,
         callback: () -> Unit
     ) {
-
+        userRef.document(docId).set(userMapper.userToMap(user, picRef))
+            .addOnSuccessListener {
+                callback()
+            }
     }
 }
