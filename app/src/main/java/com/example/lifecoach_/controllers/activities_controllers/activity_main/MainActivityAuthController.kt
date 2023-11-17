@@ -1,10 +1,9 @@
-package com.example.lifecoach_.controllers.activities_controllers
+package com.example.lifecoach_.controllers.activities_controllers.activity_main
 
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import com.example.lifecoach_.activities.DashBoardHabitsActivity
 import com.example.lifecoach_.activities.MainActivity
 import com.example.lifecoach_.model.User
 import com.google.firebase.auth.ActionCodeSettings

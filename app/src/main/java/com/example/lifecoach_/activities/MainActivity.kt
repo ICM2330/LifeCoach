@@ -6,23 +6,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.example.lifecoach_.controllers.activities_controllers.MainActivityAuthController
+import com.example.lifecoach_.controllers.activities_controllers.activity_main.MainActivityAuthController
 import com.example.lifecoach_.databinding.ActivityMainBinding
-import com.google.firebase.auth.ActionCodeSettings
-import com.google.firebase.auth.ktx.actionCodeSettings
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
 import java.io.File
-import java.io.FileReader
-import java.io.FileWriter
 import com.example.lifecoach_.model.User
 
 class MainActivity : AppCompatActivity() {
