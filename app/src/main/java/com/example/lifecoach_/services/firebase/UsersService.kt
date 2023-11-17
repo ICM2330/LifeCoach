@@ -33,18 +33,20 @@ class UsersService {
         }
     }
 
-    fun updateUser(
+    private fun updateUser(
         docId: String,
         user: User,
         callback: () -> Unit
     ) {
-
+        userRepository.updateUser(docId, user, callback)
     }
 
     private fun tryFindUser(
         user: User,
         callback: (String?) -> Unit
     ) {
-
+        userRepository.findUserByEmail(user.email) {
+            callback(it.documents[0].id)
+        }
     }
 }
