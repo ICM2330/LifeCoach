@@ -21,7 +21,7 @@ import com.example.lifecoach_.model.User
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
-    private val authController: MainActivityAuthController = MainActivityAuthController(intent, baseContext)
+    private lateinit var authController: MainActivityAuthController
     private val registerController: MainActivityRegisterController = MainActivityRegisterController()
 
     private var uriImage: Uri? = null
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         buttonsManager()
+        authController = MainActivityAuthController(intent, baseContext)
     }
 
     override fun onResume() {
