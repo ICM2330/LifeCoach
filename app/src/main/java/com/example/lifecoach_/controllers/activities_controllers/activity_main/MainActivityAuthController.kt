@@ -26,7 +26,10 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
 
     fun runIfLogged(callback: (user: User?) -> Unit) {
         Log.i("LOGIN", "Checking if logged")
+        Log.i("LOGIN", "Loading User Data")
         loadUser()
+        Log.i("LOGIN", "User Data Loaded")
+        Log.i("LOGIN", "Starting Check For User Logged")
         checkIfLogged(callback)
     }
 
@@ -113,6 +116,8 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
         if (userFile.exists()) {
             val reader = FileReader(userFile)
             user = gson.fromJson(reader, User::class.java)
+        } else {
+            Log.i("USERLOAD", "No existe el archivo de usuario")
         }
     }
 
@@ -122,6 +127,8 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
             Log.i("SAVEUSER", "User File Created")
         } else {
             Log.i("SAVEUSER", "User File Already Exists")
+            userFile.delete()
+            userFile.createNewFile()
         }
 
         userFile.setWritable(true)
