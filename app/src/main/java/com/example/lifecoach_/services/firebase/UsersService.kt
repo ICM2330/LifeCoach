@@ -1,15 +1,18 @@
 package com.example.lifecoach_.services.firebase
 
+import android.net.Uri
 import com.example.lifecoach_.model.User
+import com.example.lifecoach_.repositories.PicRepository
 import com.example.lifecoach_.repositories.UserRepository
 
 class UsersService {
     private val userRepository: UserRepository = UserRepository()
+    private val picRepository: PicRepository = PicRepository()
 
-    fun registerUser(user: User, callback: () -> Unit) {
+    fun registerUser(user: User, picUri: Uri?, callback: () -> Unit) {
         tryFindUser(user) {docId: String? ->
             if (docId == null) {
-                saveNewUser(user, callback)
+                saveNewUser(user, picUri, callback)
             } else {
                 updateUser(docId, user, callback)
             }
@@ -18,10 +21,16 @@ class UsersService {
 
     private fun saveNewUser(
         user: User,
+        picUri: Uri?,
         callback: () -> Unit
     ) {
-        var picRef: String? = null
-        userRepository.saveUser(user, picRef, callback)
+        if (picUri != null) {
+            picRepository.saveImage(picUri) { picRef: String ->
+                userRepository.saveUser(user, picRef, callback)
+            }
+        } else {
+            userRepository.saveUser(user, null, callback)
+        }
     }
 
     fun updateUser(
