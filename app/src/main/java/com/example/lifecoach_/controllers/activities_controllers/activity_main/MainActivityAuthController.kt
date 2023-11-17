@@ -102,7 +102,8 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
             } else {
                 Log.i("LOGIN", "No es emailLink o el usuario es nulo. User: $user")
             }
-        } else  if (user != null){
+        } else if (user != null){
+            Log.i("LOGIN", "Ya se encontraba loggeado")
             successLogin()
         }
     }
