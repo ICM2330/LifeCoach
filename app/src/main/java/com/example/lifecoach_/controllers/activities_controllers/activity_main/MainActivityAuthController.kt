@@ -90,6 +90,7 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
 
                 auth.signInWithEmailLink(user!!.email, emailLink)
                     .addOnCompleteListener { task ->
+                        user!!.uid = auth.currentUser?.uid
                         if (task.isSuccessful) {
                             Log.i("LOGIN", "Verificación exitosa")
                             successLogin()
