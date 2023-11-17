@@ -28,14 +28,15 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
         Log.i("LOGIN", "Checking if logged")
         Log.i("LOGIN", "Loading User Data")
         loadUser()
-        Log.i("LOGIN", "User Data Loaded")
+        Log.i("LOGIN", "User Data Loaded. User=$user")
         Log.i("LOGIN", "Starting Check For User Logged")
         checkIfLogged(callback)
     }
 
     fun register(user: User, failureListener: () -> Unit) {
+        this.user = user
         storeUser()
-        Firebase.auth.sendSignInLinkToEmail(user!!.email,
+        Firebase.auth.sendSignInLinkToEmail(user.email,
             actionCodeSettings
         )
             .addOnCompleteListener {
@@ -113,9 +114,13 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
 
     private fun loadUser() {
         val userFile = File(context.filesDir, "user.json")
+        Log.i("LOGIN", "Creado manejador de archivo")
         if (userFile.exists()) {
+            Log.i("LOGIN", "Se encontró el archivo. Cargando...")
             val reader = FileReader(userFile)
+            Log.i("LOGIN", "Creado el lector del archivo")
             user = gson.fromJson(reader, User::class.java)
+            Log.i("LOGIN", "Se leyó el siguiente contenido $user")
         } else {
             Log.i("USERLOAD", "No existe el archivo de usuario")
         }
