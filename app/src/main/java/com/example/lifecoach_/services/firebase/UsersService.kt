@@ -46,7 +46,11 @@ class UsersService {
         callback: (String?) -> Unit
     ) {
         userRepository.findUserByEmail(user.email) {
-            callback(it.documents[0].id)
+            try {
+                callback(it.documents[0].id)
+            } catch (e: Exception) {
+                callback(null)
+            }
         }
     }
 }
