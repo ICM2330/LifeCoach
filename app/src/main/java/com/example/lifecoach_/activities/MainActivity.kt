@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.lifecoach_.controllers.activities_controllers.activity_main.MainActivityAuthController
+import com.example.lifecoach_.controllers.activities_controllers.activity_main.MainActivityRegisterController
 import com.example.lifecoach_.databinding.ActivityMainBinding
 import java.io.File
 import com.example.lifecoach_.model.User
@@ -20,7 +21,8 @@ import com.example.lifecoach_.model.User
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
-    private lateinit var authController: MainActivityAuthController
+    private val authController: MainActivityAuthController = MainActivityAuthController(intent, baseContext)
+    private val registerController: MainActivityRegisterController = MainActivityRegisterController()
 
     private var uriImage: Uri? = null
 
@@ -34,21 +36,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        authController = MainActivityAuthController(intent, baseContext)
         buttonsManager()
     }
 
     override fun onResume() {
         super.onResume()
-        authController.runIfLogged {
-            val t = Toast.makeText(baseContext,
-                "Se ha iniciado sesión correctamente",
-                Toast.LENGTH_LONG)
-            t.show()
-            val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
-            i.putExtra("user", it)
-            startActivity(i)
-            finish()
+        authController.runIfLogged {user1: User? ->
+            if (user1 != null) {
+                registerController.registerUser(user1, uriImage) {user2: User? ->
+                    val t = Toast.makeText(baseContext,
+                        "Se ha iniciado sesión correctamente",
+                        Toast.LENGTH_LONG)
+                    t.show()
+                    val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
+                    i.putExtra("user", user2)
+                    startActivity(i)
+                    finish()
+                }
+            }
         }
     }
     
