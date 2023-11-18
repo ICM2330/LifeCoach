@@ -57,12 +57,39 @@ class HabitsService {
     }
 
     private fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
+        val accompsWithID = mutableListOf<Accomplishment>()
         // Actualizar Documento del Habito
         habitRepository.updateHabit(habit) {habitUpdate: Habit ->
             // Actualizar o Agregar cada Accomplishment
             habit.accomplishment.forEach {acomp: Accomplishment ->
-                // TODO: Actualizar o Agregar Accomplishment
+                // Actualizar o Agregar Accomplishment
+                addOrUpdateAccomp(acomp, habit.id!!) {
+                        updatedAcomp: Accomplishment ->
+                    accompsWithID.add(updatedAcomp)
+
+                    if (accompsWithID.size == habit.accomplishment.size) {
+                        habit.accomplishment = accompsWithID
+                        callback(habit)
+                    }
+                }
             }
+
+            // Si no tiene accomps retorna de una vez
+            habit.accomplishment.ifEmpty {
+                callback(habit)
+            }
+        }
+    }
+
+    private fun addOrUpdateAccomp(
+        acomp: Accomplishment,
+        habitId: String,
+        callback: (Accomplishment) -> Unit
+    ) {
+        if (acomp.id != null) {
+            // TODO: Actualizar Accomplishment
+        } else {
+            accompRepository.addAccomp(acomp, habitId, callback)
         }
     }
 }
