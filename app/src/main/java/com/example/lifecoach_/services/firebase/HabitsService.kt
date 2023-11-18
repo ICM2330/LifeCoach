@@ -14,8 +14,10 @@ class HabitsService {
         habitRepository.addHabit(habit) {habitWithID: Habit ->
             // Agrega todos los cumplimientos (Accomplishment)s relacionados
             habitWithID.accomplishment.forEach { accomplishment: Accomplishment ->
-                accompRepository.addAccomp(accomplishment) {
+                habitWithID.id?.let { hid: String ->
+                    accompRepository.addAccomp(accomplishment, hid) {
 
+                    }
                 }
             }
             // Retorna el hábito con el ID obtenido de Firebase
