@@ -72,6 +72,7 @@ class StepHabitCreationActivity : AppCompatActivity() {
                     putExtra(
                         "habit",
                         StepsHabit(
+                            null,
                             binding.shName.text.toString(),
                             Frequency(selectedHour, selectedMin, notiDays),
                             binding.shObjective.text.toString().toInt()
