@@ -34,6 +34,17 @@ class HabitsService {
         }
     }
 
+    private fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
+        // Actualizar Documento del Habito
+        habitRepository.updateHabit(habit) {habitUpdate: Habit ->
+            addOrUpdateAccomps(habitUpdate.accomplishment, habitUpdate.id!!) {
+                    updatedAccomps: MutableList<Accomplishment> ->
+                habitUpdate.accomplishment = updatedAccomps
+                callback(habitUpdate)
+            }
+        }
+    }
+
     private fun addOrUpdateAccomps(
         accomps: MutableList<Accomplishment>,
         habitId: String,
@@ -56,17 +67,6 @@ class HabitsService {
         // Si no tiene accomps retorna de una vez
         accomps.ifEmpty {
             callback(accomps)
-        }
-    }
-
-    private fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
-        // Actualizar Documento del Habito
-        habitRepository.updateHabit(habit) {habitUpdate: Habit ->
-            addOrUpdateAccomps(habitUpdate.accomplishment, habitUpdate.id!!) {
-                    updatedAccomps: MutableList<Accomplishment> ->
-                habitUpdate.accomplishment = updatedAccomps
-                callback(habitUpdate)
-            }
         }
     }
 
