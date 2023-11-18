@@ -68,10 +68,10 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Fill the info. with the login activity
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            userTest = intent.getSerializableExtra("user") as User
+        userTest = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("user") as User
         } else {
-            userTest = intent.getSerializableExtra("user", User::class.java)!!
+            intent.getSerializableExtra("user", User::class.java)!!
         }
 
         super.onCreate(savedInstanceState)
