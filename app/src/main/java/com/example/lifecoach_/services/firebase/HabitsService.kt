@@ -22,7 +22,7 @@ class HabitsService {
         habitRepository.addHabit(habit) {habitWithID: Habit ->
             // Agrega todos los cumplimientos (Accomplishment)s relacionados
             habitWithID.id?.let {hid: String ->
-                addsAccomps(habitWithID.accomplishment, hid)
+                addOrUpdateAccomps(habitWithID.accomplishment, hid)
                 {
                     // Anexa los Accomps con IDs
                     habitWithID.accomplishment = it
@@ -34,48 +34,37 @@ class HabitsService {
         }
     }
 
-    private fun addsAccomps(
+    private fun addOrUpdateAccomps(
         accomps: MutableList<Accomplishment>,
         habitId: String,
         callback: (MutableList<Accomplishment>) -> Unit) {
-        val accompsWithId = mutableListOf<Accomplishment>()
-        accomps.forEach { accomplishment: Accomplishment ->
-            accompRepository.addAccomp(accomplishment, habitId)
-            { accomplishmentWithID: Accomplishment ->
-                accompsWithId.add(accomplishmentWithID)
-                if (accompsWithId.size == accomps.size) {
-                    // Retorna los Accomplishments con los IDS
-                    callback(accompsWithId)
+        val accompsWithID = mutableListOf<Accomplishment>()
+
+        // Actualizar o Agregar cada Accomplishment
+        accomps.forEach {acomp: Accomplishment ->
+            // Actualizar o Agregar Accomplishment
+            addOrUpdateAccomp(acomp, habitId) {
+                    updatedAcomp: Accomplishment ->
+                accompsWithID.add(updatedAcomp)
+
+                if (accompsWithID.size == accomps.size) {
+                    callback(accompsWithID)
                 }
             }
         }
 
-        // Si no hay elementos, entonces retornar de una vez
-        if (accomps.size == 0) {
-            callback(accompsWithId)
+        // Si no tiene accomps retorna de una vez
+        accomps.ifEmpty {
+            callback(accomps)
         }
     }
 
     private fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
-        val accompsWithID = mutableListOf<Accomplishment>()
         // Actualizar Documento del Habito
         habitRepository.updateHabit(habit) {habitUpdate: Habit ->
-            // Actualizar o Agregar cada Accomplishment
-            habitUpdate.accomplishment.forEach {acomp: Accomplishment ->
-                // Actualizar o Agregar Accomplishment
-                addOrUpdateAccomp(acomp, habitUpdate.id!!) {
-                        updatedAcomp: Accomplishment ->
-                    accompsWithID.add(updatedAcomp)
-
-                    if (accompsWithID.size == habitUpdate.accomplishment.size) {
-                        habitUpdate.accomplishment = accompsWithID
-                        callback(habitUpdate)
-                    }
-                }
-            }
-
-            // Si no tiene accomps retorna de una vez
-            habitUpdate.accomplishment.ifEmpty {
+            addOrUpdateAccomps(habitUpdate.accomplishment, habitUpdate.id!!) {
+                    updatedAccomps: MutableList<Accomplishment> ->
+                habitUpdate.accomplishment = updatedAccomps
                 callback(habitUpdate)
             }
         }
