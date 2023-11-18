@@ -5,6 +5,7 @@ import java.util.Calendar
 import java.util.Date
 
 open class Habit(
+    var id: String?,
     var name: String,
     var frequency: Frequency
 ) : Serializable {

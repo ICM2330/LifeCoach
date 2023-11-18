@@ -65,6 +65,7 @@ class GenericHabitCreationActivity : AppCompatActivity() {
                     putExtra(
                         "habit",
                         Habit(
+                            null,
                             binding.ghName.text.toString(),
                             Frequency(selectedHour, selectedMin, notiDays)
                         )

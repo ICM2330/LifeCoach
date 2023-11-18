@@ -26,6 +26,7 @@ import com.example.lifecoach_.activities.habits.view.RunningHabitViewActivity
 import com.example.lifecoach_.activities.habits.view.StepHabitViewActivity
 import com.example.lifecoach_.activities.habits.view.TimeHabitViewActivity
 import com.example.lifecoach_.adapters.HabitListViewAdapter
+import com.example.lifecoach_.controllers.activities_controllers.activity_dashboard.DashBoardHabitsDataController
 import com.example.lifecoach_.databinding.ActivityDashBoardHabitsBinding
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.model.habits.Habit
@@ -51,8 +52,12 @@ class DashBoardHabitsActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 val habit = intent?.getSerializableExtra("habit") as Habit
-                userTest.habits.add(habit)
-                updateHabits()
+                // Crea el nuevo hábito en la base de datos
+                dataController.addHabit(habit) {
+                    // Agrega el hábito con el ID generado por Firebase
+                    userTest.habits.add(it)
+                    updateHabits()
+                }
             }
         }
 
@@ -61,10 +66,17 @@ class DashBoardHabitsActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 val habit = intent?.getSerializableExtra("habit") as Habit
-                userTest.habits[selectedHabit] = habit
-                updateHabits()
+                // Actualiza el hábito con el ID del objeto
+                dataController.updateHabit(habit) {
+                    // Reemplaza con el hábito actualizado
+                    userTest.habits[selectedHabit] = habit
+                    updateHabits()
+                }
             }
         }
+
+    private val dataController: DashBoardHabitsDataController =
+        DashBoardHabitsDataController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Fill the info. with the login activity
