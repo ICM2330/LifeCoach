@@ -57,6 +57,9 @@ class HabitsService {
     }
 
     private fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
-
+        // TODO: Mapear HashMap del Habito
+        // TODO: Buscar Documento Actual en FireStore
+        // TODO: Actualizar Documento
+        // TODO: Actualizar o Agregar cada Accomplishment
     }
 }
