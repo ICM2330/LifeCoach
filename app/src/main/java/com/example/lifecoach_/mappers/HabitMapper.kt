@@ -7,7 +7,6 @@ class HabitMapper {
     private val gson = Gson()
     fun habitToMap(habit: Habit): HashMap<String, Any?> {
         return hashMapOf<String, Any?>(
-            "id" to habit.id,
             "name" to habit.name,
             "freq_hour" to habit.frequency.notiHour,
             "freq_min" to habit.frequency.notiMinute,
