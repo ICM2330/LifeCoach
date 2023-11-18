@@ -9,8 +9,6 @@ class HabitsService {
     fun addHabit(habit: Habit, callback: (Habit) -> Unit) {
         // Agrega el Hábito
         habitRepository.addHabit(habit) {
-            // TODO: Agrega frecuencia
-            // TODO: Agrega días de la semana a las frecuencias
             // TODO: Agrega todos los cumplimientos (Accomplishment)s relacionados
             // Retorna el hábito con el ID obtenido de Firebase
             callback(habit)
