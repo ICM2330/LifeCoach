@@ -61,22 +61,22 @@ class HabitsService {
         // Actualizar Documento del Habito
         habitRepository.updateHabit(habit) {habitUpdate: Habit ->
             // Actualizar o Agregar cada Accomplishment
-            habit.accomplishment.forEach {acomp: Accomplishment ->
+            habitUpdate.accomplishment.forEach {acomp: Accomplishment ->
                 // Actualizar o Agregar Accomplishment
-                addOrUpdateAccomp(acomp, habit.id!!) {
+                addOrUpdateAccomp(acomp, habitUpdate.id!!) {
                         updatedAcomp: Accomplishment ->
                     accompsWithID.add(updatedAcomp)
 
-                    if (accompsWithID.size == habit.accomplishment.size) {
-                        habit.accomplishment = accompsWithID
-                        callback(habit)
+                    if (accompsWithID.size == habitUpdate.accomplishment.size) {
+                        habitUpdate.accomplishment = accompsWithID
+                        callback(habitUpdate)
                     }
                 }
             }
 
             // Si no tiene accomps retorna de una vez
-            habit.accomplishment.ifEmpty {
-                callback(habit)
+            habitUpdate.accomplishment.ifEmpty {
+                callback(habitUpdate)
             }
         }
     }
