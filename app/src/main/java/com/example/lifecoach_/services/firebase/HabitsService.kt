@@ -41,5 +41,10 @@ class HabitsService {
                 }
             }
         }
+
+        // Si no hay elementos, entonces retornar de una vez
+        if (accomps.size == 0) {
+            callback(accompsWithId)
+        }
     }
 }
