@@ -57,7 +57,9 @@ class HabitsService {
     }
 
     private fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
-        // TODO: Actualizar Documento del Habito
-        // TODO: Actualizar o Agregar cada Accomplishment
+        // Actualizar Documento del Habito
+        habitRepository.updateHabit(habit) {habitUpdate: Habit ->
+            // TODO: Actualizar o Agregar cada Accomplishment
+        }
     }
 }
