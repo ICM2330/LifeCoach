@@ -28,4 +28,9 @@ class HabitRepository {
                 callback(habit)
             }
     }
+
+    fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
+        // TODO: Mapear HashMap del Habito
+        // TODO: Buscar Documento Actual en FireStore
+    }
 }
