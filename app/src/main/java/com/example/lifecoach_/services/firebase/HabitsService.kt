@@ -9,7 +9,15 @@ class HabitsService {
     private val habitRepository: HabitRepository = HabitRepository()
     private val accompRepository: AccompRepository = AccompRepository()
 
-    fun addHabit(habit: Habit, callback: (Habit) -> Unit) {
+    fun addOrUpdateHabit(habit: Habit, callback: (Habit) -> Unit) {
+        if (habit.id != null) {
+            updateHabit(habit, callback)
+        } else {
+            addHabit(habit, callback)
+        }
+    }
+
+    private fun addHabit(habit: Habit, callback: (Habit) -> Unit) {
         // Agrega el Hábito
         habitRepository.addHabit(habit) {habitWithID: Habit ->
             // Agrega todos los cumplimientos (Accomplishment)s relacionados
@@ -46,5 +54,9 @@ class HabitsService {
         if (accomps.size == 0) {
             callback(accompsWithId)
         }
+    }
+
+    private fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
+
     }
 }

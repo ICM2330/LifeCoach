@@ -7,10 +7,10 @@ class DashBoardHabitsDataController {
     private val habitsService: HabitsService = HabitsService()
 
     fun addHabit(habit: Habit, callback: (Habit) -> Unit) {
-        habitsService.addHabit(habit, callback)
+        habitsService.addOrUpdateHabit(habit, callback)
     }
 
-    fun updateHabit(habit: Habit, callback: () -> Unit) {
-
+    fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
+        habitsService.addOrUpdateHabit(habit, callback)
     }
 }
