@@ -30,7 +30,17 @@ class HabitRepository {
     }
 
     fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
-        // TODO: Mapear HashMap del Habito
-        // TODO: Buscar Documento Actual en FireStore
+        // Mapear HashMap del Habito
+        val habitHashMap = habitMapper.habitToMap(habit)
+
+        // Buscar Documento Actual en FireStore
+        if (habit.id != null) {
+            habitsRef.document(habit.id!!).set(habitHashMap)
+                .addOnSuccessListener {
+                    callback(habit)
+                }
+        } else {
+            Log.e("HABITSAVE", "No se puede actualizar un hábito sin su id")
+        }
     }
 }
