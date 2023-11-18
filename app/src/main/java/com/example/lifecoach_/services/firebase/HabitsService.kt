@@ -39,7 +39,7 @@ class HabitsService {
         habitId: String,
         callback: (MutableList<Accomplishment>) -> Unit) {
         val accompsWithId = mutableListOf<Accomplishment>()
-        accomps.forEachIndexed { index: Int, accomplishment: Accomplishment ->
+        accomps.forEach { accomplishment: Accomplishment ->
             accompRepository.addAccomp(accomplishment, habitId)
             { accomplishmentWithID: Accomplishment ->
                 accompsWithId.add(accomplishmentWithID)
