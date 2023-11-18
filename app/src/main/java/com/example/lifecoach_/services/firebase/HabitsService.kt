@@ -87,7 +87,8 @@ class HabitsService {
         callback: (Accomplishment) -> Unit
     ) {
         if (acomp.id != null) {
-            // TODO: Actualizar Accomplishment
+            // Actualizar Accomplishment
+            accompRepository.updateAccomp(acomp, habitId, callback)
         } else {
             accompRepository.addAccomp(acomp, habitId, callback)
         }

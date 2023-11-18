@@ -23,4 +23,20 @@ class AccompRepository {
                 callback(accomplishment)
             }
     }
+
+    fun updateAccomp(
+        accomplishment: Accomplishment,
+        habitId: String,
+        callback: (accomplishment: Accomplishment) -> Unit
+    ) {
+        // Mapear Accomp
+        val accompHashMap = accompMapper.accompToMap(accomplishment, habitId)
+        // Buscar Documento del Accomp Actual en FB
+        val doc = accompRef.document(accomplishment.id!!) // Se utiliza "!!" porque no se debe llamar a este método con el id nulo
+        // Actualizar
+        doc.set(accompHashMap)
+            .addOnSuccessListener {
+                callback(accomplishment)
+            }
+    }
 }
