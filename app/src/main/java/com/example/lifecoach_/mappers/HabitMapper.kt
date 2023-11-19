@@ -22,8 +22,8 @@ class HabitMapper {
             docId,
             habitHashMap["name"] as String,
             Frequency(
-                habitHashMap["freq_hour"] as Int,
-                habitHashMap["freq_min"] as Int,
+                (habitHashMap["freq_hour"] as Long).toInt(),
+                (habitHashMap["freq_min"] as Long).toInt(),
                 gson.fromJson(habitHashMap["freq_days"] as String, object: TypeToken<MutableList<Int>>(){}.type)
             )
         )
