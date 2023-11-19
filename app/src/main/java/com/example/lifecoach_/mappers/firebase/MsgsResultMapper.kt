@@ -1,6 +1,7 @@
 package com.example.lifecoach_.mappers.firebase
 
 import com.example.lifecoach_.model.messages.MessageApp
+import com.example.lifecoach_.model.messages.TextMessage
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QuerySnapshot
 
@@ -11,9 +12,10 @@ class MsgsResultMapper {
             val data = doc.data
             if (data != null) {
                 msgs.add(
-                    MessageApp(
+                    TextMessage(
                         data["from"] as String == currentUid,
-                        (data["date"] as Timestamp).toDate()
+                        (data["date"] as Timestamp).toDate(),
+                        data["msg"] as String
                     )
                 )
             }
