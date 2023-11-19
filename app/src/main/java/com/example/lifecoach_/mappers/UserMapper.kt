@@ -13,4 +13,19 @@ class UserMapper {
             "picture" to (picRef ?: "")
         )
     }
+
+    fun mapToUser(userMap: Map<String, Any?>,
+                  callback: (User) -> Unit) {
+        val user = User(
+            userMap["uid"] as String,
+            userMap["name"] as String,
+            userMap["username"] as String,
+            userMap["email"] as String,
+            userMap["phone"] as Long
+        )
+
+        // TODO: Descarga de la Foto del Usuario
+
+        callback(user)
+    }
 }
