@@ -3,11 +3,14 @@ package com.example.lifecoach_.services.firebase
 import com.example.lifecoach_.mappers.converters.UserFriendMapper
 import com.example.lifecoach_.model.Friend
 import com.example.lifecoach_.model.messages.MessageApp
+import com.example.lifecoach_.repositories.MsgRepository
 import com.example.lifecoach_.repositories.UserRepository
 
 class FriendsService {
     private val userRepository = UserRepository()
     private val userFriendMapper = UserFriendMapper()
+
+    private val msgRepository = MsgRepository()
 
     fun registerAllFriendsListener(callback: (MutableList<Friend>) -> Unit) {
         userRepository.registerAllUsersListener { users ->
@@ -30,5 +33,9 @@ class FriendsService {
         callback: (MutableList<MessageApp>) -> Unit
     ) {
 
+    }
+
+    fun sendMessage(from: String, to: String, msg: String, callback: () -> Unit) {
+        msgRepository.sendMessage(from, to, msg, callback)
     }
 }
