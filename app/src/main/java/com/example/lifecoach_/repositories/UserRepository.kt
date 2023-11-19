@@ -47,4 +47,13 @@ class UserRepository {
                     }
             }
     }
+
+    fun getAllUsers(callback: (MutableList<User>) -> Unit) {
+        userRef.get()
+            .addOnSuccessListener {
+                // TODO: Mapear todos los documentos en una lista de usuarios
+
+                // TODO: Retornar la lista de usuarios
+            }
+    }
 }
