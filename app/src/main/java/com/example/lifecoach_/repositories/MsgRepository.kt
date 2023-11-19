@@ -46,6 +46,7 @@ class MsgRepository {
             .addSnapshotListener { query, error ->
                 // Mapear todos los mensajes a objetos MessageApp
                 if (query != null) {
+                    Log.i("MSGS", "Se recibieron cambios")
                     val msgs = msgsResultMapper.resultToMessagesApp(query, to)
 
                     // Retornar lista de mensajes
