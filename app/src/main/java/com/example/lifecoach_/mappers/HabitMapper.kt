@@ -90,12 +90,35 @@ class HabitMapper {
 
     fun mapToHabit(docId: String, habitHashMap: Map<String, Any?>): Habit {
         return when (habitHashMap["type"]) {
-            "running" -> mapToGeneralHabit(docId, habitHashMap)
+            "running" -> mapToRunningHabit(docId, habitHashMap)
             "time" -> mapToGeneralHabit(docId, habitHashMap)
             "steps" -> mapToGeneralHabit(docId, habitHashMap)
             "strength" -> mapToGeneralHabit(docId, habitHashMap)
             else -> mapToGeneralHabit(docId, habitHashMap)
         }
+    }
+
+    private fun mapToRunningHabit(
+        docId: String,
+        habitHashMap: Map<String, Any?>
+    ): RunningHabit {
+        val rh = RunningHabit(
+            docId,
+            habitHashMap["name"] as String,
+            Frequency(
+                (habitHashMap["freq_hour"] as Long).toInt(),
+                (habitHashMap["freq_min"] as Long).toInt(),
+                gson.fromJson(habitHashMap["freq_days"] as String, object: TypeToken<MutableList<Int>>(){}.type)
+            ),
+            (habitHashMap["obj"] as Long).toInt()
+        )
+
+        rh.listDistances = gson.fromJson(
+            habitHashMap["distances"] as String,
+            object: TypeToken<MutableList<Int>>(){}.type
+        )
+
+        return rh
     }
 
     private fun mapToGeneralHabit(
