@@ -92,7 +92,7 @@ class HabitMapper {
         return when (habitHashMap["type"]) {
             "running" -> mapToRunningHabit(docId, habitHashMap)
             "time" -> mapToTimeHabit(docId, habitHashMap)
-            "steps" -> mapToGeneralHabit(docId, habitHashMap)
+            "steps" -> mapToStepsHabit(docId, habitHashMap)
             "strength" -> mapToGeneralHabit(docId, habitHashMap)
             else -> mapToGeneralHabit(docId, habitHashMap)
         }
@@ -126,6 +126,22 @@ class HabitMapper {
         habitHashMap: Map<String, Any?>
     ): TimeControlHabit {
         return TimeControlHabit(
+            docId,
+            habitHashMap["name"] as String,
+            Frequency(
+                (habitHashMap["freq_hour"] as Long).toInt(),
+                (habitHashMap["freq_min"] as Long).toInt(),
+                gson.fromJson(habitHashMap["freq_days"] as String, object: TypeToken<MutableList<Int>>(){}.type)
+            ),
+            (habitHashMap["obj"] as Long).toInt()
+        )
+    }
+
+    private fun mapToStepsHabit(
+        docId: String,
+        habitHashMap: Map<String, Any?>
+    ): StepsHabit {
+        return StepsHabit(
             docId,
             habitHashMap["name"] as String,
             Frequency(
