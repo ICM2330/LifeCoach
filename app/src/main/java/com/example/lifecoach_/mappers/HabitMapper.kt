@@ -68,7 +68,9 @@ class HabitMapper {
             "freq_min" to habit.frequency.notiMinute,
             "freq_days" to gson.toJson(habit.frequency.days),
             "uid" to uid,
-            "type" to "time"
+
+            "type" to "time",
+            "obj" to habit.objectiveMins
         )
     }
 
@@ -79,7 +81,10 @@ class HabitMapper {
             "freq_min" to habit.frequency.notiMinute,
             "freq_days" to gson.toJson(habit.frequency.days),
             "uid" to uid,
-            "type" to "running"
+
+            "type" to "running",
+            "obj" to habit.objectiveMins,
+            "distances" to gson.toJson(habit.listDistances)
         )
     }
 
