@@ -37,9 +37,14 @@ class UserRepository {
         picRef: String?,
         callback: () -> Unit
     ) {
-        userRef.document(docId).set(userMapper.userToMap(user, picRef))
-            .addOnSuccessListener {
-                callback()
+        userRef.document(docId).get()
+            .addOnSuccessListener {doc ->
+                userRef.document(docId).set(
+                    userMapper.userToMap(user, doc.data?.get("picture") as String)
+                )
+                    .addOnSuccessListener {
+                        callback()
+                    }
             }
     }
 }
