@@ -28,7 +28,8 @@ class HabitMapper {
             "freq_hour" to habit.frequency.notiHour,
             "freq_min" to habit.frequency.notiMinute,
             "freq_days" to gson.toJson(habit.frequency.days),
-            "uid" to uid
+            "uid" to uid,
+            "type" to "general"
         )
     }
 
@@ -39,7 +40,8 @@ class HabitMapper {
             "freq_hour" to habit.frequency.notiHour,
             "freq_min" to habit.frequency.notiMinute,
             "freq_days" to gson.toJson(habit.frequency.days),
-            "uid" to uid
+            "uid" to uid,
+            "type" to "strength"
         )
     }
 
@@ -50,7 +52,8 @@ class HabitMapper {
             "freq_hour" to habit.frequency.notiHour,
             "freq_min" to habit.frequency.notiMinute,
             "freq_days" to gson.toJson(habit.frequency.days),
-            "uid" to uid
+            "uid" to uid,
+            "type" to "steps"
         )
     }
 
@@ -60,7 +63,8 @@ class HabitMapper {
             "freq_hour" to habit.frequency.notiHour,
             "freq_min" to habit.frequency.notiMinute,
             "freq_days" to gson.toJson(habit.frequency.days),
-            "uid" to uid
+            "uid" to uid,
+            "type" to "time"
         )
     }
 
@@ -70,7 +74,8 @@ class HabitMapper {
             "freq_hour" to habit.frequency.notiHour,
             "freq_min" to habit.frequency.notiMinute,
             "freq_days" to gson.toJson(habit.frequency.days),
-            "uid" to uid
+            "uid" to uid,
+            "type" to "running"
         )
     }
 
