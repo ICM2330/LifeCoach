@@ -1,5 +1,6 @@
 package com.example.lifecoach_.repositories
 
+import android.util.Log
 import com.example.lifecoach_.mappers.firebase.MsgsResultMapper
 import com.example.lifecoach_.model.messages.MessageApp
 import com.google.firebase.firestore.Filter
@@ -49,6 +50,13 @@ class MsgRepository {
 
                     // Retornar lista de mensajes
                     callback(msgs)
+                } else {
+                    Log.i("MSGS", "La consulta devolvió vacía")
+                }
+
+                if (error != null) {
+                    Log.i("MSGS", "Ocurrió un error:")
+                    error.printStackTrace()
                 }
         }
     }

@@ -2,6 +2,7 @@ package com.example.lifecoach_.activities.friends
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,7 @@ class ChatActivity : AppCompatActivity() {
         binding.cmessages.adapter = adapter
 
         messagesController.registerMessagesListener(friend) {msgs ->
+            Log.i("MSGS", "Updating Messages")
             binding.cmessages.adapter = MessageAdapter(
                 baseContext,
                 msgs
