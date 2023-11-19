@@ -47,9 +47,11 @@ class HabitRepository {
     }
 
     fun registerUpdateListener(uid: String, callback: (MutableList<Habit>) -> Unit) {
-        habitsRef.whereEqualTo("uid", uid).get()
-            .addOnSuccessListener {query ->
-                habitsResultMapper.resultToHabitList(query, callback)
+        habitsRef.whereEqualTo("uid", uid)
+            .addSnapshotListener { query, error ->
+                if (query != null) {
+                    habitsResultMapper.resultToHabitList(query, callback)
+                }
             }
     }
 }
