@@ -2,6 +2,8 @@ package com.example.lifecoach_.activities.friends
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.adapters.MessageAdapter
 import com.example.lifecoach_.controllers.activities_controllers.activity_chat.ChatMessagesController
@@ -38,6 +40,22 @@ class ChatActivity : AppCompatActivity() {
                 baseContext,
                 msgs
             )
+        }
+
+        binding.msgText.setOnEditorActionListener { _, actionId, _ ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                messagesController.sendMessage(binding.msgText.text.toString(), friend) {
+                    Toast.makeText(
+                        baseContext,
+                        "Mensaje enviado",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                handled = true
+            }
+
+            return@setOnEditorActionListener handled
         }
     }
 }

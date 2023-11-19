@@ -60,15 +60,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="#D5D5D5"
-                android:paddingBottom="90dp" />
+                android:paddingBottom="90dp" >
 
-            <com.google.android.material.textfield.TextInputEditText
+            </ListView>
+
+            <EditText
+                android:id="@+id/msg_text"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
                 android:layout_margin="20dp"
                 android:background="@color/white"
-                android:hint="escribe un mensaje"
+                android:hint="Escribe un mensaje .."
                 android:paddingHorizontal="20dp" />
         </FrameLayout>
 

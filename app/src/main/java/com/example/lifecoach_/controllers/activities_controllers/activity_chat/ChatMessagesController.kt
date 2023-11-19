@@ -22,4 +22,8 @@ class ChatMessagesController {
             }
         }
     }
+
+    fun sendMessage(message: String, to: Friend, callback: () -> Unit) {
+
+    }
 }
