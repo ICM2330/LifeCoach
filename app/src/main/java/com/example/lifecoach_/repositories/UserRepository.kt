@@ -55,10 +55,10 @@ class UserRepository {
         userRef.get()
             .addOnSuccessListener {query ->
                 // Mapear todos los documentos en una lista de usuarios
-                val users = usersResultMapper.resultToUsers(query)
-
-                // Retornar la lista de usuarios
-                callback(users)
+                usersResultMapper.resultToUsers(query) {users ->
+                    // Retornar la lista de usuarios
+                    callback(users)
+                }
             }
     }
 }
