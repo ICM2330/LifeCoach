@@ -39,4 +39,14 @@ class AccompRepository {
                 callback(accomplishment)
             }
     }
+
+    fun registerListenerFor(
+        habitId: String,
+        callback: (accomplishment: MutableList<Accomplishment>) -> Unit
+    ) {
+        accompRef.whereEqualTo("habit_id", habitId).get()
+            .addOnSuccessListener {
+                // TODO: Mapea todos los Accomps en Objetos y Retorna
+            }
+    }
 }
