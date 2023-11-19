@@ -8,8 +8,8 @@ class FriendsService {
     private val userRepository = UserRepository()
     private val userFriendMapper = UserFriendMapper()
 
-    fun getAllFriends(callback: (MutableList<Friend>) -> Unit) {
-        userRepository.getAllUsers {users ->
+    fun registerAllFriendsListener(callback: (MutableList<Friend>) -> Unit) {
+        userRepository.registerAllUsersListener { users ->
             // Mapear todos los usuarios a amigos
             val friends = mutableListOf<Friend>()
             users.forEach {user ->

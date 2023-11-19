@@ -7,6 +7,6 @@ class ChatMenuDataController {
     private val friendsService = FriendsService()
 
     fun registerFriendsListener(callback: (MutableList<Friend>) -> Unit) {
-        friendsService.getAllFriends(callback)
+        friendsService.registerAllFriendsListener(callback)
     }
 }
