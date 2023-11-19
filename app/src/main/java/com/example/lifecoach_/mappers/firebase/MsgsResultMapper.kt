@@ -1,5 +1,6 @@
 package com.example.lifecoach_.mappers.firebase
 
+import android.util.Log
 import com.example.lifecoach_.model.messages.MessageApp
 import com.example.lifecoach_.model.messages.TextMessage
 import com.google.firebase.Timestamp
@@ -11,6 +12,7 @@ class MsgsResultMapper {
         query.documents.forEach { doc ->
             val data = doc.data
             if (data != null) {
+                Log.i("MSGS", "Intentando Mapear $data")
                 msgs.add(
                     TextMessage(
                         data["from"] as String == currentUid,

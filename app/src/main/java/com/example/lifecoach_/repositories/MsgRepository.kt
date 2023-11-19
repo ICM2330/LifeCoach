@@ -31,7 +31,7 @@ class MsgRepository {
         to: String,
         callback: (MutableList<MessageApp>) -> Unit
     ) {
-        msgRef.where(
+        msgRef/*.where(
             Filter.or(
                 Filter.and(
                     Filter.equalTo("from", from),
@@ -42,7 +42,7 @@ class MsgRepository {
                     Filter.equalTo("to", from)
                 )
             )
-        ).orderBy("date", Query.Direction.ASCENDING)
+        ).orderBy("date", Query.Direction.ASCENDING)*/
             .addSnapshotListener { query, error ->
                 // Mapear todos los mensajes a objetos MessageApp
                 if (query != null) {
