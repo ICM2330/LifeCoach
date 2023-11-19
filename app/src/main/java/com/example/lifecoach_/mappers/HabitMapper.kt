@@ -89,6 +89,15 @@ class HabitMapper {
     }
 
     fun mapToHabit(docId: String, habitHashMap: Map<String, Any?>): Habit {
+        return when {
+            else -> mapToGeneralHabit(docId, habitHashMap)
+        }
+    }
+
+    private fun mapToGeneralHabit(
+        docId: String,
+        habitHashMap: Map<String, Any?>
+    ): Habit {
         return Habit(
             docId,
             habitHashMap["name"] as String,
