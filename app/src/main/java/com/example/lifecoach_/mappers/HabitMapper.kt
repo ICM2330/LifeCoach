@@ -7,12 +7,13 @@ import com.google.gson.reflect.TypeToken
 
 class HabitMapper {
     private val gson = Gson()
-    fun habitToMap(habit: Habit): HashMap<String, Any?> {
+    fun habitToMap(habit: Habit, uid: String): HashMap<String, Any?> {
         return hashMapOf<String, Any?>(
             "name" to habit.name,
             "freq_hour" to habit.frequency.notiHour,
             "freq_min" to habit.frequency.notiMinute,
-            "freq_days" to gson.toJson(habit.frequency.days)
+            "freq_days" to gson.toJson(habit.frequency.days),
+            "uid" to uid
         )
     }
 

@@ -53,7 +53,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 val intent = result.data
                 val habit = intent?.getSerializableExtra("habit") as Habit
                 // Crea el nuevo hábito en la base de datos
-                dataController.addHabit(habit) {
+                dataController.addHabit(habit, userTest) {
                     // Agrega el hábito con el ID generado por Firebase
                     userTest.habits.add(it)
                     updateHabits()
@@ -67,7 +67,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 val intent = result.data
                 val habit = intent?.getSerializableExtra("habit") as Habit
                 // Actualiza el hábito con el ID del objeto
-                dataController.updateHabit(habit) {
+                dataController.updateHabit(habit, userTest) {
                     // Reemplaza con el hábito actualizado
                     userTest.habits[selectedHabit] = habit
                     updateHabits()

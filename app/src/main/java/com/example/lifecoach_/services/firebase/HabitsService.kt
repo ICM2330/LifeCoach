@@ -1,5 +1,7 @@
 package com.example.lifecoach_.services.firebase
 
+import android.util.Log
+import com.example.lifecoach_.model.User
 import com.example.lifecoach_.model.habits.Accomplishment
 import com.example.lifecoach_.model.habits.Habit
 import com.example.lifecoach_.repositories.AccompRepository
@@ -9,11 +11,15 @@ class HabitsService {
     private val habitRepository: HabitRepository = HabitRepository()
     private val accompRepository: AccompRepository = AccompRepository()
 
-    fun addOrUpdateHabit(habit: Habit, callback: (Habit) -> Unit) {
-        if (habit.id != null) {
-            updateHabit(habit, callback)
+    fun addOrUpdateHabit(habit: Habit, user: User, callback: (Habit) -> Unit) {
+        if (user.uid != null) {
+            if (habit.id != null) {
+                updateHabit(habit, user.uid!!, callback)
+            } else {
+                addHabit(habit, user.uid!!, callback)
+            }
         } else {
-            addHabit(habit, callback)
+            Log.e("HABITSAVE", "No se pudo guardar el hábito debido a que no se tenía el ID del usuario")
         }
     }
 
@@ -21,9 +27,9 @@ class HabitsService {
         habitRepository.registerUpdateListener(uid, callback)
     }
 
-    private fun addHabit(habit: Habit, callback: (Habit) -> Unit) {
+    private fun addHabit(habit: Habit, uid: String, callback: (Habit) -> Unit) {
         // Agrega el Hábito
-        habitRepository.addHabit(habit) {habitWithID: Habit ->
+        habitRepository.addHabit(habit, uid) {habitWithID: Habit ->
             // Agrega todos los cumplimientos (Accomplishment)s relacionados
             habitWithID.id?.let {hid: String ->
                 addOrUpdateAccomps(habitWithID.accomplishment, hid)
@@ -38,9 +44,9 @@ class HabitsService {
         }
     }
 
-    private fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
+    private fun updateHabit(habit: Habit, uid: String, callback: (Habit) -> Unit) {
         // Actualizar Documento del Habito
-        habitRepository.updateHabit(habit) {habitUpdate: Habit ->
+        habitRepository.updateHabit(habit, uid) {habitUpdate: Habit ->
             addOrUpdateAccomps(habitUpdate.accomplishment, habitUpdate.id!!) {
                     updatedAccomps: MutableList<Accomplishment> ->
                 habitUpdate.accomplishment = updatedAccomps

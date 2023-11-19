@@ -15,10 +15,10 @@ class HabitRepository {
     private val habitMapper: HabitMapper = HabitMapper()
     private val habitsResultMapper = HabitsResultMapper()
 
-    fun addHabit(habit: Habit, callback: (Habit) -> Unit) {
+    fun addHabit(habit: Habit, uid: String, callback: (Habit) -> Unit) {
         // Mapea el Habito a un HashMap
         Log.i("HABITSTORE", "Mapeando Habito ...")
-        val habitHashMap = habitMapper.habitToMap(habit)
+        val habitHashMap = habitMapper.habitToMap(habit, uid)
 
         // Carga el HashMap en Firebase
         Log.i("HABITSTORE", "Cargando HashMap en Firestore")
@@ -31,9 +31,9 @@ class HabitRepository {
             }
     }
 
-    fun updateHabit(habit: Habit, callback: (Habit) -> Unit) {
+    fun updateHabit(habit: Habit, uid: String, callback: (Habit) -> Unit) {
         // Mapear HashMap del Habito
-        val habitHashMap = habitMapper.habitToMap(habit)
+        val habitHashMap = habitMapper.habitToMap(habit, uid)
 
         // Buscar Documento Actual en FireStore
         if (habit.id != null) {
