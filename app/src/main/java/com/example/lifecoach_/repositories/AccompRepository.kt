@@ -1,6 +1,7 @@
 package com.example.lifecoach_.repositories
 
 import com.example.lifecoach_.mappers.AccompMapper
+import com.example.lifecoach_.mappers.firebase.AccompsResultMapper
 import com.example.lifecoach_.model.habits.Accomplishment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -10,6 +11,7 @@ class AccompRepository {
     private val accompRef = db.collection("accomps")
 
     private val accompMapper = AccompMapper()
+    private val accompsResultMapper = AccompsResultMapper()
 
     fun addAccomp(accomplishment: Accomplishment, habitId: String, callback: (accomplishment: Accomplishment) -> Unit) {
         // Mapear Accomplishment con ID
@@ -45,8 +47,9 @@ class AccompRepository {
         callback: (accomplishment: MutableList<Accomplishment>) -> Unit
     ) {
         accompRef.whereEqualTo("habit_id", habitId).get()
-            .addOnSuccessListener {
-                // TODO: Mapea todos los Accomps en Objetos y Retorna
+            .addOnSuccessListener {query ->
+                // Mapea todos los Accomps en Objetos y Retorna
+                accompsResultMapper.resultToAccompsList(query, callback)
             }
     }
 }
