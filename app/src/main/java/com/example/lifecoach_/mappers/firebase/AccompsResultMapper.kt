@@ -12,9 +12,13 @@ class AccompsResultMapper {
     ): MutableList<Accomplishment> {
         val accomps = mutableListOf<Accomplishment>()
         querySnapshot.documents.forEach { doc ->
-            // TODO: Mapea de Documento a Accomplisment
+            // Mapea de Documento a Accomplisment
+            val accomp = doc.data?.let { accompMapper.mapToAccomp(doc.id, it) }
 
-            // TODO: Agrega el Accomplishment a la Lista
+            // Agrega el Accomplishment a la Lista
+            if (accomp != null) {
+                accomps.add(accomp)
+            }
         }
 
         return accomps
