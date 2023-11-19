@@ -7,14 +7,27 @@ import com.google.firebase.firestore.QuerySnapshot
 class UsersResultMapper {
     private val userMapper = UserMapper()
 
-    fun resultToUsers(query: QuerySnapshot): MutableList<User> {
+    fun resultToUsers(
+        query: QuerySnapshot,
+        callback: (MutableList<User>) -> Unit
+    ) {
         val users = mutableListOf<User>()
-        query.documents.forEach {
-            // TODO: Mapear Documento a Usuario
+        query.documents.forEach {doc ->
+            // Mapear Documento a Usuario
+            doc.data?.let {userMap ->
+                userMapper.mapToUser(userMap) {user ->
+                    // Agregar Usuario a la Lista
+                    users.add(user)
 
-            // TODO: Agregar Usuario a la Lista
+                    if (query.documents.size == users.size) {
+                        callback(users)
+                    }
+                }
+            }
         }
 
-        return users
+        query.documents.ifEmpty {
+            callback(users)
+        }
     }
 }
