@@ -2,8 +2,10 @@ package com.example.lifecoach_.repositories
 
 import com.example.lifecoach_.model.messages.MessageApp
 import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.Date
 
 class MsgRepository {
     private val db = Firebase.firestore
@@ -13,7 +15,8 @@ class MsgRepository {
         msgRef.add(hashMapOf(
             "from" to from,
             "to" to to,
-            "msg" to msg
+            "msg" to msg,
+            "date" to Date()
         )).addOnSuccessListener {
             callback()
         }
@@ -35,7 +38,8 @@ class MsgRepository {
                     Filter.equalTo("to", from)
                 )
             )
-        ).addSnapshotListener { query, error ->
+        ).orderBy("date", Query.Direction.ASCENDING)
+            .addSnapshotListener { query, error ->
             // TODO: Mapear todos los mensajes a objetos MessageApp
 
             // TODO: Retornar lista de mensajes
