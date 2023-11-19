@@ -93,7 +93,7 @@ class HabitMapper {
             "running" -> mapToRunningHabit(docId, habitHashMap)
             "time" -> mapToTimeHabit(docId, habitHashMap)
             "steps" -> mapToStepsHabit(docId, habitHashMap)
-            "strength" -> mapToGeneralHabit(docId, habitHashMap)
+            "strength" -> mapToStrengthHabit(docId, habitHashMap)
             else -> mapToGeneralHabit(docId, habitHashMap)
         }
     }
@@ -150,6 +150,22 @@ class HabitMapper {
                 gson.fromJson(habitHashMap["freq_days"] as String, object: TypeToken<MutableList<Int>>(){}.type)
             ),
             (habitHashMap["obj"] as Long).toInt()
+        )
+    }
+
+    private fun mapToStrengthHabit(
+        docId: String,
+        habitHashMap: Map<String, Any?>
+    ): StrengthHabit {
+        return StrengthHabit(
+            docId,
+            habitHashMap["name"] as String,
+            Frequency(
+                (habitHashMap["freq_hour"] as Long).toInt(),
+                (habitHashMap["freq_min"] as Long).toInt(),
+                gson.fromJson(habitHashMap["freq_days"] as String, object: TypeToken<MutableList<Int>>(){}.type)
+            ),
+            habitHashMap["muscular_group"] as String
         )
     }
 
