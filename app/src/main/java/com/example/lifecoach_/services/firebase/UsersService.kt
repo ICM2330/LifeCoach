@@ -18,7 +18,7 @@ class UsersService {
                 saveNewUser(user, picUri, callback)
             } else {
                 Log.i("REGISTER", "User ${user.email} found at $docId")
-                updateUser(docId, user, picUri, callback)
+                updateUser(docId, user, callback)
             }
         }
     }
@@ -40,16 +40,9 @@ class UsersService {
     private fun updateUser(
         docId: String,
         user: User,
-        picUri: Uri?,
         callback: () -> Unit
     ) {
-        if (picUri != null) {
-            picRepository.saveImage(picUri) {
-                userRepository.updateUser(docId, user, it, callback)
-            }
-        } else {
-            userRepository.updateUser(docId, user, null, callback)
-        }
+        userRepository.updateUser(docId, user, null, callback)
     }
 
     private fun tryFindUser(
