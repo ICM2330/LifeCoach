@@ -47,7 +47,6 @@ class HabitRepository {
     }
 
     fun registerUpdateListener(uid: String, callback: (MutableList<Habit>) -> Unit) {
-        val habits = mutableListOf<Habit>()
         habitsRef.whereEqualTo("uid", uid).get()
             .addOnSuccessListener {query ->
                 habitsResultMapper.resultToHabitList(query, callback)

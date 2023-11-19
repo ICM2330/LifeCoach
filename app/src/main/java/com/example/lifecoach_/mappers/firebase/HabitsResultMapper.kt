@@ -11,14 +11,20 @@ class HabitsResultMapper {
         query: QuerySnapshot,
         callback: (MutableList<Habit>) -> Unit
     ) {
+        val habits = mutableListOf<Habit>()
         query.documents.forEach { doc ->
             // Mapear HashMap a Objeto
             val habit = doc.data?.let { habitMapper.mapToHabit(doc.id, it) }
 
-            // TODO: Agregar a la Lista
+            // Agregar a la Lista
+            if (habit != null) {
+                habits.add(habit)
+            }
+
             // TODO: Escuchar a Actualización de Accomps
         }
 
-        // TODO: Retornar la Lista
+        // Retornar la Lista
+        callback(habits)
     }
 }
