@@ -49,7 +49,8 @@ class AccompRepository {
         accompRef.whereEqualTo("habit_id", habitId).get()
             .addOnSuccessListener {query ->
                 // Mapea todos los Accomps en Objetos y Retorna
-                accompsResultMapper.resultToAccompsList(query, callback)
+                val accomps = accompsResultMapper.resultToAccompsList(query)
+                callback(accomps)
             }
     }
 }
