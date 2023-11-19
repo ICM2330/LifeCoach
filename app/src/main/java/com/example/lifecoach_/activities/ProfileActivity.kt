@@ -19,6 +19,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.lifecoach_.databinding.ActivityProfileBinding
 import com.example.lifecoach_.model.User
+import com.example.lifecoach_.services.firebase.UsersService
 import java.io.File
 
 class ProfileActivity : AppCompatActivity() {
@@ -93,6 +94,8 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    private val usersService = UsersService()
+
     private fun uploadInfo(binding: ActivityProfileBinding, user: User) {
         binding.uploadInfoProfileButton.setOnClickListener {
             if (blankSpaces()) {
@@ -107,7 +110,10 @@ class ProfileActivity : AppCompatActivity() {
                 user.email = binding.emailProfile.text.toString()
                 user.phone = binding.phoneProfile.text.toString().toLong()
 
-                Toast.makeText(baseContext, "Datos cambiados con éxito", Toast.LENGTH_SHORT).show()
+                usersService.registerUser(user, Uri.parse(user.picture)) {
+                    Toast.makeText(baseContext, "Datos cambiados con éxito",
+                        Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
