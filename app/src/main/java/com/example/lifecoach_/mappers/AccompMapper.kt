@@ -1,6 +1,7 @@
 package com.example.lifecoach_.mappers
 
 import com.example.lifecoach_.model.habits.Accomplishment
+import com.google.firebase.Timestamp
 import java.util.Date
 
 class AccompMapper {
@@ -14,7 +15,7 @@ class AccompMapper {
 
     fun mapToAccomp(docId: String, accompMap: Map<String, Any?>): Accomplishment {
         val accomp = Accomplishment(
-            accompMap["date"] as Date,
+            (accompMap["date"] as Timestamp).toDate(),
             (accompMap["amount"] as Long).toInt()
         )
 
