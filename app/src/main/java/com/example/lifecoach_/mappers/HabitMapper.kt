@@ -16,7 +16,7 @@ class HabitMapper {
         )
     }
 
-    fun mapToHabit(docId: String, habitHashMap: HashMap<String, Any?>): Habit {
+    fun mapToHabit(docId: String, habitHashMap: Map<String, Any?>): Habit {
         return Habit(
             docId,
             habitHashMap["name"] as String,
