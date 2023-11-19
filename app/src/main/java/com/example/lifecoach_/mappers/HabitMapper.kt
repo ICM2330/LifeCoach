@@ -55,7 +55,9 @@ class HabitMapper {
             "freq_min" to habit.frequency.notiMinute,
             "freq_days" to gson.toJson(habit.frequency.days),
             "uid" to uid,
-            "type" to "steps"
+
+            "type" to "steps",
+            "obj" to habit.objectiveSteps
         )
     }
 
