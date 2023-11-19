@@ -89,7 +89,11 @@ class HabitMapper {
     }
 
     fun mapToHabit(docId: String, habitHashMap: Map<String, Any?>): Habit {
-        return when {
+        return when (habitHashMap["type"]) {
+            "running" -> mapToGeneralHabit(docId, habitHashMap)
+            "time" -> mapToGeneralHabit(docId, habitHashMap)
+            "steps" -> mapToGeneralHabit(docId, habitHashMap)
+            "strength" -> mapToGeneralHabit(docId, habitHashMap)
             else -> mapToGeneralHabit(docId, habitHashMap)
         }
     }
