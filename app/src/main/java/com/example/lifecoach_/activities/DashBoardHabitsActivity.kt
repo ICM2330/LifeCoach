@@ -105,6 +105,14 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // Set click listeners
         manageButtons(userTest)
+
+        // Set Firebase Data Update Listeners
+        userTest.uid?.let { uid -> dataController.updatesListener(uid) {
+            habits ->
+                userTest.habits = habits
+                updateHabits()
+            }
+        }
     }
 
     private lateinit var enableDarkMode: () -> Unit
