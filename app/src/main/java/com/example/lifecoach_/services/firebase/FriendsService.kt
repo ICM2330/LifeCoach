@@ -2,6 +2,7 @@ package com.example.lifecoach_.services.firebase
 
 import com.example.lifecoach_.mappers.converters.UserFriendMapper
 import com.example.lifecoach_.model.Friend
+import com.example.lifecoach_.model.messages.MessageApp
 import com.example.lifecoach_.repositories.UserRepository
 
 class FriendsService {
@@ -21,5 +22,13 @@ class FriendsService {
             // Retornar Lista de Amigos
             callback(friends)
         }
+    }
+
+    fun registerMessageListener(
+        from: String,
+        to: String,
+        callback: (MutableList<MessageApp>) -> Unit
+    ) {
+
     }
 }
