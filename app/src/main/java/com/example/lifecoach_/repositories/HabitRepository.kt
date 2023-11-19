@@ -2,6 +2,7 @@ package com.example.lifecoach_.repositories
 
 import android.util.Log
 import com.example.lifecoach_.mappers.HabitMapper
+import com.example.lifecoach_.mappers.firebase.HabitsResultMapper
 import com.example.lifecoach_.model.habits.Habit
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -12,6 +13,7 @@ class HabitRepository {
     private val habitsRef = db.collection("habits")
 
     private val habitMapper: HabitMapper = HabitMapper()
+    private val habitsResultMapper = HabitsResultMapper()
 
     fun addHabit(habit: Habit, callback: (Habit) -> Unit) {
         // Mapea el Habito a un HashMap
@@ -42,5 +44,13 @@ class HabitRepository {
         } else {
             Log.e("HABITSAVE", "No se puede actualizar un hábito sin su id")
         }
+    }
+
+    fun registerUpdateListener(uid: String, callback: (MutableList<Habit>) -> Unit) {
+        val habits = mutableListOf<Habit>()
+        habitsRef.whereEqualTo("uid", uid).get()
+            .addOnSuccessListener {query ->
+                habitsResultMapper.resultToHabitList(query, callback)
+            }
     }
 }

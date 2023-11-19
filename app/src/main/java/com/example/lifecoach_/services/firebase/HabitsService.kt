@@ -17,6 +17,10 @@ class HabitsService {
         }
     }
 
+    fun registerUpdateListener(uid: String, callback: (MutableList<Habit>) -> Unit) {
+        habitRepository.registerUpdateListener(uid, callback)
+    }
+
     private fun addHabit(habit: Habit, callback: (Habit) -> Unit) {
         // Agrega el Hábito
         habitRepository.addHabit(habit) {habitWithID: Habit ->
