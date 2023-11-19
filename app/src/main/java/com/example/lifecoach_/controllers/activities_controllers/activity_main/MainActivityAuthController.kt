@@ -76,6 +76,7 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
         Log.i("LOGIN", "Recuperados datos del intent")
 
         val successLogin = {
+            user?.uid = auth.currentUser?.uid
             callback(user)
         }
 
