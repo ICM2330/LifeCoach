@@ -1,5 +1,6 @@
 package com.example.lifecoach_.repositories
 
+import com.example.lifecoach_.mappers.firebase.MsgsResultMapper
 import com.example.lifecoach_.model.messages.MessageApp
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.Query
@@ -10,6 +11,8 @@ import java.util.Date
 class MsgRepository {
     private val db = Firebase.firestore
     private val msgRef = db.collection("msgs")
+
+    private val msgsResultMapper = MsgsResultMapper()
 
     fun sendMessage(from: String, to: String, msg: String, callback: () -> Unit) {
         msgRef.add(hashMapOf(
@@ -40,9 +43,13 @@ class MsgRepository {
             )
         ).orderBy("date", Query.Direction.ASCENDING)
             .addSnapshotListener { query, error ->
-            // TODO: Mapear todos los mensajes a objetos MessageApp
+                // Mapear todos los mensajes a objetos MessageApp
+                if (query != null) {
+                    val msgs = msgsResultMapper.resultToMessagesApp(query, to)
 
-            // TODO: Retornar lista de mensajes
+                    // Retornar lista de mensajes
+                    callback(msgs)
+                }
         }
     }
 }

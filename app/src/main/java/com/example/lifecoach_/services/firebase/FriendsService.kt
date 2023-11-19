@@ -32,7 +32,7 @@ class FriendsService {
         to: String,
         callback: (MutableList<MessageApp>) -> Unit
     ) {
-
+        msgRepository.registerMessageListener(from, to, callback)
     }
 
     fun sendMessage(from: String, to: String, msg: String, callback: () -> Unit) {
