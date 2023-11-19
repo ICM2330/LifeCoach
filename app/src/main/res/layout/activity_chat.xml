@@ -66,6 +66,10 @@
 
             <EditText
                 android:id="@+id/msg_text"
+
+                android:maxLines="1"
+                android:inputType="text"
+
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
