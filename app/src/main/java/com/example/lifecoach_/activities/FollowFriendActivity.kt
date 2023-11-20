@@ -1,25 +1,45 @@
 package com.example.lifecoach_.activities
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.IntentSender
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.location.Location
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.lifecoach_.R
 import com.example.lifecoach_.databinding.ActivityFollowFriendBinding
 import com.example.lifecoach_.model.Friend
 import com.example.lifecoach_.model.User
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.Priority
+import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.maps.DirectionsApi
@@ -132,5 +152,123 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             return distance.toDouble()
         }
         return 0.0
+    }
+
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationClient.requestLocationUpdates(
+                locationRequest, locationCallback, Looper.getMainLooper()
+            )
+        }
+    }
+
+    private fun stopLocationUpdates() {
+        locationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                baseContext, android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            if (shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(
+                    baseContext,
+                    "You must grant location permission to see the map and receive updates.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            getPermissionLocation.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            startLocationUpdates()
+        }
+    }
+
+    private val locationRequestCode = 1001
+
+    private fun showLocationPermissionDialog(){
+        if (!isLocationEnabled()){
+            val alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("Permiso de Ubicación")
+            alertDialog.setMessage("Localización no encendida, enciendela para usar la aplicación con sus funcionalidades")
+            alertDialog.setPositiveButton("Configuración") { _, _ ->
+                val intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivityForResult(intent, locationRequestCode)
+            }
+            alertDialog.setNegativeButton("Cancelar") { dialog, _ ->
+                // Show the last location of the friend
+                if (friendLastLatLng != null) {
+                    //TODO
+                }
+                dialog.cancel()
+            }
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == locationRequestCode) {
+            if (isLocationEnabled()) {
+                showLocationPermissionDialog()
+            } else {
+                Toast.makeText(this, "Location is still disabled.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun locationSettings() {
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val client: SettingsClient = LocationServices.getSettingsClient(this)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+        task.addOnSuccessListener {
+            checkLocationPermission()
+        }
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                // Show the user a dialog to change location settings
+                try {
+                    showLocationPermissionDialog()
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error
+                }
+            }
+        }
+    }
+
+    private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
+        val vectorDrawable: Drawable = ContextCompat.getDrawable(context, vectorResId)!!
+        vectorDrawable.setBounds(
+            0,
+            0,
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight
+        )
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        locationSettings()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
     }
 }
