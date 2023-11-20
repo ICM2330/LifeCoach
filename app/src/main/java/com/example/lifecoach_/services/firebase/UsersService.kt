@@ -18,9 +18,24 @@ class UsersService {
                 saveNewUser(user, picUri, callback)
             } else {
                 Log.i("REGISTER", "User ${user.email} found at $docId")
-                updateUser(docId, user, callback)
+                updateUserDocument(docId, user, null, callback)
             }
         }
+    }
+
+    fun updateUser(user: User, picUri: Uri?, callback: () -> Unit) {
+        tryFindUser(user) {docId ->
+            if (docId == null) {
+                saveNewUser(user, picUri, callback)
+            } else {
+                updateUserDocument(docId, user, picUri, callback)
+            }
+        }
+    }
+
+    fun userListener(uid: String, picDest: Uri?, callback: (User?) -> Unit) {
+        Log.i("USERIMAGE", "Registering listener")
+        userRepository.registerSingleUserListener(uid, picDest, callback)
     }
 
     private fun saveNewUser(
@@ -37,12 +52,19 @@ class UsersService {
         }
     }
 
-    private fun updateUser(
+    private fun updateUserDocument(
         docId: String,
         user: User,
+        picUri: Uri?,
         callback: () -> Unit
     ) {
-        userRepository.updateUser(docId, user, null, callback)
+        if (picUri != null) {
+            picRepository.saveImage(picUri) {picRef ->
+                userRepository.updateUser(docId, user, picRef, callback)
+            }
+        } else {
+            userRepository.updateUser(docId, user, null, callback)
+        }
     }
 
     private fun tryFindUser(

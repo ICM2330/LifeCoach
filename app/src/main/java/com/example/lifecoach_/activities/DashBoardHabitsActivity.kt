@@ -27,6 +27,7 @@ import com.example.lifecoach_.activities.habits.view.StepHabitViewActivity
 import com.example.lifecoach_.activities.habits.view.TimeHabitViewActivity
 import com.example.lifecoach_.adapters.HabitListViewAdapter
 import com.example.lifecoach_.controllers.activities_controllers.activity_dashboard.DashBoardHabitsDataController
+import com.example.lifecoach_.controllers.activities_controllers.activity_dashboard.DashBoardUserController
 import com.example.lifecoach_.databinding.ActivityDashBoardHabitsBinding
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.model.habits.Habit
@@ -77,6 +78,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
     private val dataController: DashBoardHabitsDataController =
         DashBoardHabitsDataController()
+    private lateinit var userController: DashBoardUserController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //Fill the info. with the login activity
@@ -97,8 +99,18 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
 
-        // Update photo
-        updatePhoto()
+        userController = DashBoardUserController(baseContext, filesDir)
+
+        userTest.uid?.let {uid ->
+            userController.updatePictureListener(uid) {
+                newUser ->
+                if (newUser != null) {
+                    userTest = newUser
+                    // Update photo
+                    updatePhoto()
+                }
+            }
+        }
 
         // Show habits
         updateHabits()

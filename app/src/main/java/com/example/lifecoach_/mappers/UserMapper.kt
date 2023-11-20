@@ -1,8 +1,12 @@
 package com.example.lifecoach_.mappers
 
+import android.net.Uri
 import com.example.lifecoach_.model.User
+import com.example.lifecoach_.repositories.PicRepository
 
 class UserMapper {
+    private val picRepository = PicRepository()
+
     fun userToMap(user: User, picRef: String?): HashMap<String, Any?> {
         return hashMapOf<String, Any?>(
             "uid" to user.uid,
@@ -15,6 +19,7 @@ class UserMapper {
     }
 
     fun mapToUser(userMap: Map<String, Any?>,
+                  picDest: Uri?,
                   callback: (User) -> Unit) {
         val user = User(
             userMap["uid"] as String,
@@ -24,8 +29,15 @@ class UserMapper {
             userMap["phone"] as Long
         )
 
-        // TODO: Descarga de la Foto del Usuario
+        if (picDest != null) {
+            picRepository.downloadImage(userMap["picture"] as String, picDest) {
+                    picUri ->
+                user.picture = picUri
 
-        callback(user)
+                callback(user)
+            }
+        } else {
+            callback(user)
+        }
     }
 }

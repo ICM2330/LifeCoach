@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
+import com.example.lifecoach_.controllers.activities_controllers.activity_profile.ProfileActivityUploadController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.lifecoach_.databinding.ActivityProfileBinding
@@ -25,6 +26,9 @@ import java.io.File
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     private var user: User? = null
+
+    private lateinit var uploadController:
+            ProfileActivityUploadController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,8 @@ class ProfileActivity : AppCompatActivity() {
 
         //Instructions of buttons
         manageButtons(binding, userProof)
+
+        uploadController = ProfileActivityUploadController(baseContext)
     }
 
     private fun fillInformation(binding: ActivityProfileBinding, user: User) {
@@ -94,8 +100,6 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private val usersService = UsersService()
-
     private fun uploadInfo(binding: ActivityProfileBinding, user: User) {
         binding.uploadInfoProfileButton.setOnClickListener {
             if (blankSpaces()) {
@@ -110,10 +114,7 @@ class ProfileActivity : AppCompatActivity() {
                 user.email = binding.emailProfile.text.toString()
                 user.phone = binding.phoneProfile.text.toString().toLong()
 
-                usersService.registerUser(user, Uri.parse(user.picture)) {
-                    Toast.makeText(baseContext, "Datos cambiados con éxito",
-                        Toast.LENGTH_SHORT).show()
-                }
+                uploadController.updateUser(user)
             }
         }
     }

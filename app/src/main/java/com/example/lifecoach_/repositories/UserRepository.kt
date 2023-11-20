@@ -1,5 +1,7 @@
 package com.example.lifecoach_.repositories
 
+import android.net.Uri
+import android.util.Log
 import com.example.lifecoach_.mappers.UserMapper
 import com.example.lifecoach_.mappers.firebase.UsersResultMapper
 import com.example.lifecoach_.model.User
@@ -48,6 +50,25 @@ class UserRepository {
                     .addOnSuccessListener {
                         callback()
                     }
+            }
+    }
+
+    fun registerSingleUserListener(
+        uid: String,
+        picDest: Uri?,
+        callback: (User?) -> Unit
+    ) {
+        userRef.whereEqualTo("uid", uid)
+            .addSnapshotListener { value, _ ->
+                Log.i("USERIMAGE", "User update received")
+                val userMap = value?.documents?.get(0)?.data
+                if (userMap != null) {
+                    userMapper.mapToUser(userMap, picDest) {user ->
+                        callback(user)
+                    }
+                } else {
+                    callback(null)
+                }
             }
     }
 
