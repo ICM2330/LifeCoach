@@ -8,9 +8,9 @@ import com.example.lifecoach_.model.Friend
 import com.example.lifecoach_.model.User
 
 class FollowFriendActivity : AppCompatActivity() {
-
     private lateinit var binding : ActivityFollowFriendBinding
     private lateinit var userFriend : User
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFollowFriendBinding.inflate(layoutInflater)
