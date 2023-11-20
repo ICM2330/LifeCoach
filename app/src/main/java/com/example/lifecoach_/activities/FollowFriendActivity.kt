@@ -30,6 +30,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.Priority
 import com.google.android.gms.location.SettingsClient
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.tasks.Task
@@ -62,6 +64,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
 
+    private var lastLocation: Location? = null
     private var lastLocationMarker: Marker? = null
     private var friendLastLatLng: LatLng? = null
     private var friendLocationMarker: Marker? = null
@@ -84,6 +87,24 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                 val doc = value.documents[0]
                 val latitude = doc["latitude"] as Double
                 val longitude = doc["longitude"] as Double
+                friendLastLatLng = LatLng(latitude, longitude)
+                updateFriendLocationOnMap()
+                val distance = drawRouteBetweenTwoLocations(
+                    LatLng(lastLocation!!.latitude, lastLocation!!.longitude),
+                    LatLng(latitude, longitude)
+                )
+                binding.distanceFollowing.text = "Distance: $distance mts"
+            }
+        }
+
+        query.get()
+            .addOnSuccessListener {
+                listener(it)
+            }
+
+        query.addSnapshotListener { value, _ ->
+            if (value != null) {
+                listener(value)
             }
         }
     }
@@ -106,6 +127,8 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setWaitForAccurateLocation(true).setMinUpdateIntervalMillis(5000).build()
+
+
 
     }
 
@@ -154,6 +177,44 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
         return 0.0
     }
 
+    private fun updateLocationOnMap() {
+        lastLocation?.let {
+            val latLng = LatLng(it.latitude, it.longitude)
+            if (::mMap.isInitialized) {
+                if (lastLocationMarker == null) {
+                    lastLocationMarker = mMap.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title("Last Location")
+                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.userpin))
+                    )
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                } else {
+                    lastLocationMarker?.position = latLng
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                }
+            }
+        }
+    }
+
+    private fun updateFriendLocationOnMap() {
+        friendLastLatLng?.let {
+            if (::mMap.isInitialized) {
+                if (friendLocationMarker == null) {
+                    friendLocationMarker = mMap.addMarker(
+                        MarkerOptions()
+                            .position(it)
+                            .title("Friend Location")
+                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.friendpin))
+                    )
+
+                } else {
+                    friendLocationMarker?.position = it
+                }
+            }
+        }
+    }
+
     private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(
                 this, android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -168,6 +229,8 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun stopLocationUpdates() {
         locationClient.removeLocationUpdates(locationCallback)
     }
+
+
 
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
@@ -199,10 +262,6 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                 startActivityForResult(intent, locationRequestCode)
             }
             alertDialog.setNegativeButton("Cancelar") { dialog, _ ->
-                // Show the last location of the friend
-                if (friendLastLatLng != null) {
-                    //TODO
-                }
                 dialog.cancel()
             }
         }
