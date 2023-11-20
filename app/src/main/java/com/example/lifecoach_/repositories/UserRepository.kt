@@ -1,5 +1,6 @@
 package com.example.lifecoach_.repositories
 
+import android.net.Uri
 import com.example.lifecoach_.mappers.UserMapper
 import com.example.lifecoach_.mappers.firebase.UsersResultMapper
 import com.example.lifecoach_.model.User
@@ -53,13 +54,14 @@ class UserRepository {
 
     fun registerSingleUserListener(
         uid: String,
+        picDest: Uri?,
         callback: (User?) -> Unit
     ) {
         userRef.whereEqualTo("uid", uid)
             .addSnapshotListener { value, _ ->
                 val userMap = value?.documents?.get(0)?.data
                 if (userMap != null) {
-                    userMapper.mapToUser(userMap, null) {user ->
+                    userMapper.mapToUser(userMap, picDest) {user ->
                         callback(user)
                     }
                 } else {

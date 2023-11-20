@@ -33,8 +33,8 @@ class UsersService {
         }
     }
 
-    fun userListener(uid: String, callback: (User?) -> Unit) {
-        userRepository.registerSingleUserListener(uid, callback)
+    fun userListener(uid: String, picDest: Uri?, callback: (User?) -> Unit) {
+        userRepository.registerSingleUserListener(uid, picDest, callback)
     }
 
     private fun saveNewUser(
