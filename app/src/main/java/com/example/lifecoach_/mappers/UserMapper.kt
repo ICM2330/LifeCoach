@@ -3,7 +3,6 @@ package com.example.lifecoach_.mappers
 import android.net.Uri
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.repositories.PicRepository
-import java.io.File
 
 class UserMapper {
     private val picRepository = PicRepository()
@@ -20,7 +19,7 @@ class UserMapper {
     }
 
     fun mapToUser(userMap: Map<String, Any?>,
-                  picDest: File?,
+                  picDest: Uri?,
                   callback: (User) -> Unit) {
         val user = User(
             userMap["uid"] as String,
