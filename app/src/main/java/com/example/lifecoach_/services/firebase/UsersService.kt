@@ -18,7 +18,17 @@ class UsersService {
                 saveNewUser(user, picUri, callback)
             } else {
                 Log.i("REGISTER", "User ${user.email} found at $docId")
-                updateUser(docId, user, null, callback)
+                updateUserDocument(docId, user, null, callback)
+            }
+        }
+    }
+
+    fun updateUser(user: User, picUri: Uri?, callback: () -> Unit) {
+        tryFindUser(user) {docId ->
+            if (docId == null) {
+                saveNewUser(user, picUri, callback)
+            } else {
+                updateUserDocument(docId, user, picUri, callback)
             }
         }
     }
@@ -37,7 +47,7 @@ class UsersService {
         }
     }
 
-    fun updateUser(
+    private fun updateUserDocument(
         docId: String,
         user: User,
         picUri: Uri?,
