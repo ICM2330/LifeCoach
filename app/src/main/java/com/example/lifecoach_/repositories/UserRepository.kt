@@ -45,8 +45,13 @@ class UserRepository {
     ) {
         userRef.document(docId).get()
             .addOnSuccessListener {doc ->
+                val keepPicRef: String = if (picRef.isNullOrEmpty()) {
+                    doc.data?.get("picture") as String
+                } else {
+                    picRef
+                }
                 userRef.document(docId).set(
-                    userMapper.userToMap(user, picRef)
+                    userMapper.userToMap(user, keepPicRef)
                 )
                     .addOnSuccessListener {
                         callback()
