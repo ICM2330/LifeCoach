@@ -30,8 +30,8 @@ class UserMapper {
             userMap["username"] as String,
             userMap["email"] as String,
             userMap["phone"] as Long,
-            userMap["latitude"] as Double,
-            userMap["longitude"] as Double
+            (userMap["latitude"] as? Number)?.toDouble() ?: 360.0,
+            (userMap["longitude"] as? Number)?.toDouble() ?: 360.0,
         )
 
         if (picDest != null) {

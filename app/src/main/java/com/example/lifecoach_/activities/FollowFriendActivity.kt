@@ -13,6 +13,7 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -91,16 +92,19 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                 val doc = value.documents[0]
                 val latitude = doc["latitude"] as Double
                 val longitude = doc["longitude"] as Double
+                Log.i("FRIEND", "Lat: $latitude, Long: $longitude")
 
                 if (latitude != 360.0 && longitude != 360.0) {
                     friendLastLatLng = LatLng(latitude, longitude)
                     updateFriendLocationOnMap()
-                    val distance = drawRouteBetweenTwoLocations(
-                        LatLng(lastLocation!!.latitude, lastLocation!!.longitude),
-                        LatLng(latitude, longitude)
-                    )
-                    binding.follow.text = "Following: ${userFriend.username}"
-                    binding.distanceFollowing.text = "Distance: $distance mts"
+                    if (lastLocation != null) {
+                        val distance = drawRouteBetweenTwoLocations(
+                            LatLng(lastLocation!!.latitude, lastLocation!!.longitude),
+                            LatLng(latitude, longitude)
+                        )
+                        binding.follow.text = "Following: ${userFriend.username}"
+                        binding.distanceFollowing.text = "Distance: $distance mts"
+                    }
                 } else {
                     binding.follow.text = "Following: ${userFriend.username}"
                     binding.distanceFollowing.text = "Distance: 0 mts"
@@ -127,6 +131,8 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
         // Retrieve the friend's from the intent
         val friend = intent.getSerializableExtra("friend") as Friend
         userFriend = friend.user
+
+        auth = FirebaseAuth.getInstance()
 
         setupFireStore()
 
