@@ -27,6 +27,9 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     private var user: User? = null
 
+    private lateinit var uploadController:
+            ProfileActivityUploadController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -41,6 +44,8 @@ class ProfileActivity : AppCompatActivity() {
 
         //Instructions of buttons
         manageButtons(binding, userProof)
+
+        uploadController = ProfileActivityUploadController(baseContext)
     }
 
     private fun fillInformation(binding: ActivityProfileBinding, user: User) {
@@ -95,9 +100,6 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private val profileActivityUploadController =
-        ProfileActivityUploadController(baseContext)
-
     private fun uploadInfo(binding: ActivityProfileBinding, user: User) {
         binding.uploadInfoProfileButton.setOnClickListener {
             if (blankSpaces()) {
@@ -112,7 +114,7 @@ class ProfileActivity : AppCompatActivity() {
                 user.email = binding.emailProfile.text.toString()
                 user.phone = binding.phoneProfile.text.toString().toLong()
 
-                profileActivityUploadController.updateUser(user)
+                uploadController.updateUser(user)
             }
         }
     }
