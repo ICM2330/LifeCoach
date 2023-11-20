@@ -1,6 +1,7 @@
 package com.example.lifecoach_.repositories
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -23,6 +24,7 @@ class PicRepository{
     fun downloadImage(picRef: String, picDest: Uri, callback: (uri: String) -> Unit) {
         val imgRef = storage.reference.child(picRef)
 
+        Log.i("USERIMAGE", "Downloading image")
         imgRef.getFile(picDest)
             .addOnSuccessListener {
                 callback(picDest.toString())

@@ -1,6 +1,7 @@
 package com.example.lifecoach_.controllers.activities_controllers.activity_dashboard
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.FileProvider
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.services.firebase.UsersService
@@ -21,6 +22,7 @@ class DashBoardUserController(
                 file)
 
         usersService.userListener(uid, destUri) {newUser ->
+            Log.i("USERIMAGE", "Got User Image Update")
             callback(newUser)
         }
     }

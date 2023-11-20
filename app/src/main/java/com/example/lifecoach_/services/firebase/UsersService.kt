@@ -34,6 +34,7 @@ class UsersService {
     }
 
     fun userListener(uid: String, picDest: Uri?, callback: (User?) -> Unit) {
+        Log.i("USERIMAGE", "Registering listener")
         userRepository.registerSingleUserListener(uid, picDest, callback)
     }
 
