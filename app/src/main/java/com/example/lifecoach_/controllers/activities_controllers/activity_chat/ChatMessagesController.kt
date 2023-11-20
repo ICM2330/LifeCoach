@@ -9,7 +9,6 @@ import com.google.firebase.ktx.Firebase
 
 class ChatMessagesController {
     private val auth: FirebaseAuth = Firebase.auth
-
     private val friendsService = FriendsService()
 
     fun registerMessagesListener(
