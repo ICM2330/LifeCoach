@@ -46,7 +46,9 @@ class MainActivity : AppCompatActivity() {
         authController.runIfLogged {user1: User? ->
             if (user1 != null) {
                 Log.i("LOGIN", "Loaded Image from URI: ${user1.picture}")
-                uriImage = Uri.parse(user1.picture)
+                if (!user1.picture.isNullOrEmpty()) {
+                    uriImage = Uri.parse(user1.picture)
+                }
                 registerController.registerUser(user1, uriImage) {user2: User? ->
                     val t = Toast.makeText(baseContext,
                         "Se ha iniciado sesión correctamente",
