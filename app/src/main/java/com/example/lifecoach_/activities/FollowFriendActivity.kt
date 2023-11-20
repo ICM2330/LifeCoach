@@ -87,16 +87,23 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                 val doc = value.documents[0]
                 val latitude = doc["latitude"] as Double
                 val longitude = doc["longitude"] as Double
-                friendLastLatLng = LatLng(latitude, longitude)
-                updateFriendLocationOnMap()
-                val distance = drawRouteBetweenTwoLocations(
-                    LatLng(lastLocation!!.latitude, lastLocation!!.longitude),
-                    LatLng(latitude, longitude)
-                )
-                binding.distanceFollowing.text = "Distance: $distance mts"
+
+                if (latitude != 360.0 && longitude != 360.0) {
+                    friendLastLatLng = LatLng(latitude, longitude)
+                    updateFriendLocationOnMap()
+                    val distance = drawRouteBetweenTwoLocations(
+                        LatLng(lastLocation!!.latitude, lastLocation!!.longitude),
+                        LatLng(latitude, longitude)
+                    )
+                    binding.follow.text = "Following: ${userFriend.username}"
+                    binding.distanceFollowing.text = "Distance: $distance mts"
+                }
+                else{
+                    binding.follow.text = "Following: ${userFriend.username}"
+                    binding.distanceFollowing.text = "Distance: 0 mts"
+                }
             }
         }
-
         query.get()
             .addOnSuccessListener {
                 listener(it)
@@ -128,7 +135,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setWaitForAccurateLocation(true).setMinUpdateIntervalMillis(5000).build()
 
-
+        // TODO : Callback
 
     }
 
