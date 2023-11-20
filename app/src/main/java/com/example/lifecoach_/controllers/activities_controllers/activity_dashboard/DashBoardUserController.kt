@@ -20,8 +20,8 @@ class DashBoardUserController(
                 context.packageName + ".fileprovider",
                 file)
 
-        usersService.userListener(uid, destUri) {
-
+        usersService.userListener(uid, destUri) {newUser ->
+            callback(newUser)
         }
     }
 }
