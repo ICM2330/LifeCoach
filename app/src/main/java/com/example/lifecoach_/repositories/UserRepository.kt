@@ -59,7 +59,7 @@ class UserRepository {
             .addSnapshotListener { value, _ ->
                 val userMap = value?.documents?.get(0)?.data
                 if (userMap != null) {
-                    userMapper.mapToUser(userMap) {user ->
+                    userMapper.mapToUser(userMap, null) {user ->
                         callback(user)
                     }
                 } else {

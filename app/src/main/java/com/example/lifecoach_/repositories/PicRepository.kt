@@ -4,9 +4,10 @@ import android.net.Uri
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import java.io.File
 import java.util.UUID
 
-class PicRepository {
+class PicRepository{
     private val storage: FirebaseStorage = Firebase.storage
     private var imagesRef = storage.reference.child("images")
 
@@ -16,6 +17,15 @@ class PicRepository {
         imgRef.putFile(uri)
             .addOnSuccessListener {
                 callback(imgRef.path)
+            }
+    }
+
+    fun downloadImage(picRef: String, picDest: Uri, callback: (uri: String) -> Unit) {
+        val imgRef = storage.reference.child(picRef)
+
+        imgRef.getFile(picDest)
+            .addOnSuccessListener {
+                callback(picDest.toString())
             }
     }
 }
