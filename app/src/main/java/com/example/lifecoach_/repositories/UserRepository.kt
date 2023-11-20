@@ -51,6 +51,23 @@ class UserRepository {
             }
     }
 
+    fun registerSingleUserListener(
+        uid: String,
+        callback: (User?) -> Unit
+    ) {
+        userRef.whereEqualTo("uid", uid)
+            .addSnapshotListener { value, _ ->
+                val userMap = value?.documents?.get(0)?.data
+                if (userMap != null) {
+                    userMapper.mapToUser(userMap) {user ->
+                        callback(user)
+                    }
+                } else {
+                    callback(null)
+                }
+            }
+    }
+
     fun registerAllUsersListener(callback: (MutableList<User>) -> Unit) {
         userRef.addSnapshotListener { query, _ ->
             // Mapear todos los documentos en una lista de usuarios
