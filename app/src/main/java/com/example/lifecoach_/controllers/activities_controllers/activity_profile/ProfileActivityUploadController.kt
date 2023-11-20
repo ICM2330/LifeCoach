@@ -10,6 +10,12 @@ class ProfileActivityUploadController(val context: Context) {
     private val usersService = UsersService()
 
     fun updateUser(user: User) {
+        Toast.makeText(
+            context,
+            "Actualizando Información ...",
+            Toast.LENGTH_LONG
+        ).show()
+
         val uri = Uri.parse(user.picture)
         usersService.updateUser(user, uri) {
             Toast.makeText(
