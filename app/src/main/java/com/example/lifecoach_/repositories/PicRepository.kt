@@ -21,7 +21,7 @@ class PicRepository{
             }
     }
 
-    fun downloadImage(picRef: String, picDest: Uri, callback: (uri: String) -> Unit) {
+    fun downloadImage(picRef: String, picDest: File, callback: (uri: String) -> Unit) {
         val imgRef = storage.reference.child(picRef)
 
         Log.i("USERIMAGE", "Downloading image")
