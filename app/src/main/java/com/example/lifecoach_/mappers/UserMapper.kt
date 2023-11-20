@@ -15,6 +15,8 @@ class UserMapper {
             "username" to user.username,
             "email" to user.email,
             "phone" to user.phone,
+            "latitude" to user.latitude,
+            "longitude" to user.longitude,
             "picture" to (picRef ?: "")
         )
     }
@@ -27,7 +29,9 @@ class UserMapper {
             userMap["name"] as String,
             userMap["username"] as String,
             userMap["email"] as String,
-            userMap["phone"] as Long
+            userMap["phone"] as Long,
+            userMap["latitude"] as Double,
+            userMap["longitude"] as Double
         )
 
         if (picDest != null) {
