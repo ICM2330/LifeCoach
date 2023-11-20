@@ -55,7 +55,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 // Crea el nuevo hábito en la base de datos
                 dataController.addHabit(habit, userTest) {
                     // Agrega el hábito con el ID generado por Firebase
-                    userTest.habits.add(it)
+                    // userTest.habits.add(it)
                     updateHabits()
                 }
             }
