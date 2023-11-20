@@ -43,10 +43,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        authController.runIfLogged {user1: User? ->
+        authController.runIfLogged {user1: User?, already: Boolean ->
             if (user1 != null) {
                 Log.i("LOGIN", "Loaded Image from URI: ${user1.picture}")
-                if (!user1.picture.isNullOrEmpty()) {
+                if (!user1.picture.isNullOrEmpty() && !already) {
                     uriImage = Uri.parse(user1.picture)
                 }
                 registerController.registerUser(user1, uriImage) {user2: User? ->
