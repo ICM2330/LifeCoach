@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.maps.DirectionsApi
@@ -50,14 +51,14 @@ import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
 
 class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var binding : ActivityFollowFriendBinding
+    private lateinit var binding: ActivityFollowFriendBinding
 
     // DB Management
-    private lateinit var userFriend : User
-    private lateinit var db : FirebaseFirestore
+    private lateinit var userFriend: User
+    private lateinit var db: FirebaseFirestore
 
     // Map attributes
-    private lateinit var mMap : GoogleMap
+    private lateinit var mMap: GoogleMap
 
     // Location attributes
     private lateinit var locationClient: FusedLocationProviderClient
@@ -68,6 +69,9 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     private var lastLocationMarker: Marker? = null
     private var friendLastLatLng: LatLng? = null
     private var friendLocationMarker: Marker? = null
+
+    // Auth / Current user attributes
+    private lateinit var auth : FirebaseAuth
 
     private val getPermissionLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -82,8 +86,8 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
         val usersRef = db.collection("users")
         val query = usersRef.whereEqualTo("username", userFriend.username)
 
-        val listener = { value : QuerySnapshot ->
-            if (value.documents.size >= 1){
+        val listener = { value: QuerySnapshot ->
+            if (value.documents.size >= 1) {
                 val doc = value.documents[0]
                 val latitude = doc["latitude"] as Double
                 val longitude = doc["longitude"] as Double
@@ -97,8 +101,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                     )
                     binding.follow.text = "Following: ${userFriend.username}"
                     binding.distanceFollowing.text = "Distance: $distance mts"
-                }
-                else{
+                } else {
                     binding.follow.text = "Following: ${userFriend.username}"
                     binding.distanceFollowing.text = "Distance: 0 mts"
                 }
@@ -115,6 +118,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFollowFriendBinding.inflate(layoutInflater)
@@ -128,7 +132,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFollow) as SupportMapFragment
-        mapFragment.getMapAsync (this)
+        mapFragment.getMapAsync(this)
 
         // Location features
         locationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -136,7 +140,72 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             .setWaitForAccurateLocation(true).setMinUpdateIntervalMillis(5000).build()
 
         // TODO : Callback
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
+                super.onLocationResult(locationResult)
+                if (locationResult.lastLocation != null) {
+                    val currentLocation = locationResult.lastLocation
 
+                    if (lastLocation == null) {
+                        lastLocation = currentLocation
+                        updateLocationOnMap()
+
+                        // TODO : Update the location on the DB
+                        val usersRef = db.collection("users")
+                        val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
+                        query.get()
+                            .addOnSuccessListener {
+                                if (it.documents.size >= 1) {
+                                    val doc = it.documents[0]
+                                    doc.reference.update(
+                                        mapOf(
+                                            "latitude" to currentLocation!!.latitude,
+                                            "longitude" to currentLocation!!.longitude
+                                        )
+                                    )
+                                    // Draw the route
+                                    val distance = drawRouteBetweenTwoLocations(
+                                        LatLng(currentLocation.latitude, currentLocation.longitude),
+                                        LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
+                                    )
+                                    binding.follow.text = "Following: ${userFriend.username}"
+                                    binding.distanceFollowing.text = "Distance: $distance mts"
+                                }
+                            }
+                    }
+                    else{
+                        if (locationResult.lastLocation!!.distanceTo(lastLocation!!) > 30){
+                            lastLocation = locationResult.lastLocation
+
+                            updateLocationOnMap()
+
+                            // TODO : Update the location on the DB
+                            val usersRef = db.collection("users")
+                            val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
+                            query.get()
+                                .addOnSuccessListener {
+                                    if (it.documents.size >= 1) {
+                                        val doc = it.documents[0]
+                                        doc.reference.update(
+                                            mapOf(
+                                                "latitude" to currentLocation!!.latitude,
+                                                "longitude" to currentLocation!!.longitude
+                                            )
+                                        )
+                                        // Draw the route
+                                        val distance = drawRouteBetweenTwoLocations(
+                                            LatLng(currentLocation.latitude, currentLocation.longitude),
+                                            LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
+                                        )
+                                        binding.follow.text = "Following: ${userFriend.username}"
+                                        binding.distanceFollowing.text = "Distance: $distance mts"
+                                    }
+                                }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -145,9 +214,9 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var polyLines = mutableListOf<Polyline>()
     private fun drawRouteBetweenTwoLocations(
-        origin : LatLng,
-        destination : LatLng
-    ) : Double {
+        origin: LatLng,
+        destination: LatLng
+    ): Double {
         val apiKey = getString(R.string.google_maps_key)
         val geoContext = GeoApiContext.Builder()
             .apiKey(apiKey)
@@ -238,7 +307,6 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 baseContext, android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -259,8 +327,8 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val locationRequestCode = 1001
 
-    private fun showLocationPermissionDialog(){
-        if (!isLocationEnabled()){
+    private fun showLocationPermissionDialog() {
+        if (!isLocationEnabled()) {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle("Permiso de Ubicación")
             alertDialog.setMessage("Localización no encendida, enciendela para usar la aplicación con sus funcionalidades")
@@ -277,7 +345,8 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun isLocationEnabled(): Boolean {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER)
+            LocationManager.NETWORK_PROVIDER
+        )
     }
 
     @Deprecated("Deprecated in Java")
