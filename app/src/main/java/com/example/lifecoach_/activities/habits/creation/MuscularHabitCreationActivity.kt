@@ -65,6 +65,7 @@ class MuscularHabitCreationActivity : AppCompatActivity() {
                     putExtra(
                         "habit",
                         StrengthHabit(
+                            null,
                             binding.mhName.text.toString(),
                             Frequency(selectedHour, selectedMin, notiDays),
                             binding.mhMuscularGroup.text.toString()

@@ -26,6 +26,7 @@ import com.example.lifecoach_.activities.habits.view.RunningHabitViewActivity
 import com.example.lifecoach_.activities.habits.view.StepHabitViewActivity
 import com.example.lifecoach_.activities.habits.view.TimeHabitViewActivity
 import com.example.lifecoach_.adapters.HabitListViewAdapter
+import com.example.lifecoach_.controllers.activities_controllers.activity_dashboard.DashBoardHabitsDataController
 import com.example.lifecoach_.databinding.ActivityDashBoardHabitsBinding
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.model.habits.Habit
@@ -33,8 +34,8 @@ import com.example.lifecoach_.model.habits.RunningHabit
 import com.example.lifecoach_.model.habits.StepsHabit
 import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
-import com.example.lifecoach_.sensor_controllers.MotionController
-import com.example.lifecoach_.sensor_controllers.ThemeController
+import com.example.lifecoach_.controllers.sensor_controllers.MotionController
+import com.example.lifecoach_.controllers.sensor_controllers.ThemeController
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
@@ -51,8 +52,12 @@ class DashBoardHabitsActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 val habit = intent?.getSerializableExtra("habit") as Habit
-                userTest.habits.add(habit)
-                updateHabits()
+                // Crea el nuevo hábito en la base de datos
+                dataController.addHabit(habit, userTest) {
+                    // Agrega el hábito con el ID generado por Firebase
+                    userTest.habits.add(it)
+                    updateHabits()
+                }
             }
         }
 
@@ -61,17 +66,24 @@ class DashBoardHabitsActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 val habit = intent?.getSerializableExtra("habit") as Habit
-                userTest.habits[selectedHabit] = habit
-                updateHabits()
+                // Actualiza el hábito con el ID del objeto
+                dataController.updateHabit(habit, userTest) {
+                    // Reemplaza con el hábito actualizado
+                    userTest.habits[selectedHabit] = habit
+                    updateHabits()
+                }
             }
         }
 
+    private val dataController: DashBoardHabitsDataController =
+        DashBoardHabitsDataController()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //Fill the info. with the login activity
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            userTest = intent.getSerializableExtra("user") as User
+        userTest = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("user") as User
         } else {
-            userTest = intent.getSerializableExtra("user", User::class.java)!!
+            intent.getSerializableExtra("user", User::class.java)!!
         }
 
         super.onCreate(savedInstanceState)
@@ -93,6 +105,14 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // Set click listeners
         manageButtons(userTest)
+
+        // Set Firebase Data Update Listeners
+        userTest.uid?.let { uid -> dataController.updatesListener(uid) {
+            habits ->
+                userTest.habits = habits
+                updateHabits()
+            }
+        }
     }
 
     private lateinit var enableDarkMode: () -> Unit

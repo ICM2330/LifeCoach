@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.lifecoach_.adapters.FriendChatAdapter
+import com.example.lifecoach_.controllers.activities_controllers.activity_chat_menu.ChatMenuDataController
 import com.example.lifecoach_.databinding.ActivityChatMenuBinding
 import com.example.lifecoach_.model.Friend
 import com.example.lifecoach_.model.User
@@ -14,6 +15,8 @@ import java.util.Date
 class ChatMenuActivity : AppCompatActivity() {
     private lateinit var binding : ActivityChatMenuBinding
     private lateinit var friends : MutableList<Friend>
+
+    private val dataController = ChatMenuDataController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityChatMenuBinding.inflate(layoutInflater)
@@ -28,6 +31,11 @@ class ChatMenuActivity : AppCompatActivity() {
             val intent = Intent(baseContext, ChatActivity::class.java)
             intent.putExtra("friend", friends[position])
             startActivity(intent)
+        }
+
+        dataController.registerFriendsListener {
+            friends = it
+            binding.cmChats.adapter = FriendChatAdapter(this, friends)
         }
     }
 
@@ -65,7 +73,7 @@ class ChatMenuActivity : AppCompatActivity() {
             val chat = messages.toMutableList()
             if(lastMessage[i] != "")
                 chat.add(TextMessage(false, Date(), lastMessage[i]))
-            friends.add(Friend(User(nombres[i], "${nombres[i]}${nombres[i].length}", "${nombres[i]}@gmail.com", 0), chat))
+            friends.add(Friend(User(null, nombres[i], "${nombres[i]}${nombres[i].length}", "${nombres[i]}@gmail.com", 0), chat))
         }
         return friends
     }

@@ -73,6 +73,7 @@ class RunningHabitCreationActivity : AppCompatActivity() {
                     putExtra(
                         "habit",
                         RunningHabit(
+                            null,
                             binding.rhName.text.toString(),
                             Frequency(selectedHour, selectedMin, notiDays),
                             binding.rhObjective.text.toString().toInt()

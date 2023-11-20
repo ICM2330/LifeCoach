@@ -3,10 +3,11 @@ package com.example.lifecoach_.model.habits
 import java.io.Serializable
 
 class RunningHabit(
+    id: String?,
     name: String,
     frequency: Frequency,
     objectiveMins: Int,
-) : TimeControlHabit(name, frequency, objectiveMins), Serializable {
+) : TimeControlHabit(id, name, frequency, objectiveMins), Serializable {
     var listDistances = mutableListOf<Int>()
 
     override fun doneToday() : Boolean {

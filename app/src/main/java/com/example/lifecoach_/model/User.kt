@@ -3,7 +3,8 @@ package com.example.lifecoach_.model
 import com.example.lifecoach_.model.habits.Habit
 import java.io.Serializable
 
-class User(
+data class User(
+    var uid: String?,
     var name: String,
     var username: String,
     var email: String,
