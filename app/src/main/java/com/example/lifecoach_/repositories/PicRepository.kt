@@ -22,12 +22,16 @@ class PicRepository{
     }
 
     fun downloadImage(picRef: String, picDest: File, callback: () -> Unit) {
-        val imgRef = storage.reference.child(picRef)
+        try {
+            val imgRef = storage.reference.child(picRef)
 
-        Log.i("USERIMAGE", "Downloading image")
-        imgRef.getFile(picDest)
-            .addOnSuccessListener {
-                callback()
-            }
+            Log.i("USERIMAGE", "Downloading image")
+            imgRef.getFile(picDest)
+                .addOnSuccessListener {
+                    callback()
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
