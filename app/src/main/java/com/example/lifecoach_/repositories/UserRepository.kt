@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.io.File
 
 class UserRepository {
     private val db: FirebaseFirestore = Firebase.firestore
@@ -55,7 +56,7 @@ class UserRepository {
 
     fun registerSingleUserListener(
         uid: String,
-        picDest: Uri?,
+        picDest: File?,
         callback: (User?) -> Unit
     ) {
         userRef.whereEqualTo("uid", uid)

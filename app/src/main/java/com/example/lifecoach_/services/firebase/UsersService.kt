@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.lifecoach_.model.User
 import com.example.lifecoach_.repositories.PicRepository
 import com.example.lifecoach_.repositories.UserRepository
+import java.io.File
 
 class UsersService {
     private val userRepository: UserRepository = UserRepository()
@@ -33,7 +34,7 @@ class UsersService {
         }
     }
 
-    fun userListener(uid: String, picDest: Uri?, callback: (User?) -> Unit) {
+    fun userListener(uid: String, picDest: File?, callback: (User?) -> Unit) {
         Log.i("USERIMAGE", "Registering listener")
         userRepository.registerSingleUserListener(uid, picDest, callback)
     }

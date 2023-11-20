@@ -14,7 +14,7 @@ class DashBoardUserController(
 ) {
     private val usersService = UsersService()
     fun updatePictureListener(uid: String, callback: (User?) -> Unit) {
-        val file = File(filesDir, UUID.randomUUID().toString() + ".jpg")
+        val file = File.createTempFile(UUID.randomUUID().toString(), ".jpg", filesDir)
         Log.i("USERIMAGE", "File creation result ${file.createNewFile()}")
         val destUri = FileProvider
             .getUriForFile(
@@ -24,8 +24,11 @@ class DashBoardUserController(
 
         Log.i("USERIMAGE", "URI: ${destUri.toString()}")
 
-        usersService.userListener(uid, destUri) {newUser ->
+        usersService.userListener(uid, file) {newUser ->
             Log.i("USERIMAGE", "Got User Image Update")
+            if (newUser != null) {
+                newUser.picture = destUri.toString()
+            }
             callback(newUser)
         }
     }
