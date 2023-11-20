@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.lifecoach_.R
 import com.example.lifecoach_.activities.friends.ChatMenuActivity
+import com.example.lifecoach_.controllers.activities_controllers.activity_profile.ProfileActivityUploadController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.lifecoach_.databinding.ActivityProfileBinding
@@ -94,7 +95,8 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private val usersService = UsersService()
+    private val profileActivityUploadController =
+        ProfileActivityUploadController(baseContext)
 
     private fun uploadInfo(binding: ActivityProfileBinding, user: User) {
         binding.uploadInfoProfileButton.setOnClickListener {
@@ -110,10 +112,7 @@ class ProfileActivity : AppCompatActivity() {
                 user.email = binding.emailProfile.text.toString()
                 user.phone = binding.phoneProfile.text.toString().toLong()
 
-                usersService.registerUser(user, Uri.parse(user.picture)) {
-                    Toast.makeText(baseContext, "Datos cambiados con éxito",
-                        Toast.LENGTH_SHORT).show()
-                }
+                profileActivityUploadController.updateUser(user)
             }
         }
     }
