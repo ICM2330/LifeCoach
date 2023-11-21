@@ -55,6 +55,10 @@ import com.google.maps.DirectionsApi
 import com.google.maps.GeoApiContext
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityFollowFriendBinding
@@ -144,6 +148,9 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
 
         auth = FirebaseAuth.getInstance()
 
+        // Fill the data of the friend
+        binding.nameUserFollowing.text = "${userFriend.username}"
+
         setupFireStore()
 
         val mapFragment = supportFragmentManager
@@ -178,14 +185,21 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                             "longitude" to currentLocation.longitude
                                         )
                                     )
-                                    updateFriendLocationOnMap()
-                                    // Draw the route
-                                    val distance = drawRouteBetweenTwoLocations(
-                                        LatLng(currentLocation.latitude, currentLocation.longitude),
-                                        LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
-                                    )
-                                    binding.nameUserFollowing.text = "${userFriend.username}"
-                                    binding.distanceFollowing.text = "$distance mts"
+                                    if (friendLastLatLng != null) {
+                                        updateFriendLocationOnMap()
+                                        // Draw the route
+                                        val distance = drawRouteBetweenTwoLocations(
+                                            LatLng(
+                                                currentLocation.latitude,
+                                                currentLocation.longitude
+                                            ),
+                                            LatLng(
+                                                friendLastLatLng!!.latitude,
+                                                friendLastLatLng!!.longitude
+                                            )
+                                        )
+                                        binding.distanceFollowing.text = "$distance mts"
+                                    }
                                 }
                             }
                     }
@@ -208,14 +222,22 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                                 "longitude" to currentLocation!!.longitude
                                             )
                                         )
-                                        updateFriendLocationOnMap()
-                                        // Draw the route
-                                        val distance = drawRouteBetweenTwoLocations(
-                                            LatLng(currentLocation.latitude, currentLocation.longitude),
-                                            LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
-                                        )
-                                        binding.follow.text = "Following: ${userFriend.username}"
-                                        binding.distanceFollowing.text = "Distance: $distance mts"
+                                        if (friendLastLatLng != null) {
+                                            updateFriendLocationOnMap()
+                                            // Draw the route
+                                            val distance = drawRouteBetweenTwoLocations(
+                                                LatLng(
+                                                    currentLocation.latitude,
+                                                    currentLocation.longitude
+                                                ),
+                                                LatLng(
+                                                    friendLastLatLng!!.latitude,
+                                                    friendLastLatLng!!.longitude
+                                                )
+                                            )
+                                            binding.distanceFollowing.text =
+                                                "$distance mts"
+                                        }
                                     }
                                 }
                         }
@@ -278,7 +300,19 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             val distance = directionsResult.routes[0].legs[0].distance.inMeters
             return distance.toDouble()
         }
-        return 0.0
+        else{
+            // Return the distance in meters
+            val latDist = Math.toRadians(destination.latitude - origin.latitude)
+            val lngDist = Math.toRadians(destination.longitude - origin.longitude)
+
+            val a = (sin(latDist / 2) * sin(latDist / 2)
+                    + (cos(Math.toRadians(origin.latitude)) * cos(Math.toRadians(destination.latitude))
+                    * sin(lngDist / 2) * sin(lngDist / 2)))
+            val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+            val distance = 6371.0 * c * 1000
+            // Return the distance in meters with two decimals
+            return String.format("%.2f", distance).toDouble()
+        }
     }
 
     private fun updateLocationOnMap() {
@@ -462,7 +496,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             lightEventListener,
             lightSensor,
             SensorManager.SENSOR_DELAY_NORMAL
-        )
+        )                                                      
     }
 
     override fun onPause() {
