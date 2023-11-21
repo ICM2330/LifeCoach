@@ -185,7 +185,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         val updateIntent = Intent(this, HabitsNotificationService::class.java)
         updateIntent.action = "com.example.lifecoach_.notifications.UPDATE_NOTIFICATIONS"
         sendBroadcast(updateIntent)
-        
+
         todayHabits.clear()
         otherHabits.clear()
 

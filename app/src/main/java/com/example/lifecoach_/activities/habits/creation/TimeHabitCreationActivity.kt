@@ -71,7 +71,7 @@ class TimeHabitCreationActivity : AppCompatActivity() {
                     putExtra(
                         "habit",
                         TimeControlHabit(
-                            null,
+                            habit.let { it?.id },
                             binding.thName.text.toString(),
                             Frequency(selectedHour, selectedMin, notiDays),
                             binding.thObjective.text.toString().toInt()
