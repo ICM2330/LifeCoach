@@ -18,6 +18,8 @@ import com.example.lifecoach_.controllers.activities_controllers.activity_main.M
 import com.example.lifecoach_.databinding.ActivityMainBinding
 import java.io.File
 import com.example.lifecoach_.model.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                 if (!user1.picture.isNullOrEmpty() && !already) {
                     uriImage = Uri.parse(user1.picture)
                 }
+
                 registerController.registerUser(user1, uriImage) {user2: User? ->
                     val t = Toast.makeText(baseContext,
                         "Se ha iniciado sesión correctamente",

@@ -81,7 +81,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     private var friendLocationMarker: Marker? = null
 
     // Auth / Current user attributes
-    private lateinit var auth : FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     // Light Sensor variables
     private lateinit var sensorManager: SensorManager
@@ -199,12 +199,17 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                             )
                                         )
                                         binding.distanceFollowing.text = "$distance mts"
+                                    } else {
+                                        Toast.makeText(
+                                            baseContext,
+                                            "${userFriend.username} no está disponible para seguimiento en tiempo real",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     }
                                 }
                             }
-                    }
-                    else{
-                        if (locationResult.lastLocation!!.distanceTo(lastLocation!!) > 30){
+                    } else {
+                        if (locationResult.lastLocation!!.distanceTo(lastLocation!!) > 30) {
                             lastLocation = locationResult.lastLocation
 
                             updateLocationOnMap()
@@ -237,6 +242,13 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                             )
                                             binding.distanceFollowing.text =
                                                 "$distance mts"
+                                        }
+                                        else {
+                                            Toast.makeText(
+                                                baseContext,
+                                                "${userFriend.username} no está disponible para seguimiento en tiempo real",
+                                                Toast.LENGTH_LONG
+                                            ).show()
                                         }
                                     }
                                 }
@@ -299,8 +311,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             // Get the distance between the two points
             val distance = directionsResult.routes[0].legs[0].distance.inMeters
             return distance.toDouble()
-        }
-        else{
+        } else {
             // Return the distance in meters
             val latDist = Math.toRadians(destination.latitude - origin.latitude)
             val lngDist = Math.toRadians(destination.longitude - origin.longitude)
@@ -427,7 +438,11 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             alertDialog.setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.cancel()
-                Toast.makeText(this, "Funcionalidad de seguimiento no habilitada.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    "Funcionalidad de seguimiento no habilitada.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             val alert = alertDialog.create()
             alert.show()
@@ -496,7 +511,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             lightEventListener,
             lightSensor,
             SensorManager.SENSOR_DELAY_NORMAL
-        )                                                      
+        )
     }
 
     override fun onPause() {
