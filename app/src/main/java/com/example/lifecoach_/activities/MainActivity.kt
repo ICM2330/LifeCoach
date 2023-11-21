@@ -1,13 +1,10 @@
 package com.example.lifecoach_.activities
 
-import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -26,12 +23,7 @@ import com.example.lifecoach_.controllers.activities_controllers.activity_main.M
 import com.example.lifecoach_.databinding.ActivityMainBinding
 import java.io.File
 import com.example.lifecoach_.model.User
-import com.example.lifecoach_.model.habits.Frequency
-import com.example.lifecoach_.model.habits.Habit
-import com.example.lifecoach_.notifications.HabitNotification
-import com.example.lifecoach_.notifications.HabitNotification.Companion.NotiId
 import com.example.lifecoach_.notifications.HabitsNotificationService
-import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
