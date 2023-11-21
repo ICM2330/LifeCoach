@@ -24,11 +24,10 @@ class HabitsNotificationService : BroadcastReceiver() {
         Log.i("NOTI", "Request for update notifications received")
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        if (Build.VERSION.SDK_INT >= 34)
-            alarmManager.cancelAll()
-
         auth.currentUser?.let {
             habitsService.registerUpdateListener(it.uid) { habits ->
+                if (Build.VERSION.SDK_INT >= 34)
+                    alarmManager.cancelAll()
                 // if have notification permissions
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -39,6 +38,7 @@ class HabitsNotificationService : BroadcastReceiver() {
     }
 
     private fun scheduleAllHabitsNotifications(context: Context, habits: MutableList<Habit>) {
+        Log.i("NOTI", "Scheduling notifications for ${habits.size} habits")
         for(habit in habits)
             scheduleNotification(context, habit)
     }
@@ -65,7 +65,5 @@ class HabitsNotificationService : BroadcastReceiver() {
             SystemClock.elapsedRealtime() + nextNoti,
             pendingIntent
         )
-
-        Log.i("NOTI", "Notification scheduled")
     }
 }
