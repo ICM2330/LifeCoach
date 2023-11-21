@@ -15,7 +15,7 @@ class UsersResultMapper {
         query.documents.forEach {doc ->
             // Mapear Documento a Usuario
             doc.data?.let {userMap ->
-                userMapper.mapToUser(userMap) {user ->
+                userMapper.mapToUser(userMap, null) {user ->
                     // Agregar Usuario a la Lista
                     users.add(user)
 

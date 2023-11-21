@@ -24,7 +24,7 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
         configureFirebase()
     }
 
-    fun runIfLogged(callback: (user: User?) -> Unit) {
+    fun runIfLogged(callback: (user: User?, already: Boolean) -> Unit) {
         Log.i("LOGIN", "Checking if logged")
         Log.i("LOGIN", "Loading User Data")
         loadUser()
@@ -68,16 +68,16 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
         }
     }
 
-    private fun checkIfLogged(callback: (user: User?) -> Unit) {
+    private fun checkIfLogged(callback: (user: User?, already: Boolean) -> Unit) {
         val auth = Firebase.auth
         val intent = intent
         val emailLink = intent.data.toString()
 
         Log.i("LOGIN", "Recuperados datos del intent")
 
-        val successLogin = {
+        val successLogin = { already: Boolean ->
             user?.uid = auth.currentUser?.uid
-            callback(user)
+            callback(user, already)
         }
 
         val errorLogin = {
@@ -98,7 +98,7 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
                         user!!.uid = auth.currentUser?.uid
                         if (task.isSuccessful) {
                             Log.i("LOGIN", "Verificación exitosa")
-                            successLogin()
+                            successLogin(false)
                         } else {
                             Log.i("LOGIN", "Verificación Fallida")
                             errorLogin()
@@ -109,7 +109,7 @@ class MainActivityAuthController(val intent: Intent, val context: Context) {
             }
         } else if (user != null){
             Log.i("LOGIN", "Ya se encontraba loggeado")
-            successLogin()
+            successLogin(true)
         }
     }
 

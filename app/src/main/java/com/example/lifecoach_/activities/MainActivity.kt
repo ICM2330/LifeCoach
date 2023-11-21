@@ -66,10 +66,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        authController.runIfLogged { user1: User? ->
+        authController.runIfLogged {user1: User?, already: Boolean ->
+
             if (user1 != null) {
                 Log.i("LOGIN", "Loaded Image from URI: ${user1.picture}")
-                if (!user1.picture.isNullOrEmpty()) {
+                if (!user1.picture.isNullOrEmpty() && !already) {
                     uriImage = Uri.parse(user1.picture)
                 }
                 registerController.registerUser(user1, uriImage) { user2: User? ->
@@ -131,7 +132,8 @@ class MainActivity : AppCompatActivity() {
         val user = User(
             null,
             binding.nameRegister.text.toString(), binding.userRegister.text.toString(),
-            binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong()
+            binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong(),
+            360.0, 360.0
         )
 
         if (uriImage != null) {

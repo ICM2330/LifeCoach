@@ -1,4 +1,4 @@
-package com.example.lifecoach_.activities.habits.auxiliar
+package com.example.lifecoach_.activities
 
 import android.app.AlertDialog
 import android.content.Context
@@ -8,30 +8,24 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationManager
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
-import android.os.SystemClock
-import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.lifecoach_.R
-import com.example.lifecoach_.databinding.ActivityRunningActionHabitBinding
-import com.example.lifecoach_.controllers.sensor_controllers.MotionController
+import com.example.lifecoach_.databinding.ActivityFollowFriendBinding
+import com.example.lifecoach_.model.Friend
+import com.example.lifecoach_.model.User
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsResponse
@@ -50,39 +44,35 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.tasks.Task
-import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.maps.DirectionsApi
 import com.google.maps.GeoApiContext
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
 
-class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var binding: ActivityRunningActionHabitBinding
+class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
+    private lateinit var binding: ActivityFollowFriendBinding
 
+    // DB Management
+    private lateinit var userFriend: User
+    private lateinit var db: FirebaseFirestore
+
+    // Map attributes
     private lateinit var mMap: GoogleMap
 
+    // Location attributes
     private lateinit var locationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
 
     private var lastLocation: Location? = null
     private var lastLocationMarker: Marker? = null
+    private var friendLastLatLng: LatLng? = null
+    private var friendLocationMarker: Marker? = null
 
-    private var metersRan = 0
-
-    private val currentPolylines = mutableListOf<Polyline>()
-
-    // Sensor variables
-    private lateinit var sensorManager: SensorManager
-    private lateinit var lightSensor: Sensor
-    private lateinit var lightEventListener: SensorEventListener
-
-    // DB Management
-    private lateinit var db : FirebaseFirestore
-
-    // Auth attribute
+    // Auth / Current user attributes
     private lateinit var auth : FirebaseAuth
 
     private val getPermissionLocation =
@@ -92,35 +82,81 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+    // Management of FireStore
+    private fun setupFireStore() {
+        db = FirebaseFirestore.getInstance()
+        val usersRef = db.collection("users")
+        val query = usersRef.whereEqualTo("username", userFriend.username)
+
+        val listener = { value: QuerySnapshot ->
+            if (value.documents.size >= 1) {
+                val doc = value.documents[0]
+                val latitude = doc["latitude"] as Double
+                val longitude = doc["longitude"] as Double
+                Log.i("FRIEND", "Lat: $latitude, Long: $longitude")
+
+                if (latitude != 360.0 && longitude != 360.0) {
+                    friendLastLatLng = LatLng(latitude, longitude)
+                    updateFriendLocationOnMap()
+                    if (lastLocation != null) {
+                        val distance = drawRouteBetweenTwoLocations(
+                            LatLng(lastLocation!!.latitude, lastLocation!!.longitude),
+                            LatLng(latitude, longitude)
+                        )
+                        binding.nameUserFollowing.text = "${userFriend.username}"
+                        binding.distanceFollowing.text = "$distance mts"
+                    }
+                } else {
+                    binding.nameUserFollowing.text = "${userFriend.username}"
+                    binding.distanceFollowing.text = "0 mts"
+                }
+            }
+        }
+        query.get()
+            .addOnSuccessListener {
+                listener(it)
+            }
+
+        query.addSnapshotListener { value, _ ->
+            if (value != null) {
+                listener(value)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRunningActionHabitBinding.inflate(layoutInflater)
-        setContentView(binding.root) // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        binding = ActivityFollowFriendBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Initialize Firebase Auth
+        // Retrieve the friend's from the intent
+        val friend = intent.getSerializableExtra("friend") as Friend
+        userFriend = friend.user
+
         auth = FirebaseAuth.getInstance()
 
-        // Initialize Firebase Firestore
-        db = FirebaseFirestore.getInstance()
+        setupFireStore()
 
         val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.mapsFragment) as SupportMapFragment
+            .findFragmentById(R.id.mapFollow) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         // Location features
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setWaitForAccurateLocation(true).setMinUpdateIntervalMillis(5000).build()
+
+        // TODO : Callback
         locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
+            override fun onLocationResult(locationResult: com.google.android.gms.location.LocationResult) {
                 super.onLocationResult(locationResult)
                 if (locationResult.lastLocation != null) {
-                    val currentLocation = locationResult.lastLocation!!
+                    val currentLocation = locationResult.lastLocation
 
                     if (lastLocation == null) {
-                        // If it's the first location, save it
                         lastLocation = currentLocation
                         updateLocationOnMap()
+
                         val usersRef = db.collection("users")
                         val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
                         query.get()
@@ -133,73 +169,102 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                                             "longitude" to currentLocation.longitude
                                         )
                                     )
-                                }
-                            }
-                    } else {
-                        // If it's not the first location, calculate the distance and draw the route
-                        val metersRoad = drawRouteBetweenTwoLocations(lastLocation!!, currentLocation)
-                        metersRan += metersRoad.toInt()
-
-                        // Update the location
-                        lastLocation = currentLocation
-
-                        // Update the text
-                        binding.distanceRanModifyText.text = metersRan.toString() + " mts"
-
-                        updateLocationOnMap()
-                        val usersRef = db.collection("users")
-                        val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
-                        query.get()
-                            .addOnSuccessListener {
-                                if (it.documents.size >= 1) {
-                                    val doc = it.documents[0]
-                                    doc.reference.update(
-                                        mapOf(
-                                            "latitude" to currentLocation!!.latitude,
-                                            "longitude" to currentLocation.longitude
-                                        )
+                                    updateFriendLocationOnMap()
+                                    // Draw the route
+                                    val distance = drawRouteBetweenTwoLocations(
+                                        LatLng(currentLocation.latitude, currentLocation.longitude),
+                                        LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
                                     )
+                                    binding.nameUserFollowing.text = "${userFriend.username}"
+                                    binding.distanceFollowing.text = "$distance mts"
                                 }
                             }
+                    }
+                    else{
+                        if (locationResult.lastLocation!!.distanceTo(lastLocation!!) > 30){
+                            lastLocation = locationResult.lastLocation
+
+                            updateLocationOnMap()
+
+                            // TODO : Update the location on the DB
+                            val usersRef = db.collection("users")
+                            val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
+                            query.get()
+                                .addOnSuccessListener {
+                                    if (it.documents.size >= 1) {
+                                        val doc = it.documents[0]
+                                        doc.reference.update(
+                                            mapOf(
+                                                "latitude" to currentLocation!!.latitude,
+                                                "longitude" to currentLocation!!.longitude
+                                            )
+                                        )
+                                        updateFriendLocationOnMap()
+                                        // Draw the route
+                                        val distance = drawRouteBetweenTwoLocations(
+                                            LatLng(currentLocation.latitude, currentLocation.longitude),
+                                            LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
+                                        )
+                                        binding.follow.text = "Following: ${userFriend.username}"
+                                        binding.distanceFollowing.text = "Distance: $distance mts"
+                                    }
+                                }
+                        }
                     }
                 }
             }
         }
-
-        // Management of the sensor
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
-        lightEventListener = createLightSensorListener()
-
-        configureMotionController()
     }
 
-    private lateinit var motionController: MotionController
-    private fun configureMotionController() {
-        motionController = MotionController.getMotionController()
-        motionController.configureAccelerometer(baseContext)
-        motionController.registerMotionListener({
-            binding.motionText.text = "Corriendo ..."
-        }, {
-            binding.motionText.text = "No te detengas. Sigue moviendote!"
-        })
-    }
-
-
-    override fun onMapReady(gMap: GoogleMap) {
-        mMap = gMap
-        mMap.uiSettings.setAllGesturesEnabled(true)
-
-        Places.initialize(this, getString(R.string.google_maps_key))
-
-        //Set the default style
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
         mMap.setMapStyle(
             MapStyleOptions.loadRawResourceStyle(
-                baseContext, R.raw.lightmodemap
+                this,
+                R.raw.lightmodemap
             )
         )
+    }
 
-        manageButtons()
+    private var polyLines = mutableListOf<Polyline>()
+    private fun drawRouteBetweenTwoLocations(
+        origin: LatLng,
+        destination: LatLng
+    ): Double {
+        val apiKey = getString(R.string.google_maps_key)
+        val geoContext = GeoApiContext.Builder()
+            .apiKey(apiKey)
+            .build()
+
+        val directionsResult: DirectionsResult = DirectionsApi.newRequest(geoContext)
+            .origin(origin.latitude.toString() + "," + origin.longitude.toString())
+            .destination(destination.latitude.toString() + "," + destination.longitude.toString())
+            .mode(TravelMode.WALKING)
+            .await()
+
+        // Clear the list of polyline
+        for (polyline in polyLines) {
+            polyline.remove()
+        }
+
+        // Draw the polyline
+        val polylineOptions = PolylineOptions()
+
+        if (directionsResult.routes.isNotEmpty()) {
+            val route = directionsResult.routes[0].overviewPolyline.decodePath()
+            for (point in route) {
+                polylineOptions.add(LatLng(point.lat, point.lng))
+            }
+
+            val polyline = mMap.addPolyline(polylineOptions)
+            polyline.color = getColor(R.color.green2)
+            polyLines.add(polyline)
+
+            // Get the distance between the two points
+            val distance = directionsResult.routes[0].legs[0].distance.inMeters
+            return distance.toDouble()
+        }
+        return 0.0
     }
 
     private fun updateLocationOnMap() {
@@ -222,61 +287,20 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // Draw route between two points (Locations)
-    private fun drawRouteBetweenTwoLocations(
-        originLocation: Location,
-        destinationLocation: Location
-    ) : Double{
-        val apiKey = getString(R.string.google_maps_key)
-        val geoContext = GeoApiContext.Builder()
-            .apiKey(apiKey)
-            .build()
+    private fun updateFriendLocationOnMap() {
+        friendLastLatLng?.let {
+            if (::mMap.isInitialized) {
+                if (friendLocationMarker == null) {
+                    friendLocationMarker = mMap.addMarker(
+                        MarkerOptions()
+                            .position(it)
+                            .title("Friend Location")
+                            .icon(bitmapDescriptorFromVector(baseContext, R.drawable.friendpin))
+                    )
 
-        val directionsResult: DirectionsResult = DirectionsApi.newRequest(geoContext)
-            .origin("${originLocation.latitude},${originLocation.longitude}")
-            .destination("${destinationLocation.latitude},${destinationLocation.longitude}")
-            .mode(TravelMode.WALKING)
-            .await()
-
-        // Draw the polyline
-        val polylineOptions = PolylineOptions()
-
-        if (directionsResult.routes.isNotEmpty()) {
-            val route = directionsResult.routes[0].overviewPolyline.decodePath()
-            for (point in route) {
-                polylineOptions.add(LatLng(point.lat, point.lng))
-            }
-
-            val polyline = mMap.addPolyline(polylineOptions)
-            polyline.color = getColor(R.color.green1)
-            currentPolylines.add(polyline)
-
-            // Get the distance between the two points
-            val distance = directionsResult.routes[0].legs[0].distance.inMeters
-            return distance.toDouble()
-        }
-
-        return 0.0
-    }
-
-    private fun manageButtons() {
-        binding.actionsRunningButton.setOnClickListener {
-            if (binding.actionsRunningButton.text == "Iniciar") {
-                binding.chronometerRunning.base = SystemClock.elapsedRealtime()
-                binding.chronometerRunning.start()
-
-                // Change button text
-                binding.actionsRunningButton.text = "Detener"
-            } else {
-                // Stop Running
-                binding.chronometerRunning.stop()
-                val minutesRanByChrono =
-                    (SystemClock.elapsedRealtime() - binding.chronometerRunning.base) / 60000
-                val intent = Intent().apply {
-                    putExtra("minutesRan", minutesRanByChrono.toInt())
+                } else {
+                    friendLocationMarker?.position = it
                 }
-                setResult(RESULT_OK, intent)
-                finish()
             }
         }
     }
@@ -295,6 +319,7 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun stopLocationUpdates() {
         locationClient.removeLocationUpdates(locationCallback)
     }
+
 
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
@@ -322,12 +347,12 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
             alertDialog.setTitle("Permiso de Ubicación")
             alertDialog.setMessage("Localización no encendida, enciendela para usar la aplicación con sus funcionalidades")
             alertDialog.setPositiveButton("OK") { _, _ ->
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                val intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivityForResult(intent, locationRequestCode)
             }
             alertDialog.setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.cancel()
-                Toast.makeText(this, "Funcionalidad de correr no habilitada.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Funcionalidad de seguimiento no habilitada.", Toast.LENGTH_LONG).show()
             }
             val alert = alertDialog.create()
             alert.show()
@@ -392,42 +417,10 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         locationSettings()
-        sensorManager.registerListener(
-            lightEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL
-        )
     }
 
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
-        sensorManager.unregisterListener(lightEventListener)
     }
-
-    // Method for managing the sensor listener
-    private fun createLightSensorListener(): SensorEventListener {
-        val ret: SensorEventListener = object : SensorEventListener {
-            override fun onSensorChanged(event: SensorEvent?) {
-                if (event != null && ::mMap.isInitialized) {
-                    if (event.values[0] < 5000) {
-                        mMap.setMapStyle(
-                            MapStyleOptions.loadRawResourceStyle(
-                                baseContext, R.raw.darkmodemap
-                            )
-                        )
-                    } else {
-                        mMap.setMapStyle(
-                            MapStyleOptions.loadRawResourceStyle(
-                                baseContext, R.raw.lightmodemap
-                            )
-                        )
-                    }
-                }
-            }
-
-            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-            }
-        }
-        return ret
-    }
-
 }
