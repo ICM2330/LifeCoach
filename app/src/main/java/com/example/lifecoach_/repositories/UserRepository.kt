@@ -44,12 +44,16 @@ class UserRepository {
         callback: () -> Unit
     ) {
         userRef.document(docId).get()
-            .addOnSuccessListener {doc ->
+            .addOnSuccessListener { doc ->
                 val keepPicRef: String = if (picRef.isNullOrEmpty()) {
                     doc.data?.get("picture") as String
                 } else {
                     picRef
                 }
+                val latitud = doc.data?.get("latitude") as Double
+                val longitud = doc.data?.get("longitude") as Double
+                user.latitude = latitud
+                user.longitude = longitud
                 userRef.document(docId).set(
                     userMapper.userToMap(user, keepPicRef)
                 )
@@ -69,7 +73,7 @@ class UserRepository {
                 Log.i("USERIMAGE", "User update received")
                 val userMap = value?.documents?.get(0)?.data
                 if (userMap != null) {
-                    userMapper.mapToUser(userMap, picDest) {user ->
+                    userMapper.mapToUser(userMap, picDest) { user ->
                         callback(user)
                     }
                 } else {
@@ -82,7 +86,7 @@ class UserRepository {
         userRef.addSnapshotListener { query, _ ->
             // Mapear todos los documentos en una lista de usuarios
             if (query != null) {
-                usersResultMapper.resultToUsers(query) {users ->
+                usersResultMapper.resultToUsers(query) { users ->
                     // Retornar la lista de usuarios
                     callback(users)
                 }

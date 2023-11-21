@@ -55,6 +55,10 @@ import com.google.maps.DirectionsApi
 import com.google.maps.GeoApiContext
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.TravelMode
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityFollowFriendBinding
@@ -77,7 +81,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     private var friendLocationMarker: Marker? = null
 
     // Auth / Current user attributes
-    private lateinit var auth : FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     // Light Sensor variables
     private lateinit var sensorManager: SensorManager
@@ -144,6 +148,9 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
 
         auth = FirebaseAuth.getInstance()
 
+        // Fill the data of the friend
+        binding.nameUserFollowing.text = "${userFriend.username}"
+
         setupFireStore()
 
         val mapFragment = supportFragmentManager
@@ -178,24 +185,35 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                             "longitude" to currentLocation.longitude
                                         )
                                     )
-                                    updateFriendLocationOnMap()
-                                    // Draw the route
-                                    val distance = drawRouteBetweenTwoLocations(
-                                        LatLng(currentLocation.latitude, currentLocation.longitude),
-                                        LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
-                                    )
-                                    binding.nameUserFollowing.text = "${userFriend.username}"
-                                    binding.distanceFollowing.text = "$distance mts"
+                                    if (friendLastLatLng != null) {
+                                        updateFriendLocationOnMap()
+                                        // Draw the route
+                                        val distance = drawRouteBetweenTwoLocations(
+                                            LatLng(
+                                                currentLocation.latitude,
+                                                currentLocation.longitude
+                                            ),
+                                            LatLng(
+                                                friendLastLatLng!!.latitude,
+                                                friendLastLatLng!!.longitude
+                                            )
+                                        )
+                                        binding.distanceFollowing.text = "$distance mts"
+                                    } else {
+                                        Toast.makeText(
+                                            baseContext,
+                                            "${userFriend.username} no está disponible para seguimiento en tiempo real",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
                                 }
                             }
-                    }
-                    else{
-                        if (locationResult.lastLocation!!.distanceTo(lastLocation!!) > 30){
+                    } else {
+                        if (locationResult.lastLocation!!.distanceTo(lastLocation!!) > 30) {
                             lastLocation = locationResult.lastLocation
 
                             updateLocationOnMap()
 
-                            // TODO : Update the location on the DB
                             val usersRef = db.collection("users")
                             val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
                             query.get()
@@ -208,14 +226,29 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                                 "longitude" to currentLocation!!.longitude
                                             )
                                         )
-                                        updateFriendLocationOnMap()
-                                        // Draw the route
-                                        val distance = drawRouteBetweenTwoLocations(
-                                            LatLng(currentLocation.latitude, currentLocation.longitude),
-                                            LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
-                                        )
-                                        binding.follow.text = "Following: ${userFriend.username}"
-                                        binding.distanceFollowing.text = "Distance: $distance mts"
+                                        if (friendLastLatLng != null) {
+                                            updateFriendLocationOnMap()
+                                            // Draw the route
+                                            val distance = drawRouteBetweenTwoLocations(
+                                                LatLng(
+                                                    currentLocation.latitude,
+                                                    currentLocation.longitude
+                                                ),
+                                                LatLng(
+                                                    friendLastLatLng!!.latitude,
+                                                    friendLastLatLng!!.longitude
+                                                )
+                                            )
+                                            binding.distanceFollowing.text =
+                                                "$distance mts"
+                                        }
+                                        else {
+                                            Toast.makeText(
+                                                baseContext,
+                                                "${userFriend.username} no está disponible para seguimiento en tiempo real",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
                                     }
                                 }
                         }
@@ -277,8 +310,19 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             // Get the distance between the two points
             val distance = directionsResult.routes[0].legs[0].distance.inMeters
             return distance.toDouble()
+        } else {
+            // Return the distance in meters
+            val latDist = Math.toRadians(destination.latitude - origin.latitude)
+            val lngDist = Math.toRadians(destination.longitude - origin.longitude)
+
+            val a = (sin(latDist / 2) * sin(latDist / 2)
+                    + (cos(Math.toRadians(origin.latitude)) * cos(Math.toRadians(destination.latitude))
+                    * sin(lngDist / 2) * sin(lngDist / 2)))
+            val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+            val distance = 6371.0 * c * 1000
+            // Return the distance in meters with two decimals
+            return String.format("%.2f", distance).toDouble()
         }
-        return 0.0
     }
 
     private fun updateLocationOnMap() {
@@ -393,7 +437,11 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             alertDialog.setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.cancel()
-                Toast.makeText(this, "Funcionalidad de seguimiento no habilitada.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    "Funcionalidad de seguimiento no habilitada.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
             val alert = alertDialog.create()
             alert.show()
