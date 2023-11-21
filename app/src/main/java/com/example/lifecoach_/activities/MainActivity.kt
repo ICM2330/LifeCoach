@@ -103,7 +103,8 @@ class MainActivity : AppCompatActivity() {
         val user = User(
             null,
             binding.nameRegister.text.toString(), binding.userRegister.text.toString(),
-            binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong()
+            binding.emailRegister.text.toString(), binding.phoneRegister.text.toString().toLong(),
+            360.0, 360.0
         )
 
         if (uriImage != null) {

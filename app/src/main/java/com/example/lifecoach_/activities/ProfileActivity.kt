@@ -113,6 +113,10 @@ class ProfileActivity : AppCompatActivity() {
                 user.username = binding.userProfile.text.toString()
                 user.email = binding.emailProfile.text.toString()
                 user.phone = binding.phoneProfile.text.toString().toLong()
+                if ((user.longitude == 360.0 || user.latitude == 360.0) || (user.longitude == null || user.latitude == null)) {
+                    user.latitude = 360.0
+                    user.longitude = 360.0
+                }
 
                 uploadController.updateUser(user)
             }

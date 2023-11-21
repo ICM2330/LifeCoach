@@ -27,11 +27,13 @@ class ChatMenuActivity : AppCompatActivity() {
         val adapter = FriendChatAdapter(this, friends)
         binding.cmChats.adapter = adapter
 
+        /*
         binding.cmChats.setOnItemClickListener { parent, view, position, id  ->
             val intent = Intent(baseContext, ChatActivity::class.java)
             intent.putExtra("friend", friends[position])
             startActivity(intent)
         }
+         */
 
         dataController.registerFriendsListener {
             friends = it
@@ -73,7 +75,7 @@ class ChatMenuActivity : AppCompatActivity() {
             val chat = messages.toMutableList()
             if(lastMessage[i] != "")
                 chat.add(TextMessage(false, Date(), lastMessage[i]))
-            friends.add(Friend(User(null, nombres[i], "${nombres[i]}${nombres[i].length}", "${nombres[i]}@gmail.com", 0), chat))
+            friends.add(Friend(User(null, nombres[i], "${nombres[i]}${nombres[i].length}", "${nombres[i]}@gmail.com", 0, 360.0, 360.0), chat))
         }
         return friends
     }

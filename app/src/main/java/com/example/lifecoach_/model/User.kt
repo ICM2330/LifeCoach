@@ -8,7 +8,9 @@ data class User(
     var name: String,
     var username: String,
     var email: String,
-    var phone: Long
+    var phone: Long,
+    var latitude : Double?,
+    var longitude : Double?
 ):Serializable
 {
     var picture: String = ""
