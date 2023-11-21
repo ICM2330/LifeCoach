@@ -104,19 +104,15 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         userTest.uid?.let {uid ->
             userController.updatePictureListener(uid) {
                 newUser ->
+                val userHabits = userTest.habits
                 if (newUser != null) {
                     userTest = newUser
                     // Update photo
                     updatePhoto()
                 }
+                userTest.habits = userHabits
             }
         }
-
-        // Show habits
-        updateHabits()
-
-        // Set click listeners
-        manageButtons(userTest)
 
         // Set Firebase Data Update Listeners
         userTest.uid?.let { uid -> dataController.updatesListener(uid) {
@@ -125,6 +121,9 @@ class DashBoardHabitsActivity : AppCompatActivity() {
                 updateHabits()
             }
         }
+
+        // Set click listeners
+        manageButtons(userTest)
     }
 
     private lateinit var enableDarkMode: () -> Unit
@@ -184,7 +183,9 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     private fun updateHabits() {
         todayHabits.clear()
         otherHabits.clear()
+
         for (habit in userTest.habits) {
+            Log.i("HABIT", "${habit.id} --- ${habit.accomplishment}")
             if (habit.shouldDoToday())
                 todayHabits.add(habit)
             else

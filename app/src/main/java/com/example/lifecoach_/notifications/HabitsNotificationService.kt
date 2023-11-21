@@ -14,26 +14,35 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.example.lifecoach_.model.habits.Frequency
 import com.example.lifecoach_.model.habits.Habit
+import com.example.lifecoach_.services.firebase.HabitsService
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import java.util.Calendar
 
 class HabitsNotificationService : BroadcastReceiver() {
+    private val habitsService = HabitsService()
+    private val auth = Firebase.auth
 
     override fun onReceive(context: Context, intent: Intent) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        if(Build.VERSION.SDK_INT >= 34)
-            alarmManager.cancelAll()
-        Log.i("SERVICE", "Request for update notifications received")
-        // if have notification permissions
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            scheduleNotification(
-                context,
-                Habit(null, "Habito generico", Frequency(6, 25, mutableListOf(0,1)))
-            )
 
+        auth.currentUser?.let {
+            habitsService.registerUpdateListener(it.uid) {
+                if (Build.VERSION.SDK_INT >= 34)
+                    alarmManager.cancelAll()
+                Log.i("SERVICE", "Request for update notifications received")
+                // if have notification permissions
+                if (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    scheduleNotification(
+                        context,
+                        Habit(null, "Habito generico", Frequency(6, 25, mutableListOf(0, 1)))
+                    )
+                }
+            }
         }
     }
 

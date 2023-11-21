@@ -27,6 +27,7 @@ class HabitsResultMapper {
                 habit.id?.let { hid ->
                     accompRepository.registerListenerFor(hid) {
                         habit.accomplishment = it
+                        callback(habits)
                     }
                 }
             }
