@@ -1,5 +1,6 @@
 package com.example.lifecoach_.activities.habits.auxiliar
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -12,9 +13,11 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.os.SystemClock
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,7 +34,9 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.Priority
+import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -44,7 +49,10 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.maps.DirectionsApi
 import com.google.maps.GeoApiContext
 import com.google.maps.model.DirectionsResult
@@ -71,6 +79,12 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var lightSensor: Sensor
     private lateinit var lightEventListener: SensorEventListener
 
+    // DB Management
+    private lateinit var db : FirebaseFirestore
+
+    // Auth attribute
+    private lateinit var auth : FirebaseAuth
+
     private val getPermissionLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -82,6 +96,12 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityRunningActionHabitBinding.inflate(layoutInflater)
         setContentView(binding.root) // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance()
+
+        // Initialize Firebase Firestore
+        db = FirebaseFirestore.getInstance()
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapsFragment) as SupportMapFragment
@@ -101,6 +121,20 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         // If it's the first location, save it
                         lastLocation = currentLocation
                         updateLocationOnMap()
+                        val usersRef = db.collection("users")
+                        val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
+                        query.get()
+                            .addOnSuccessListener {
+                                if (it.documents.size >= 1) {
+                                    val doc = it.documents[0]
+                                    doc.reference.update(
+                                        mapOf(
+                                            "latitude" to currentLocation!!.latitude,
+                                            "longitude" to currentLocation.longitude
+                                        )
+                                    )
+                                }
+                            }
                     } else {
                         // If it's not the first location, calculate the distance and draw the route
                         val metersRoad = drawRouteBetweenTwoLocations(lastLocation!!, currentLocation)
@@ -113,6 +147,20 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
                         binding.distanceRanModifyText.text = metersRan.toString() + " mts"
 
                         updateLocationOnMap()
+                        val usersRef = db.collection("users")
+                        val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
+                        query.get()
+                            .addOnSuccessListener {
+                                if (it.documents.size >= 1) {
+                                    val doc = it.documents[0]
+                                    doc.reference.update(
+                                        mapOf(
+                                            "latitude" to currentLocation!!.latitude,
+                                            "longitude" to currentLocation.longitude
+                                        )
+                                    )
+                                }
+                            }
                     }
                 }
             }
@@ -266,40 +314,61 @@ class RunningActionHabitActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // Handle location settings
-    private fun locationSettings() {
-        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-        val client = LocationServices.getSettingsClient(this)
-        val task = client.checkLocationSettings(builder.build())
+    private val locationRequestCode = 1001
 
-        task.addOnSuccessListener {
-            checkLocationPermission()
+    private fun showLocationPermissionDialog() {
+        if (!isLocationEnabled()) {
+            val alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("Permiso de Ubicación")
+            alertDialog.setMessage("Localización no encendida, enciendela para usar la aplicación con sus funcionalidades")
+            alertDialog.setPositiveButton("OK") { _, _ ->
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivityForResult(intent, locationRequestCode)
+            }
+            alertDialog.setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.cancel()
+                Toast.makeText(this, "Funcionalidad de correr no habilitada.", Toast.LENGTH_LONG).show()
+            }
+            val alert = alertDialog.create()
+            alert.show()
         }
+    }
 
-        task.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException) {
-                try {
-                    val intentSenderRequest =
-                        IntentSenderRequest.Builder(exception.resolution).build()
-                    locationSettings.launch(intentSenderRequest)
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Show a toast if the location settings are not satisfied
-                    Toast.makeText(
-                        baseContext, "Location settings are not satisfied", Toast.LENGTH_LONG
-                    ).show()
-                }
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == locationRequestCode) {
+            if (isLocationEnabled()) {
+                showLocationPermissionDialog()
+            } else {
+                Toast.makeText(this, "Location is still disabled.", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private val locationSettings = registerForActivityResult(
-        ActivityResultContracts.StartIntentSenderForResult()
-    ) {
-        if (it.resultCode == RESULT_OK) {
+    private fun locationSettings() {
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val client: SettingsClient = LocationServices.getSettingsClient(this)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+        task.addOnSuccessListener {
             checkLocationPermission()
-        } else {
-            Toast.makeText(baseContext, "Location is required for this app", Toast.LENGTH_LONG)
-                .show()
+        }
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                // Show the user a dialog to change location settings
+                try {
+                    showLocationPermissionDialog()
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error
+                }
+            }
         }
     }
 

@@ -176,7 +176,6 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
                             // Here quit the markers of the gyms
                             consumeRestVolley()
-
                         }
                     }
                 }
