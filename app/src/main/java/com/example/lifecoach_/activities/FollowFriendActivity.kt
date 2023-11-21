@@ -38,6 +38,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
@@ -156,7 +157,6 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                         lastLocation = currentLocation
                         updateLocationOnMap()
 
-                        // TODO : Update the location on the DB
                         val usersRef = db.collection("users")
                         val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
                         query.get()
@@ -169,6 +169,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                             "longitude" to currentLocation.longitude
                                         )
                                     )
+                                    updateFriendLocationOnMap()
                                     // Draw the route
                                     val distance = drawRouteBetweenTwoLocations(
                                         LatLng(currentLocation.latitude, currentLocation.longitude),
@@ -198,6 +199,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                                 "longitude" to currentLocation!!.longitude
                                             )
                                         )
+                                        updateFriendLocationOnMap()
                                         // Draw the route
                                         val distance = drawRouteBetweenTwoLocations(
                                             LatLng(currentLocation.latitude, currentLocation.longitude),
@@ -216,6 +218,12 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                this,
+                R.raw.lightmodemap
+            )
+        )
     }
 
     private var polyLines = mutableListOf<Polyline>()
@@ -338,13 +346,16 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle("Permiso de Ubicación")
             alertDialog.setMessage("Localización no encendida, enciendela para usar la aplicación con sus funcionalidades")
-            alertDialog.setPositiveButton("Configuración") { _, _ ->
+            alertDialog.setPositiveButton("OK") { _, _ ->
                 val intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivityForResult(intent, locationRequestCode)
             }
             alertDialog.setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.cancel()
+                Toast.makeText(this, "Funcionalidad de seguimiento no habilitada.", Toast.LENGTH_LONG).show()
             }
+            val alert = alertDialog.create()
+            alert.show()
         }
     }
 
