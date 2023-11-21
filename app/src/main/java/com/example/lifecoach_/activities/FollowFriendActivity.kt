@@ -8,6 +8,10 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
@@ -74,6 +78,11 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // Auth / Current user attributes
     private lateinit var auth : FirebaseAuth
+
+    // Light Sensor variables
+    private lateinit var sensorManager: SensorManager
+    private lateinit var lightSensor: Sensor
+    private lateinit var lightEventListener: SensorEventListener
 
     private val getPermissionLocation =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -214,6 +223,11 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+
+        // Management of the sensor
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
+        lightEventListener = createLightSensorListener()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -303,6 +317,33 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+    }
+
+    // Sensor Management
+    private fun createLightSensorListener(): SensorEventListener {
+        val ret: SensorEventListener = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent?) {
+                if (event != null && ::mMap.isInitialized) {
+                    if (event.values[0] < 5000) {
+                        mMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                baseContext, R.raw.darkmodemap
+                            )
+                        )
+                    } else {
+                        mMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                baseContext, R.raw.lightmodemap
+                            )
+                        )
+                    }
+                }
+            }
+
+            override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+            }
+        }
+        return ret
     }
 
     private fun startLocationUpdates() {
@@ -417,10 +458,16 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         locationSettings()
+        sensorManager.registerListener(
+            lightEventListener,
+            lightSensor,
+            SensorManager.SENSOR_DELAY_NORMAL
+        )
     }
 
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
+        sensorManager.unregisterListener(lightEventListener)
     }
 }
