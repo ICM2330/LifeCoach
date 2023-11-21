@@ -214,7 +214,6 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
 
                             updateLocationOnMap()
 
-                            // TODO : Update the location on the DB
                             val usersRef = db.collection("users")
                             val query = usersRef.whereEqualTo("uid", auth.currentUser?.uid)
                             query.get()
