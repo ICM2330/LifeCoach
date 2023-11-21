@@ -37,6 +37,7 @@ import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
 import com.example.lifecoach_.controllers.sensor_controllers.MotionController
 import com.example.lifecoach_.controllers.sensor_controllers.ThemeController
+import com.example.lifecoach_.notifications.HabitsNotificationService
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
@@ -101,30 +102,36 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         userController = DashBoardUserController(baseContext, filesDir)
 
-        userTest.uid?.let {uid ->
-            userController.updatePictureListener(uid) {
-                newUser ->
+        userTest.uid?.let { uid ->
+            userController.updatePictureListener(uid) { newUser ->
+                val userHabits = userTest.habits
                 if (newUser != null) {
                     userTest = newUser
                     // Update photo
                     updatePhoto()
                 }
+                userTest.habits = userHabits
             }
         }
 
-        // Show habits
-        updateHabits()
-
-        // Set click listeners
-        manageButtons(userTest)
-
         // Set Firebase Data Update Listeners
-        userTest.uid?.let { uid -> dataController.updatesListener(uid) {
-            habits ->
+        userTest.uid?.let { uid ->
+            dataController.updatesListener(uid) { habits ->
                 userTest.habits = habits
                 updateHabits()
             }
         }
+
+        // Start notification service
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermission.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+        val updateIntent = Intent(this, HabitsNotificationService::class.java)
+        updateIntent.action = "com.example.lifecoach_.notifications.UPDATE_NOTIFICATIONS"
+        sendBroadcast(updateIntent)
+
+        // Set click listeners
+        manageButtons(userTest)
     }
 
     private lateinit var enableDarkMode: () -> Unit
@@ -165,7 +172,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         return theme
     }
 
-    private fun updatePhoto(){
+    private fun updatePhoto() {
         if (userTest.picture.isNotEmpty()) {
             // Update the photo
             val uri = Uri.parse(userTest.picture)
@@ -174,8 +181,7 @@ class DashBoardHabitsActivity : AppCompatActivity() {
             binding.dashProfPic.setImageBitmap(bitmap)
 
             Log.i("Uri DashBoard", uri.toString())
-        }
-        else{
+        } else {
             // Set default photo
             binding.dashProfPic.setImageDrawable(getDrawable(R.drawable.usuario))
         }
@@ -184,7 +190,9 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     private fun updateHabits() {
         todayHabits.clear()
         otherHabits.clear()
+
         for (habit in userTest.habits) {
+            Log.i("HABIT", "${habit.id} --- ${habit.accomplishment}")
             if (habit.shouldDoToday())
                 todayHabits.add(habit)
             else
@@ -211,10 +219,12 @@ class DashBoardHabitsActivity : AppCompatActivity() {
 
         // SHOW TODAY HABITS
         binding.showToday.setOnClickListener {
-            binding.showOthers.backgroundTintList = ColorStateList.valueOf(getColor(R.color.dark_gray))
+            binding.showOthers.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.dark_gray))
             binding.showOthers.setTextColor(getColor(R.color.white))
 
-            binding.showToday.backgroundTintList = ColorStateList.valueOf(getColor(R.color.light_gray))
+            binding.showToday.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.light_gray))
             binding.showToday.setTextColor(getColor(R.color.dark_gray))
 
             showToday = true
@@ -222,10 +232,12 @@ class DashBoardHabitsActivity : AppCompatActivity() {
         }
 
         binding.showOthers.setOnClickListener {
-            binding.showToday.backgroundTintList = ColorStateList.valueOf(getColor(R.color.dark_gray))
+            binding.showToday.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.dark_gray))
             binding.showToday.setTextColor(getColor(R.color.white))
 
-            binding.showOthers.backgroundTintList = ColorStateList.valueOf(getColor(R.color.light_gray))
+            binding.showOthers.backgroundTintList =
+                ColorStateList.valueOf(getColor(R.color.light_gray))
             binding.showOthers.setTextColor(getColor(R.color.dark_gray))
 
             showToday = false
@@ -292,4 +304,16 @@ class DashBoardHabitsActivity : AppCompatActivity() {
             }
         }
     }
+
+    // NOTIFICATION METHODS
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        if (it) {
+            val updateIntent = Intent(this, HabitsNotificationService::class.java)
+            updateIntent.action = "com.example.lifecoach_.notifications.UPDATE_NOTIFICATIONS"
+            sendBroadcast(updateIntent)
+        }
+    }
+
 }

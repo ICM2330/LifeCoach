@@ -14,8 +14,10 @@ class HabitsService {
     fun addOrUpdateHabit(habit: Habit, user: User, callback: (Habit) -> Unit) {
         if (user.uid != null) {
             if (habit.id != null) {
+                Log.i("UPDATE", "Actualizando habito")
                 updateHabit(habit, user.uid!!, callback)
             } else {
+                Log.i("UPDATE", "Agregando habito")
                 addHabit(habit, user.uid!!, callback)
             }
         } else {

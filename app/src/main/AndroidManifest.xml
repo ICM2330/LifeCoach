@@ -6,6 +6,10 @@
         android:name="android.hardware.sensor.light"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -24,17 +28,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LifeCoach_"
         tools:targetApi="31">
-        <activity
-            android:name=".activities.FollowFriendActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.habits.auxiliar.RunningActionHabitActivity"
-            android:exported="false" />
 
+        <!-- BroadcastReceivers -->
+        <receiver
+            android:name=".notifications.NotificationService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".notifications.HabitsNotificationService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.lifecoach_.notifications.UPDATE_NOTIFICATIONS"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".notifications.HabitNotification"
+            android:enabled="true">
+        </receiver>
+
+        <!-- Activities -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity
+            android:name=".activities.habits.auxiliar.RunningActionHabitActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.habits.auxiliar.SearchGymForHabitActivity"
             android:exported="false" />
@@ -90,6 +114,9 @@
             android:name=".activities.friends.ChatMenuActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.FollowFriendActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -99,6 +126,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Providers -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.lifecoach_.fileprovider"

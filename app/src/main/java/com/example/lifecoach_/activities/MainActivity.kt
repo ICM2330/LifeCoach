@@ -1,10 +1,14 @@
 package com.example.lifecoach_.activities
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -23,9 +27,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var authController: MainActivityAuthController
-    private val registerController: MainActivityRegisterController = MainActivityRegisterController()
+    private val registerController: MainActivityRegisterController =
+        MainActivityRegisterController()
 
     private var uriImage: Uri? = null
 
@@ -34,11 +39,13 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val FIREBASE_URL = "https://lifecoach-9f291.firebaseapp.com"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        createNotificationChannel()
         buttonsManager()
         authController = MainActivityAuthController(intent, baseContext)
     }
@@ -46,16 +53,17 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         authController.runIfLogged {user1: User?, already: Boolean ->
+
             if (user1 != null) {
                 Log.i("LOGIN", "Loaded Image from URI: ${user1.picture}")
-                if (!user1.picture.isNullOrEmpty() && !already) {
+                if (user1.picture.isNotEmpty() && !already) {
                     uriImage = Uri.parse(user1.picture)
                 }
-
                 registerController.registerUser(user1, uriImage) {user2: User? ->
                     val t = Toast.makeText(baseContext,
                         "Se ha iniciado sesión correctamente",
-                        Toast.LENGTH_LONG)
+                        Toast.LENGTH_LONG
+                    )
                     t.show()
                     val i = Intent(baseContext, DashBoardHabitsActivity::class.java)
                     i.putExtra("user", user2)
@@ -65,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     private fun buttonsManager() {
         //Button of attach photo from the registering proccess
         binding.photoFromGallery.setOnClickListener {
@@ -75,7 +83,11 @@ class MainActivity : AppCompatActivity() {
         // Button of attach photo from camera ah the registering proccess
         binding.photoFromCamera.setOnClickListener {
             val file = File(filesDir, "picFromCamera")
-            cameraUri = FileProvider.getUriForFile(baseContext,baseContext.packageName + ".fileprovider", file)
+            cameraUri = FileProvider.getUriForFile(
+                baseContext,
+                baseContext.packageName + ".fileprovider",
+                file
+            )
             getContentCamera.launch(cameraUri)
         }
 
@@ -90,8 +102,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(i)
                     finish()
                 }
-            }
-            else{
+            } else {
                 //Say that is not possible to do the register
                 Toast.makeText(
                     this,
@@ -123,17 +134,18 @@ class MainActivity : AppCompatActivity() {
                     .isBlank() || binding.phoneRegister.text.toString().isBlank()
     }
 
-    private val getContentGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            // Load Image implemented
-            val imageStream = contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(imageStream)
-            binding.photoload.setImageBitmap(bitmap)
+    private val getContentGallery =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                // Load Image implemented
+                val imageStream = contentResolver.openInputStream(uri)
+                val bitmap = BitmapFactory.decodeStream(imageStream)
+                binding.photoload.setImageBitmap(bitmap)
 
-            // Call this function to save the image to the gallery
-            saveImageToGallery(bitmap)
+                // Call this function to save the image to the gallery
+                saveImageToGallery(bitmap)
+            }
         }
-    }
 
     private fun saveImageToGallery(bitmap: Bitmap) {
         val displayName = "MyImage.jpg"
@@ -145,7 +157,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         val contentResolver = contentResolver
-        val imageUri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        val imageUri: Uri? =
+            contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 
         uriImage = imageUri
 
@@ -160,7 +173,8 @@ class MainActivity : AppCompatActivity() {
 
     // Attributes of the camera
     private lateinit var cameraUri: Uri
-    private val getContentCamera = registerForActivityResult(ActivityResultContracts.TakePicture()
+    private val getContentCamera = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
     ) {
         if (it) {
             loadImage(cameraUri)
@@ -175,4 +189,18 @@ class MainActivity : AppCompatActivity() {
         uriImage = uri
     }
 
+
+    // Create notification channel
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Habits"
+            val description = "Notifications to inform when is time for a habit"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("Habits", name, importance)
+            channel.description = description
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 }
