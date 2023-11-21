@@ -27,11 +27,13 @@ class ChatMenuActivity : AppCompatActivity() {
         val adapter = FriendChatAdapter(this, friends)
         binding.cmChats.adapter = adapter
 
+        /*
         binding.cmChats.setOnItemClickListener { parent, view, position, id  ->
             val intent = Intent(baseContext, ChatActivity::class.java)
             intent.putExtra("friend", friends[position])
             startActivity(intent)
         }
+         */
 
         dataController.registerFriendsListener {
             friends = it
