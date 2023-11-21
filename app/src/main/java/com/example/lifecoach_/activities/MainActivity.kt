@@ -15,7 +15,6 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.lifecoach_.controllers.activities_controllers.activity_main.MainActivityAuthController
@@ -23,7 +22,6 @@ import com.example.lifecoach_.controllers.activities_controllers.activity_main.M
 import com.example.lifecoach_.databinding.ActivityMainBinding
 import java.io.File
 import com.example.lifecoach_.model.User
-import com.example.lifecoach_.notifications.HabitsNotificationService
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,18 +38,12 @@ class MainActivity : AppCompatActivity() {
         const val FIREBASE_URL = "https://lifecoach-9f291.firebaseapp.com"
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         createNotificationChannel()
-
-        val updateIntent = Intent(this, HabitsNotificationService::class.java)
-        updateIntent.action = "com.example.lifecoach_.notifications.UPDATE_NOTIFICATIONS"
-        sendBroadcast(updateIntent)
-
         buttonsManager()
         authController = MainActivityAuthController(intent, baseContext)
     }
@@ -62,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
             if (user1 != null) {
                 Log.i("LOGIN", "Loaded Image from URI: ${user1.picture}")
-                if (!user1.picture.isNullOrEmpty() && !already) {
+                if (user1.picture.isNotEmpty() && !already) {
                     uriImage = Uri.parse(user1.picture)
                 }
                 registerController.registerUser(user1, uriImage) { user2: User? ->

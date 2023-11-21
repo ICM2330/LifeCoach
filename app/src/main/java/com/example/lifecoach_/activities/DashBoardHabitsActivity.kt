@@ -37,6 +37,7 @@ import com.example.lifecoach_.model.habits.StrengthHabit
 import com.example.lifecoach_.model.habits.TimeControlHabit
 import com.example.lifecoach_.controllers.sensor_controllers.MotionController
 import com.example.lifecoach_.controllers.sensor_controllers.ThemeController
+import com.example.lifecoach_.notifications.HabitsNotificationService
 
 class DashBoardHabitsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashBoardHabitsBinding
@@ -181,6 +182,10 @@ class DashBoardHabitsActivity : AppCompatActivity() {
     }
 
     private fun updateHabits() {
+        val updateIntent = Intent(this, HabitsNotificationService::class.java)
+        updateIntent.action = "com.example.lifecoach_.notifications.UPDATE_NOTIFICATIONS"
+        sendBroadcast(updateIntent)
+        
         todayHabits.clear()
         otherHabits.clear()
 

@@ -39,13 +39,10 @@ class Frequency(
         notificationCalendar.set(Calendar.SECOND, 0)
         notificationCalendar.set(Calendar.MILLISECOND, 0)
 
-        Log.i("NOTIDAY", "now ${currentCalendar.time}")
         for (day in days) {
             notificationCalendar.set(Calendar.DAY_OF_WEEK, toCalendarDays[day])
-            Log.i("NOTIDAY", "checking ${notificationCalendar.time}")
             if (currentCalendar.before(notificationCalendar)) {
-                Log.i("NOTIDAY", "${notificationCalendar.time}")
-                Log.i("NOTIDAY", "${notificationCalendar.timeInMillis - currentTimeMillis}")
+                Log.i("NOTI", "Next notification: ${notificationCalendar.time}")
                 return notificationCalendar.timeInMillis - currentTimeMillis
             }
         }
@@ -53,8 +50,7 @@ class Frequency(
         notificationCalendar.add(Calendar.WEEK_OF_YEAR, 1)
         notificationCalendar.set(Calendar.DAY_OF_WEEK, toCalendarDays[days.first()])
 
-        Log.i("NOTIDAY", "${notificationCalendar.time}")
-        Log.i("NOTIDAY", "${notificationCalendar.timeInMillis - currentTimeMillis}")
+        Log.i("NOTI", "Next notification: ${notificationCalendar.time}")
         return notificationCalendar.timeInMillis - currentTimeMillis
     }
 
