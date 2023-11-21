@@ -54,7 +54,7 @@ class HabitsNotificationService : BroadcastReceiver() {
         // sets the intent that start the service who build the notification according to the habit
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            HabitNotification.NotiId,
+            0,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
