@@ -39,11 +39,11 @@ class HabitsNotificationService : BroadcastReceiver() {
 
     private fun scheduleAllHabitsNotifications(context: Context, habits: MutableList<Habit>) {
         Log.i("NOTI", "Scheduling notifications for ${habits.size} habits")
-        for(habit in habits)
-            scheduleNotification(context, habit)
+        for(i in 0 until habits.size)
+            scheduleNotification(context, i, habits[i])
     }
 
-    private fun scheduleNotification(context: Context, habit: Habit) {
+    private fun scheduleNotification(context: Context, id : Int, habit: Habit) {
         // create the intent to the dashboard activity
         val intent = Intent(context, HabitNotification::class.java).apply {
             putExtra(
@@ -54,7 +54,7 @@ class HabitsNotificationService : BroadcastReceiver() {
         // sets the intent that start the service who build the notification according to the habit
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            0,
+            id,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
