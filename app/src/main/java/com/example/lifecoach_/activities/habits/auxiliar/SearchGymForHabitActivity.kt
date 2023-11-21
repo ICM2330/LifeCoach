@@ -83,7 +83,7 @@ class SearchGymForHabitActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val listGym = mutableListOf<Gym>()
 
-    // Sensor variables
+    // Light Sensor variables
     private lateinit var sensorManager: SensorManager
     private lateinit var lightSensor: Sensor
     private lateinit var lightEventListener: SensorEventListener
