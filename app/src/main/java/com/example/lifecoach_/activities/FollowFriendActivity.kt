@@ -102,12 +102,12 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                             LatLng(lastLocation!!.latitude, lastLocation!!.longitude),
                             LatLng(latitude, longitude)
                         )
-                        binding.follow.text = "Following: ${userFriend.username}"
-                        binding.distanceFollowing.text = "Distance: $distance mts"
+                        binding.nameUserFollowing.text = "${userFriend.username}"
+                        binding.distanceFollowing.text = "$distance mts"
                     }
                 } else {
-                    binding.follow.text = "Following: ${userFriend.username}"
-                    binding.distanceFollowing.text = "Distance: 0 mts"
+                    binding.nameUserFollowing.text = "${userFriend.username}"
+                    binding.distanceFollowing.text = "0 mts"
                 }
             }
         }
@@ -166,7 +166,7 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                     doc.reference.update(
                                         mapOf(
                                             "latitude" to currentLocation!!.latitude,
-                                            "longitude" to currentLocation!!.longitude
+                                            "longitude" to currentLocation.longitude
                                         )
                                     )
                                     // Draw the route
@@ -174,8 +174,8 @@ class FollowFriendActivity : AppCompatActivity(), OnMapReadyCallback {
                                         LatLng(currentLocation.latitude, currentLocation.longitude),
                                         LatLng(friendLastLatLng!!.latitude, friendLastLatLng!!.longitude)
                                     )
-                                    binding.follow.text = "Following: ${userFriend.username}"
-                                    binding.distanceFollowing.text = "Distance: $distance mts"
+                                    binding.nameUserFollowing.text = "${userFriend.username}"
+                                    binding.distanceFollowing.text = "$distance mts"
                                 }
                             }
                     }

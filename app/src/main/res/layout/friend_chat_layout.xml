@@ -38,9 +38,9 @@
 
         <Button
             android:id="@+id/buttonRealTime"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="40dp"
-            android:text="! Sigue a tu amigo y corran juntos !" />
+            android:text="Corre junto a tu amigo" />
     </LinearLayout>
 
 </LinearLayout>
