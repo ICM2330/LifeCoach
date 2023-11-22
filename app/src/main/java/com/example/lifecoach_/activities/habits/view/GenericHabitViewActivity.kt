@@ -89,6 +89,9 @@ class GenericHabitViewActivity : AppCompatActivity() {
         binding.vghHabitName.text = habit.name
         binding.vghHour.text = habit.frequency.hourString()
 
+        if(habit.doneToday())
+            binding.btnCompletado.setIconTintResource(R.color.white)
+
         // Days of notification
         for (not in notificationDays) {
             not.setBackgroundColor(getColor(R.color.gray))
