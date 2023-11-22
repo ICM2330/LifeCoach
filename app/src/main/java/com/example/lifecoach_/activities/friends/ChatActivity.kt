@@ -54,6 +54,7 @@ class ChatActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                binding.msgText.text.clear()
                 handled = true
             }
 
