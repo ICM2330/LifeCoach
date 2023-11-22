@@ -13,6 +13,9 @@ import com.example.lifecoach_.R
 import com.example.lifecoach_.model.messages.MediaMessage
 import com.example.lifecoach_.model.messages.MessageApp
 import com.example.lifecoach_.model.messages.TextMessage
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MessageAdapter(context: Context, messages: List<MessageApp>)
     : ArrayAdapter<MessageApp>(context, 0, messages) {
@@ -26,6 +29,7 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
 
         val msg : TextView
         val img : ImageView
+        val timeStamp : TextView
         val frameForwarded = itemView!!.findViewById<FrameLayout>(R.id.frameForwarded)
         val frameReceived = itemView.findViewById<FrameLayout>(R.id.frameReceived)
         frameForwarded.alpha = 1.0f
@@ -34,6 +38,7 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
         if(item!!.forwarded){
             msg = itemView.findViewById(R.id.messageForwarded)
             img = itemView.findViewById(R.id.messageImgForwarded)
+            timeStamp = itemView.findViewById(R.id.timeForwarded)
 
             val paramsframe = LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -44,6 +49,8 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
         else {
             img = itemView.findViewById(R.id.messageImgReceived)
             msg = itemView.findViewById(R.id.messageReceived)
+            timeStamp = itemView.findViewById(R.id.timeReceived)
+
             val paramsframe = LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT)
             paramsframe.weight = 3.0f
@@ -55,6 +62,7 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
             is TextMessage-> {
                 msg.text = item.text
                 img.setImageResource(0)
+                timeStamp.text = convertHourString(item.timeStamp)
             }
             is MediaMessage->{
                 val message = item
@@ -66,5 +74,10 @@ class MessageAdapter(context: Context, messages: List<MessageApp>)
             }
         }
         return itemView
+    }
+
+    fun convertHourString(date: Date): String {
+        val formatoHora12h = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        return formatoHora12h.format(date)
     }
 }
